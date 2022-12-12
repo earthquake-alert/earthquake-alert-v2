@@ -1,4 +1,4 @@
-package report
+package src
 
 import "time"
 
@@ -9,6 +9,7 @@ const (
 	Common Status = iota
 	Training
 	Test
+	Unknown
 )
 
 const (
@@ -17,25 +18,24 @@ const (
 	Cancel
 )
 
-type Report struct {
-	// 管理部
-	// 本情報の配信に関連する情報を記載する。
-	Control string
-
+// 管理部
+// 本情報の配信に関連する情報を記載する。
+type JmaXmlControl struct {
 	// 情報名称
 	// 本要素は、「独立した情報単位」判別のキーとしても用いられる（（ⅲ）共通別紙ア．「地震火
 	// 山関連XML 電文の「独立した情報単位」の運用」参照）。
-	Title string
+	Title string `xml:"Title"`
 
 	// 発表時刻
 	// 気象庁システムからの発信時刻を記載する。この値は秒値まで有効である
-	DateTime time.Time
+	// TODO: ISO 8601 でエンコードできるかどうか
+	DateTime time.Time `xml:"DateTime"`
 
 	// 運用種別
-	// - 通常の運用で発表する情報: Status.Common
-	// - 事前に日時を定めて行う業務訓練等で発表する情報: Status.Training
-	// - 定期または臨時に伝聞疎通確認等を目的として発表する緊急地震速報の配信テスト伝聞: Status.Test
-	Status Status
+	// - 通常の運用で発表する情報: 通常
+	// - 事前に日時を定めて行う業務訓練等で発表する情報: 訓練
+	// - 定期または臨時に伝聞疎通確認等を目的として発表する緊急地震速報の配信テスト伝聞: 試験
+	Status string `xml:"Status"`
 
 	// 編集官署名
 	// 	本要素は、「独立した情報単位」判別のキーとしても用いられるが、地震・津波に関連する情
@@ -43,14 +43,14 @@ type Report struct {
 	// 害発生等により一連の情報であっても編集官署が切り替わる場合があることに留意が必要で
 	// ある。地震・津波に関連する情報等のこうした取扱については、（ⅲ）共通別紙ア．「地震火山
 	// 関連XML 電文の「独立した情報単位」の運用」を参照すること。
-	EditorialOffice string
+	EditorialOffice string `xml:"EditorialOffice"`
+
+	// 発表官署名
+	PublishingOffice string `xml:"PublishingOffice"`
 }
 
-type ReportHeader struct {
-	// ヘッダ部
-	// 本情報の見出しを記載する。
-	Head string
-
+// ヘッダ部
+type JmaXmlHeader struct {
 	// 課題
 	// 	情報の標題を記載する。
 	// 震源・震度に関する情報において、近地地震の場合には“震源・震度情報”、遠地地震の場
@@ -78,14 +78,14 @@ type ReportHeader struct {
 	//   - 津波予報
 	// - 事例４（大津波警報、津波警報、津波注意報、津波予報を発表する場合）
 	//   - 大津波警報・津波警報・津波注意報・津波予報
-	Title string
+	Title string `xml:"Title"`
 
 	// 発表時刻
 	// 発表官署が本情報を発表した時刻を記載する。
 	// 緊急地震速報（警報）、緊急地震速報（地震動予報）、緊急地震速報（予報）、及び緊急地
 	// 震速報の配信テスト電文については秒値まで、その他の地震・津波・南海トラフ地震・火山に
 	// 関連する情報については、分値まで有効である。
-	ReportDateTime time.Time
+	ReportDateTime time.Time `xml:"ReportDateTime"`
 
 	// 基点時刻
 	// 	情報の内容が発現・発効する基点時刻を記載する。
@@ -103,7 +103,7 @@ type ReportHeader struct {
 	// 火速報、推定噴煙流向報については、基本的に分値まで有効であるが、TargetDTDubious が
 	// 出現する場合は、それで示すあいまいさに応じた単位までが有効、発現時刻が不明の場合に
 	// は~~xsi:nil=“true”属性値により空要素となる~~ nilとなる。
-	TargetDateTime time.Time
+	TargetDateTime time.Time `xml:"TargetDateTime"`
 
 	// 基点時刻の曖昧さ
 	// "頃", "年頃", "月頃", "日頃", "時頃", "分頃", "秒頃"
@@ -113,7 +113,7 @@ type ReportHeader struct {
 	// 発現時刻にあいまいさがある場合に記載する。
 	// 例えば“日頃”のときは年月日までが有効となる。具体的な精度の有効な範囲は、内容部の
 	// EventDateTime 及びEventDateTimeUTC の@significant に記載する。
-	TargetDTDubious string
+	TargetDTDubious string `xml:"TargetDTDubious,omitempty"`
 
 	// 失効時刻
 	// 津波警報・注意報・予報の電文及び降灰予報の電文において情報の失効時刻を記載する。
@@ -125,7 +125,7 @@ type ReportHeader struct {
 	// 時刻から概ね6 時間後となる。
 	// 存在しない場合はnil
 	// Optional
-	ValidDateTim time.Time
+	ValidDateTim time.Time `xml:"ValidDateTim,omitempty"`
 
 	// 識別情報
 	// 地震・津波に関連する情報については、ある特定の地震を識別するための地震識別番号
@@ -140,14 +140,14 @@ type ReportHeader struct {
 	// 結して記載する。
 	// 地震・津波に関するお知らせや火山に関するお知らせについては、情報発表日時分（14 桁
 	// の数字）を記載する。
-	EventID string
+	EventID string `xml:"EventID"`
 
 	// 情報形態
 	// 情報を発表する場合は“発表”を、「独立した情報単位」において直前の時点で発表されて
 	// いるControl/DateTime の最も新しい電文を訂正する場合は“訂正”を、「独立した情報単位」
 	// 全体を取り消す場合は“取消”を記載する。取消電文の運用については、（ⅲ）共通別紙ウ．
 	// 「取消電文の運用」を参照。
-	InfoType InfoType
+	InfoType string `xml:"InfoType"`
 
 	// 情報番号
 	// 続報を発表し、内容を更新する情報については、情報番号を記載する。続報を発表する度
@@ -156,33 +156,11 @@ type ReportHeader struct {
 	// 南海トラフ地震に関連する情報については、続報を発表する情報で情報番号を記載する。
 	// 詳細については、（ⅲ）共通別紙エ．「南海トラフ地震に関連する情報におけるEventID 要素
 	// 及びSerial 要素の運用」を参照。
-	Serial string
+	Serial string `xml:"Serial"`
 
 	// スキーマの運用種別情報
-	InfoKind string
+	InfoKind string `xml:"InfoKind"`
 
 	// スキーマの運用種別情報のバージョン番
-	InfoKindVersion string
-
-	Headline Headline
-}
-
-type Headline struct {
-	// 見出し分を自由文形式で掲載する
-	Text string
-
-	// 地震火山関連XML 電文では、情報によって本要素の運用が異なる。このため、以下のとお
-	// り個別に解説する。
-	//
-	// 本要素は津波警報・注意報・予報、沖合の津波観測に関する情報のみに出現し、津波情
-	// 報には出現しない。
-	// 津波警報・注意報・予報においては、津波予報（若干の海面変動）のみ発表する場合、津
-	// 波警報・注意報を全解除する場合、津波警報発表後に切り替わり津波注意報のみとなる場合、
-	// 又は情報形態（Head/InfoType）が“取消”の場合を除き、本要素が出現する。
-	// 沖合の津波観測に関する情報においては、大津波警報・津波警報に相当する観測値が含
-	// まれない場合、又は情報形態（Head/InfoType）が“取消”の場合を除き、本要素が出現する。
-	// 本要素が出現する場合、津波警報・注意報・予報においては、@type が“津波予報領域表
-	// 現”となり、子要素としてItem をもち、沖合の津波観測に関する情報においては、@type が“沖
-	// 合の津波観測に関する情報”となり、子要素としてItem をもつ。
-	Information string
+	InfoKindVersion string `xml:"InfoKindVersion"`
 }
