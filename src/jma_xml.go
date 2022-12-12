@@ -1,7 +1,5 @@
 package src
 
-import "time"
-
 type Status int
 type InfoType int
 
@@ -9,13 +7,14 @@ const (
 	Common Status = iota
 	Training
 	Test
-	Unknown
+	StatusUnknown
 )
 
 const (
 	Publication InfoType = iota
 	Correction
 	Cancel
+	InfoTypeUnknown
 )
 
 // 管理部
@@ -29,7 +28,7 @@ type JmaXmlControl struct {
 	// 発表時刻
 	// 気象庁システムからの発信時刻を記載する。この値は秒値まで有効である
 	// TODO: ISO 8601 でエンコードできるかどうか
-	DateTime time.Time `xml:"DateTime"`
+	DateTime string `xml:"DateTime"`
 
 	// 運用種別
 	// - 通常の運用で発表する情報: 通常
@@ -85,7 +84,7 @@ type JmaXmlHeader struct {
 	// 緊急地震速報（警報）、緊急地震速報（地震動予報）、緊急地震速報（予報）、及び緊急地
 	// 震速報の配信テスト電文については秒値まで、その他の地震・津波・南海トラフ地震・火山に
 	// 関連する情報については、分値まで有効である。
-	ReportDateTime time.Time `xml:"ReportDateTime"`
+	ReportDateTime string `xml:"ReportDateTime"`
 
 	// 基点時刻
 	// 	情報の内容が発現・発効する基点時刻を記載する。
@@ -103,7 +102,7 @@ type JmaXmlHeader struct {
 	// 火速報、推定噴煙流向報については、基本的に分値まで有効であるが、TargetDTDubious が
 	// 出現する場合は、それで示すあいまいさに応じた単位までが有効、発現時刻が不明の場合に
 	// は~~xsi:nil=“true”属性値により空要素となる~~ nilとなる。
-	TargetDateTime time.Time `xml:"TargetDateTime"`
+	TargetDateTime string `xml:"TargetDateTime"`
 
 	// 基点時刻の曖昧さ
 	// "頃", "年頃", "月頃", "日頃", "時頃", "分頃", "秒頃"
@@ -125,7 +124,7 @@ type JmaXmlHeader struct {
 	// 時刻から概ね6 時間後となる。
 	// 存在しない場合はnil
 	// Optional
-	ValidDateTim time.Time `xml:"ValidDateTim,omitempty"`
+	ValidDateTim string `xml:"ValidDateTim,omitempty"`
 
 	// 識別情報
 	// 地震・津波に関連する情報については、ある特定の地震を識別するための地震識別番号

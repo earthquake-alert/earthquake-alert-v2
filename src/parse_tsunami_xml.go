@@ -35,7 +35,7 @@ func (c *Tsunami) Status() Status {
 	case "試験":
 		return Test
 	default:
-		return Unknown
+		return StatusUnknown
 	}
 }
 
@@ -49,5 +49,21 @@ func (c *Tsunami) IsCommon() bool {
 		return true
 	default:
 		return false
+	}
+}
+
+// 情報携帯を返す
+func (c *Tsunami) InfoType() InfoType {
+	i := c.Parsed.Head.InfoType
+
+	switch i {
+	case "発表":
+		return Publication
+	case "訂正":
+		return Correction
+	case "取消":
+		return Cancel
+	default:
+		return InfoTypeUnknown
 	}
 }

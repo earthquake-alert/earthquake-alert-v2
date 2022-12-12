@@ -33,6 +33,8 @@ type TsunamiHeadline struct {
 	// 現”となり、子要素としてItem をもち、沖合の津波観測に関する情報においては、@type が“沖
 	// 合の津波観測に関する情報”となり、子要素としてItem をもつ。
 	Information []struct {
+		Type string `xml:"type,attr"`
+
 		// 個々の防災気象情報要素 1~2回
 		Item []struct {
 			// 防災気象情報要素
@@ -69,6 +71,8 @@ type TsunamiHeadline struct {
 			//     大津波警報・津波警報に相当する高い津波が観測された沖合の潮位観測点を記載する。
 			//     子要素にArea をもつ。
 			Areas struct {
+				CodeType string `xml:"codeType,attr"`
+
 				// 対象地域・地点
 				//
 				//   - 津波警報・注意報・予報の場合
@@ -121,7 +125,7 @@ type TsunamiBody struct {
 		// 津波の観測値
 		//
 		// 津波が観測された場合、本要素に津波の観測に関する情報を記載する。
-		Observation struct {
+		Observation *struct {
 			// コード体系の定義
 			//
 			// 「津波の観測」（Body/Tsunami/Observation）以下で使用するコード体系を定義する。使用
@@ -129,8 +133,8 @@ type TsunamiBody struct {
 			// の@xpath として、定義したコードを使用する要素の相対的な出現位置を記載する。
 			CodeDefine struct {
 				Types []struct {
-					Value xml.Name `xml:"Type"`
-					XPath string   `xml:"xpath,attr"`
+					Value string `xml:""`
+					XPath string `xml:"xpath,attr"`
 				} `xml:"Type"`
 			} `xml:"CodeDefine"`
 
@@ -207,7 +211,7 @@ type TsunamiBody struct {
 		// 津波の予測値
 		//
 		// 津波警報・注意報・予報に関する情報を本要素に記載する。
-		Forecast struct {
+		Forecast *struct {
 			// コード体系の定義
 			//
 			// 「津波の予測」（Body/Tsunami/Forecast）以下で使用するコード体系を定義する。使用する
@@ -220,8 +224,8 @@ type TsunamiBody struct {
 				// <Type xpath="Item/Category/LastKind/Code">警報等情報要素／津波警報・注意報・予報</Type>
 				// </CodeDefine>
 				Type []struct {
-					XPath string   `xml:"xpath,attr"`
-					Value xml.Name `xml:"Type"` // QUESTION: できるかどうかあやしいのでちゃんとテスト書く
+					XPath string `xml:"xpath,attr"`
+					Value string `xml:",chardata"`
 				} `xml:"Type"`
 			} `xml:"CodeDefine"`
 
@@ -273,7 +277,7 @@ type TsunamiBody struct {
 				// 本要素の内容が更新される場合は“更新”を記載する。
 				// また、津波警報・注意報を解除する又は津波予報（若干の海面変動）を発表している津
 				// 波予報区については、本要素は出現しない。
-				FirstHeight struct {
+				FirstHeight *struct {
 					ArrivalTime string `xml:"ArrivalTime,omitempty"`
 					Condition   string `xml:"Condition,omitempty"`
 					Revise      string `xml:"Revise"`
@@ -298,14 +302,15 @@ type TsunamiBody struct {
 				// 場合（解除、津波予報（若干の海面変動）への切り替えを含む）は、津波警報・注意報を解除
 				// した又は津波予報（若干の海面変動）を発表している全ての津波予報区について本要素
 				// は出現しない。
-				MaxHeight struct {
+				MaxHeight *struct {
 					Condition     string `xml:"Condition,omitempty"`
 					TsunamiHeight struct {
-						Value       xml.Name `xml:"jmx_eb:TsunamiHeight"`
-						Type        string   `xml:"type,attr"`
-						Unit        string   `xml:"unit,attr"`
-						Description string   `xml:"description,attr"`
-					} `xml:"jmx_eb:TsunamiHeight"`
+						Value       string `xml:",chardata"`
+						Type        string `xml:"type,attr"`
+						Unit        string `xml:"unit,attr"`
+						Description string `xml:"description,attr"`
+						Condition   string `xml:"condition,attr"`
+					} `xml:"TsunamiHeight"`
 					Revise string `xml:"Revise,omitempty"`
 				} `xml:"MaxHeight,omitempty"`
 
@@ -317,7 +322,7 @@ type TsunamiBody struct {
 				// また、当該観測点での満潮時刻を子要素HighTideDateTime に、津波の到達予想時刻を子
 				// 要素FirstHeight に記載する。津波警報・注意報を解除した又は津波予報（若干の海面変動）
 				// を発表している津波予報区について、本要素は出現しない。
-				Station struct {
+				Station *struct {
 					Name             string `xml:"Name"`
 					Code             string `xml:"Code"`
 					HighTideDateTime string `xml:"HighTideDateTime"`
@@ -349,7 +354,7 @@ type TsunamiBody struct {
 		// 地震発生時刻
 		//
 		// 地震の発生した時刻を記載する。
-		OriginTime string `xml:"OriginTim"`
+		OriginTime string `xml:"OriginTime"`
 
 		// 地震発現時刻
 		//
@@ -373,9 +378,9 @@ type TsunamiBody struct {
 				Name string `xml:"Name"`
 
 				Code struct {
-					Value xml.Name `xml:"Code"`
+					Value string `xml:",chardata"`
 
-					Type string `xml:"Type,attr"`
+					Type string `xml:"type,attr"`
 				} `xml:"Code"`
 
 				// 震源要素
@@ -388,10 +393,10 @@ type TsunamiBody struct {
 				// た地震の震源要素は世界測地系に基づき表現するため、@datum は出現しない。
 				// 深さが不明の場合等の例外的な表現については、事例にある例外表現のとおり。
 				Coordinate struct {
-					Value       xml.Name `xml:"jmx_eb:Coordinate"`
-					Description string   `xml:"description,attr"`
-					Datum       string   `xml:"datum,attr,omitempty"`
-				} `xml:"jmx_eb:Coordinate"`
+					Value       string `xml:",chardata"`
+					Description string `xml:"description,attr"`
+					Datum       string `xml:"datum,attr,omitempty"`
+				} `xml:"Coordinate"`
 
 				// 詳細震央地名
 				//
@@ -400,8 +405,8 @@ type TsunamiBody struct {
 				// “詳細震央地名”を記載する。具体的なコードの値については、別途提供するコード表を参
 				// 照。
 				DetailedName struct {
-					Value xml.Name `xml:"DetailedName"`
-					Type  string   `xml:"type,attr,omitempty"`
+					Value string `xml:",chardata"`
+					Type  string `xml:"type,attr,omitempty"`
 				} `xml:"DetailedName,omitempty"`
 
 				// 震央補助表現
@@ -414,13 +419,13 @@ type TsunamiBody struct {
 				// 離の単位“km”を記載する。
 				NameFromMark string `xml:"NameFromMark,omitempty"`
 				MarkCode     struct {
-					Value xml.Name `xml:"MarkCode"`
-					Type  string   `xml:"type,attr"`
+					Value string `xml:",chardata"`
+					Type  string `xml:"type,attr"`
 				} `xml:"MarkCode,omitempty"`
 				Direction string `xml:"Direction,omitempty"`
 				Distance  struct {
-					Value string `xml:"Distance"`
-					Type  string `xml:"type,attr"`
+					Value string `xml:",chardata"`
+					Unit  string `xml:"unit,attr"`
 				} `xml:"Distance,omitempty"`
 			} `xml:"Area"`
 
@@ -440,11 +445,11 @@ type TsunamiBody struct {
 		// 合は、これらの属性に代わって@condition が出現し、マグニチュードが不明である旨を示す固
 		// 定値“不明”を記載する。マグニチュードの値には“NaN”を記載する。
 		Magnitude struct {
-			Value       xml.Name `xml:"jmx_eb:Magnitude"`
-			Type        string   `xml:"type,attr"`
-			Description string   `xml:"description,attr"`
-			Condition   string   `xml:"condition,attr,omitempty"`
-		} `xml:"jmx_eb:Magnitude"`
+			Value       string `xml:",chardata"`
+			Type        string `xml:"type,attr"`
+			Description string `xml:"description,attr"`
+			Condition   string `xml:"condition,attr,omitempty"`
+		} `xml:"Magnitude"`
 	} `xml:"Earthquake"`
 
 	// テキスト要素
@@ -469,6 +474,7 @@ type TsunamiBody struct {
 		WarningComment struct {
 			CodeType string `xml:"codeType,attr"`
 			Text     string `xml:"Text"`
+			Code     string `xml:"Code"`
 		} `xml:"WarningComment"`
 
 		// 自由付加文
