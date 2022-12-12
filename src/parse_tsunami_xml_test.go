@@ -675,6 +675,56 @@ func TestParseTsunamiInfo2(t *testing.T) {
 	})
 }
 
+// 津波情報 のパーステスト2 （取り消し）
+func TestParseTsunamiInfo3(t *testing.T) {
+	target := "38-39_03_03_210805_VTSE51.xml"
+
+	testPath := filepath.Join(TEST_DATA_PATH, target)
+	row, err := os.ReadFile(testPath)
+	require.NoError(t, err)
+
+	tsunami, err := src.ParseTsunami(row)
+	require.NoError(t, err)
+
+	t.Run("control", func(t *testing.T) {
+		control := tsunami.Parsed.Control
+
+		require.Equal(t, control, src.JmaXmlControl{
+			Title:            "津波情報a",
+			DateTime:         "2021-08-05T03:56:58Z",
+			Status:           "通常",
+			EditorialOffice:  "気象庁本庁",
+			PublishingOffice: "気象庁",
+		})
+	})
+
+	t.Run("head", func(t *testing.T) {
+		head := tsunami.Parsed.Head
+
+		require.Equal(t, head.Title, "津波観測に関する情報")
+		require.Equal(t, head.ReportDateTime, "2021-08-05T12:56:00+09:00")
+		require.Equal(t, head.TargetDateTime, "2021-08-05T13:05:00+09:00")
+		require.Equal(t, head.EventID, "20210805103531")
+		require.Equal(t, head.InfoType, "取消")
+		require.Equal(t, head.Serial, "1")
+		require.Equal(t, head.InfoKind, "津波情報")
+		require.Equal(t, head.InfoKindVersion, "1.0_1")
+
+		require.Equal(t, head.Headline.Text, "津波観測に関する情報を取り消します。")
+
+		// Information
+		require.Len(t, head.Headline.Information, 0)
+	})
+
+	t.Run("body", func(t *testing.T) {
+		body := tsunami.Parsed.Body
+
+		t.Run("other", func(t *testing.T) {
+			require.Equal(t, body.Text, "先ほどの、津波観測に関する情報を取り消します。")
+		})
+	})
+}
+
 // 沖合の津波観測に関する情報 のパーステスト
 func TestParseTsunamiOffshoreInfo(t *testing.T) {
 	target := "32-39_12_05_191025_VTSE52.xml"
