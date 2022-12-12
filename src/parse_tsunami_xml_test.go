@@ -131,6 +131,8 @@ func TestParseTsunamiWarning(t *testing.T) {
 			// Observation は津波情報なのでnil
 			require.Nil(t, bodyTsunami.Observation)
 
+			require.Nil(t, bodyTsunami.Estimation)
+
 			// CodeDefine
 			require.Len(t, bodyTsunami.Forecast.CodeDefine.Type, 3)
 			require.Equal(t, bodyTsunami.Forecast.CodeDefine.Type[0].XPath, "Item/Area/Code")
@@ -232,6 +234,160 @@ func TestParseTsunamiWarning(t *testing.T) {
 	})
 }
 
+// 津波警報・注意報・予報 のパーステスト2
+func TestParseTsunamiWarning2(t *testing.T) {
+	target := "32-39_13_02_191025_VTSE41.xml"
+
+	testPath := filepath.Join(TEST_DATA_PATH, target)
+	row, err := os.ReadFile(testPath)
+	require.NoError(t, err)
+
+	tsunami, err := src.ParseTsunami(row)
+	require.NoError(t, err)
+
+	t.Run("control", func(t *testing.T) {
+		control := tsunami.Parsed.Control
+
+		require.Equal(t, control, src.JmaXmlControl{
+			Title:            "津波警報・注意報・予報a",
+			DateTime:         "2018-12-04T09:03:00Z",
+			Status:           "訓練",
+			EditorialOffice:  "気象庁本庁",
+			PublishingOffice: "気象庁",
+		})
+	})
+
+	t.Run("head", func(t *testing.T) {
+		head := tsunami.Parsed.Head
+
+		require.Equal(t, head.Title, "津波注意報・津波予報")
+		require.Equal(t, head.ReportDateTime, "2018-12-04T18:03:00+09:00")
+		require.Equal(t, head.TargetDateTime, "2018-12-04T18:03:00+09:00")
+		require.Equal(t, head.EventID, "20181204180000")
+		require.Equal(t, head.InfoType, "発表")
+		require.Equal(t, head.Serial, "")
+		require.Equal(t, head.InfoKind, "津波警報・注意報・予報")
+		require.Equal(t, head.InfoKindVersion, "1.0_1")
+
+		require.Equal(t, head.Headline.Text, `＊＊＊これは訓練です＊＊＊
+津波注意報を発表しました。`)
+
+		// Information
+		require.Len(t, head.Headline.Information, 1)
+		require.Equal(t, head.Headline.Information[0].Type, "津波予報領域表現")
+
+		require.Len(t, head.Headline.Information[0].Item, 1)
+		require.Equal(t, head.Headline.Information[0].Item[0].Kind.Name, "津波注意報")
+		require.Equal(t, head.Headline.Information[0].Item[0].Kind.Code, "62")
+
+		require.Equal(t, head.Headline.Information[0].Item[0].Areas.CodeType, "津波予報区")
+		require.Len(t, head.Headline.Information[0].Item[0].Areas.Area, 3)
+		require.Equal(t, head.Headline.Information[0].Item[0].Areas.Area[0].Name, "伊豆諸島")
+		require.Equal(t, head.Headline.Information[0].Item[0].Areas.Area[0].Code, "320")
+	})
+
+	t.Run("body", func(t *testing.T) {
+		body := tsunami.Parsed.Body
+
+		t.Run("tsunami", func(t *testing.T) {
+			bodyTsunami := body.Tsunami
+
+			// Observation は津波情報なのでnil
+			require.Nil(t, bodyTsunami.Observation)
+
+			require.Nil(t, bodyTsunami.Estimation)
+
+			// CodeDefine
+			require.Len(t, bodyTsunami.Forecast.CodeDefine.Type, 3)
+			require.Equal(t, bodyTsunami.Forecast.CodeDefine.Type[0].XPath, "Item/Area/Code")
+			require.Equal(t, bodyTsunami.Forecast.CodeDefine.Type[0].Value, "津波予報区")
+
+			// Item
+			require.Len(t, bodyTsunami.Forecast.Item, 7)
+			require.Equal(t, bodyTsunami.Forecast.Item[0].Area.Name, "千葉県内房")
+			require.Equal(t, bodyTsunami.Forecast.Item[0].Area.Code, "311")
+
+			require.Equal(t, bodyTsunami.Forecast.Item[0].Category.Kind.Name, "津波注意報")
+			require.Equal(t, bodyTsunami.Forecast.Item[0].Category.Kind.Code, "62")
+			require.Equal(t, bodyTsunami.Forecast.Item[0].Category.LastKind.Name, "津波なし")
+			require.Equal(t, bodyTsunami.Forecast.Item[0].Category.LastKind.Code, "00")
+
+			require.Equal(t, bodyTsunami.Forecast.Item[0].FirstHeight.Condition, "津波到達中と推測")
+			require.Equal(t, bodyTsunami.Forecast.Item[0].FirstHeight.ArrivalTime, "")
+			require.Equal(t, bodyTsunami.Forecast.Item[0].FirstHeight.Revise, "")
+
+			require.NotNil(t, bodyTsunami.Forecast.Item[0].MaxHeight)
+			require.Equal(t, bodyTsunami.Forecast.Item[0].MaxHeight.Condition, "")
+			require.Equal(t, bodyTsunami.Forecast.Item[0].MaxHeight.Revise, "")
+			require.Equal(t, bodyTsunami.Forecast.Item[0].MaxHeight.TsunamiHeight.Value, "1")
+			require.Equal(t, bodyTsunami.Forecast.Item[0].MaxHeight.TsunamiHeight.Type, "津波の高さ")
+			require.Equal(t, bodyTsunami.Forecast.Item[0].MaxHeight.TsunamiHeight.Unit, "m")
+			require.Equal(t, bodyTsunami.Forecast.Item[0].MaxHeight.TsunamiHeight.Description, "１ｍ")
+			require.Equal(t, bodyTsunami.Forecast.Item[0].MaxHeight.TsunamiHeight.Condition, "")
+
+			// Station は津波情報なのでnil
+			require.Len(t, bodyTsunami.Forecast.Item[0].Station, 0)
+		})
+
+		t.Run("earthquake", func(t *testing.T) {
+			bodyEarthquake := body.Earthquake
+
+			require.Len(t, bodyEarthquake, 1)
+			require.Equal(t, bodyEarthquake[0].OriginTime, "2018-12-04T18:00:00+09:00")
+			require.Equal(t, bodyEarthquake[0].ArrivalTime, "2018-12-04T18:00:00+09:00")
+
+			// Hypocenter
+			require.Equal(t, bodyEarthquake[0].Hypocenter.Area.Name, "東京都２３区")
+			require.Equal(t, bodyEarthquake[0].Hypocenter.Area.Code.Value, "350")
+			require.Equal(t, bodyEarthquake[0].Hypocenter.Area.Code.Type, "震央地名")
+			require.Equal(t, bodyEarthquake[0].Hypocenter.Area.Coordinate.Value, "+35.6+139.7-30000/")
+			require.Equal(t, bodyEarthquake[0].Hypocenter.Area.Coordinate.Description, "北緯３５．６度　東経１３９．７度　深さ　３０ｋｍ")
+			require.Equal(t, bodyEarthquake[0].Hypocenter.Area.Coordinate.Datum, "日本測地系")
+			require.Equal(t, bodyEarthquake[0].Hypocenter.Area.NameFromMark, "館山の北北西７０ｋｍ付近")
+			require.Equal(t, bodyEarthquake[0].Hypocenter.Area.MarkCode.Type, "震央補助")
+			require.Equal(t, bodyEarthquake[0].Hypocenter.Area.MarkCode.Value, "301")
+			require.Equal(t, bodyEarthquake[0].Hypocenter.Area.Direction, "北北西")
+			require.Equal(t, bodyEarthquake[0].Hypocenter.Area.Distance.Value, "70")
+			require.Equal(t, bodyEarthquake[0].Hypocenter.Area.Distance.Unit, "km")
+
+			require.Equal(t, bodyEarthquake[0].Hypocenter.Source, "")
+
+			require.Equal(t, bodyEarthquake[0].Magnitude.Value, "7.3")
+			require.Equal(t, bodyEarthquake[0].Magnitude.Type, "Mj")
+			require.Equal(t, bodyEarthquake[0].Magnitude.Description, "Ｍ７．３")
+			require.Equal(t, bodyEarthquake[0].Magnitude.Condition, "")
+		})
+
+		t.Run("comments", func(t *testing.T) {
+			bodyComments := body.Comments
+
+			require.Equal(t, bodyComments.WarningComment.Text, `＜津波注意報＞
+海の中や海岸付近は危険です。
+海の中にいる人はただちに海から上がって、海岸から離れてください。
+潮の流れが速い状態が続きますので、注意報が解除されるまで海に入ったり海岸に近づいたりしないようにしてください。
+
+＜津波予報（若干の海面変動）＞
+若干の海面変動が予想されますが、被害の心配はありません。
+
+場所によっては津波の高さが「予想される津波の高さ」より高くなる可能性があります。`)
+			require.Equal(t, bodyComments.WarningComment.CodeType, "固定付加文")
+			require.Equal(t, bodyComments.WarningComment.Code, "0123 0124 0132")
+
+			require.Equal(t, bodyComments.FreeFormComment, `［予想される津波の高さの解説］
+予想される津波が高いほど、より甚大な被害が生じます。
+１０ｍ超　　巨大な津波が襲い壊滅的な被害が生じる。木造家屋が全壊・流失し、人は津波による流れに巻き込まれる。
+１０ｍ　　　巨大な津波が襲い甚大な被害が生じる。木造家屋が全壊・流失し、人は津波による流れに巻き込まれる。
+　５ｍ　　　津波が襲い甚大な被害が生じる。木造家屋が全壊・流失し、人は津波による流れに巻き込まれる。
+　３ｍ　　　標高の低いところでは津波が襲い被害が生じる。木造家屋で浸水被害が発生し、人は津波による流れに巻き込まれる。
+　１ｍ　　　海の中では人は速い流れに巻き込まれる。養殖いかだが流失し小型船舶が転覆する。`)
+		})
+
+		t.Run("other", func(t *testing.T) {
+			require.Equal(t, body.Text, "")
+		})
+	})
+}
+
 // 津波情報 のパーステスト
 func TestParseTsunamiInfo(t *testing.T) {
 	target := "32-39_11_03_120615_VTSE51.xml"
@@ -281,6 +437,8 @@ func TestParseTsunamiInfo(t *testing.T) {
 
 			// Observation は津波情報なのでnil
 			require.Nil(t, bodyTsunami.Observation)
+
+			require.Nil(t, bodyTsunami.Estimation)
 
 			// CodeDefine
 			require.Len(t, bodyTsunami.Forecast.CodeDefine.Type, 4)
@@ -362,6 +520,7 @@ func TestParseTsunamiInfo(t *testing.T) {
 	})
 }
 
+// 津波情報 のパーステスト2
 func TestParseTsunamiInfo2(t *testing.T) {
 	target := "32-39_11_08_120615_VTSE51.xml"
 
@@ -407,6 +566,8 @@ func TestParseTsunamiInfo2(t *testing.T) {
 
 		t.Run("tsunami", func(t *testing.T) {
 			bodyTsunami := body.Tsunami
+
+			require.Nil(t, bodyTsunami.Estimation)
 
 			// Observation
 			require.Len(t, bodyTsunami.Observation.CodeDefine.Types, 2)
