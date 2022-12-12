@@ -1,7 +1,5 @@
 package src
 
-import "encoding/xml"
-
 type TsunamiJmaXml struct {
 	Control JmaXmlControl `xml:"Control"`
 
@@ -133,7 +131,7 @@ type TsunamiBody struct {
 			// の@xpath として、定義したコードを使用する要素の相対的な出現位置を記載する。
 			CodeDefine struct {
 				Types []struct {
-					Value string `xml:""`
+					Value string `xml:",chardata"`
 					XPath string `xml:"xpath,attr"`
 				} `xml:"Type"`
 			} `xml:"CodeDefine"`
@@ -148,7 +146,10 @@ type TsunamiBody struct {
 				// 当該津波予報区について、その名称を子要素Name に、対応するコードを子要素Code に記
 				// 載する。対応するコードは、「コード体系の定義」（Body/Tsunami/Observation/CodeDefine）
 				// で定義されている。具体的なコードの値については、別途提供するコード表を参照。
-				Area struct{} `xml:"Area"`
+				Area struct {
+					Name string `xml:"Name"`
+					Code string `xml:"Code"`
+				} `xml:"Area"`
 
 				// 潮位観測点
 				//
@@ -158,6 +159,11 @@ type TsunamiBody struct {
 				// コードは、「コード体系の定義」（Body/Tsunami/Observation/CodeDefine）で定義されている。
 				// 具体的なコードの値については、別途提供するコード表を参照。
 				Station []struct {
+					Name string `xml:"Name"`
+					Code string `xml:"Code"`
+
+					Sensor string `xml:"Sensor,omitempty"`
+
 					// 津波の第１波（観測値）
 					//
 					// 観測した津波の第１波について、子要素ArrivalTime に観測時刻を、子要素Initial に極性を
@@ -170,7 +176,7 @@ type TsunamiBody struct {
 						ArrivalTime string `xml:"ArrivalTime,omitempty"`
 						Initial     string `xml:"Initial,omitempty"`
 						Condition   string `xml:"Condition,omitempty"`
-						Revise      string `xml:"Revise"`
+						Revise      string `xml:"Revise,omitempty"`
 					} `xml:"FirstHeight"`
 
 					// 津波の最大波（観測値）
@@ -193,16 +199,17 @@ type TsunamiBody struct {
 					// る場合は子要素Revise に“追加”を、既出であった本要素の内容が更新される場合は“更新”
 					// を記載する。
 					MaxHeight struct {
+						DateTime      string `xml:"DateTime,omitempty"`
 						ArrivalTime   string `xml:"ArrivalTime,omitempty"`
 						Condition     string `xml:"Condition,omitempty"`
-						Revise        string `xml:"Revise"`
-						TsunamiHeight struct {
-							Value       xml.Name `xml:"jmx_eb:TsunamiHeight"`
-							Type        string   `xml:"type,attr"`
-							Unit        string   `xml:"unit,attr"`
-							Condition   string   `xml:"condition,attr"`
-							Description string   `xml:"description,attr"`
-						} `xml:"jmx_eb:TsunamiHeight,omitempty"`
+						Revise        string `xml:"Revise,omitempty"`
+						TsunamiHeight *struct {
+							Value       string `xml:",chardata"`
+							Type        string `xml:"type,attr"`
+							Unit        string `xml:"unit,attr"`
+							Condition   string `xml:"condition,attr"`
+							Description string `xml:"description,attr"`
+						} `xml:"TsunamiHeight,omitempty"`
 					} `xml:"MaxHeight"`
 				} `xml:"Station"`
 			} `xml:"Item"`
@@ -256,7 +263,7 @@ type TsunamiBody struct {
 				// 新たに大津波警報となる津波予報区においては”大津波警報：発表”、大津波警報を継続す
 				// る津波予報区においては”大津波警報”を記載する。
 				Category struct {
-					Kind struct {
+					Kind *struct {
 						Name string `xml:"Name"`
 						Code string `xml:"Code"`
 					} `xml:"Kind"`
@@ -322,7 +329,7 @@ type TsunamiBody struct {
 				// また、当該観測点での満潮時刻を子要素HighTideDateTime に、津波の到達予想時刻を子
 				// 要素FirstHeight に記載する。津波警報・注意報を解除した又は津波予報（若干の海面変動）
 				// を発表している津波予報区について、本要素は出現しない。
-				Station *struct {
+				Station []struct {
 					Name             string `xml:"Name"`
 					Code             string `xml:"Code"`
 					HighTideDateTime string `xml:"HighTideDateTime"`
@@ -342,7 +349,150 @@ type TsunamiBody struct {
 					} `xml:"FirstHeight"`
 				} `xml:"Station,omitempty"`
 			} `xml:"Item"`
-		} `xml:"Forecast"`
+		} `xml:"Forecast,omitempty"`
+
+		// 津波の推定値
+		//
+		// 沖合の潮位観測点で観測された津波の情報に基づき、津波が到達すると推定される沿岸地
+		// 域について、津波の推定値に関する情報を記載する。
+		Estimation *struct {
+			// コード体系の定義
+			//
+			// 「津波の推定」（Body/Tsunami/Estimation）以下で使用するコード体系を定義する。使用す
+			// るコードの種類に応じて子要素Type が出現し、ここにコード種別を記載する。さらに、Type の
+			// @xpath として、定義したコードを使用する要素の相対的な出現位置を記載する。
+			CodeDefine struct {
+				Types []struct {
+					Value string `xml:",chardata"`
+					XPath string `xml:"xpath,attr"`
+				} `xml:"Type"`
+			} `xml:"CodeDefine"`
+
+			// 津波の推定値（沿岸地域毎）
+			//
+			// 沿岸地域毎に推定される津波の到達時刻、高さ等の情報を記載する。推定値を発表する沿
+			// 岸地域の数に応じて、本要素が複数出現する。
+			Item []struct {
+				// 沿岸地域
+				//
+				// 対象となる沿岸地域の名称を子要素Name に、対応するコードを子要素Code に記載する。
+				// 対応するコードは、「コード体系の定義」（Body/Tsunami/Estimation/CodeDefine）で定義され
+				// ている。具体的なコードの値については、別途提供するコード表を参照。
+				Area struct {
+					Name string `xml:"Name"`
+					Code string `xml:"Code"`
+				} `xml:"Area"`
+
+				// 津波到達時刻（推定値）
+				//
+				// 当該沿岸地域に第１波が到達すると推定される時刻を子要素ArrivalTime に記載する。
+				// 沖合の潮位観測点による観測値から当該沿岸地域への津波到達予想時刻を推定し、推定
+				// 時刻よりも早く沿岸地域に津波が到達している可能性がある場合は、子要素Condition を追加
+				// し、“早いところでは既に津波到達と推定”と記載する。
+				// 続報において、新たに本要素が出現する場合は子要素Revise に“追加”を、既出であった
+				// 本要素の内容が更新される場合は“更新”を記載する。
+				FirstHeight struct {
+					Condition   string `xml:"Condition"`
+					ArrivalTime string `xml:"ArrivalTime"`
+				} `xml:"FirstHeight"`
+
+				// 津波の高さ（推定値）
+				//
+				// 沖合の潮位観測点によるこれまでの最大波の観測値から、当該沿岸地域に到達すると推定
+				// される時刻を子要素DateTime に、津波の高さを子要素jmx_eb:TsunamiHeight に記載する。
+				// 子要素jmx_eb:TsunamiHeight の@type に“津波の高さ”、@unit に津波の高さの単位である
+				// “m”、@description に文字列表現を記載する。発表する津波の高さのとりうる値を下表に示す。
+				// jmx_eb:TsunamiHeight に記載する値はxs:float 型とし、「～超」の表現は、事例に示すとおり
+				// @description に記載する。
+				// マグニチュードが8 を超える巨大地震と推定されるなど、地震規模推定の不確定性が大きい
+				// 場合は、これらの属性に加えて@condition が出現し、ここに津波の高さが不明である旨を示す
+				// 固定値“不明”を記載する。津波の高さの値には“NaN”を記載する。また、@description に津
+				// 波の高さに関する定性的表現を記載する。発表する定性的表現のとりうる値を下表に示す。
+				// 定性的表現がない津波注意報の場合は、@description は空属性となる。
+				// 津波警報以上の沿岸地域に対して推定される津波の高さが、予想される高さに比べて十分
+				// 小さい場合は、子要素DateTime 及び子要素jmx_eb:TsunamiHeight に代わって子要素
+				// Condition が出現し、ここに“推定中”と記載する（予想される高さが定性的表現で発表されて
+				// いる場合を除く）。
+				// 推定される津波の高さが大津波警報の基準を超え、追加あるいは更新された場合（定性的
+				// 表現から数値表現に変更された場合も含む）は、子要素Condition を追加し、ここに“重要”と
+				// 記載する。
+				// 続報において、新たに本要素が出現する場合は子要素Revise に“追加”を、既出であった
+				// 本要素の内容が更新される場合は“更新”を記載する。
+				MaxHeight struct {
+					DateTime      string `xml:"DateTime,omitempty"`
+					TsunamiHeight *struct {
+						Type        string `xml:"type,attr"`
+						Unit        string `xml:"unit,attr"`
+						Description string `xml:"description,attr"`
+						Condition   string `xml:"condition,attr"`
+						Value       string `xml:",chardata"`
+					} `xml:"TsunamiHeight,omitempty"`
+					Revise    string `xml:"Revise,omitempty"`
+					Condition string `xml:"Condition,omitempty"`
+				} `xml:"MaxHeight"`
+
+				// 潮位観測点
+				//
+				// 潮位観測点毎に津波の観測値を記載する。津波を観測した潮位観測点の数に応じて、本
+				// 要素が複数出現する。
+				// 潮位観測点の名称を子要素Name に、対応するコードを子要素Code に記載する。対応する
+				// コードは、「コード体系の定義」（Body/Tsunami/Observation/CodeDefine）で定義されている。
+				// 具体的なコードの値については、別途提供するコード表を参照。
+				Station []struct {
+					Name string `xml:"Name"`
+					Code string `xml:"Code"`
+
+					Sensor string `xml:"Sensor,omitempty"`
+
+					// 津波の第１波（観測値）
+					//
+					// 観測した津波の第１波について、子要素ArrivalTime に観測時刻を、子要素Initial に極性を
+					// 記載する。
+					// 津波の最大波を観測したものの第１波を観測できなかった場合は、子要素ArrivalTime 及び
+					// 子要素Initial に代わって子要素Condition が出現し、ここに“第１波識別不能”と記載する。
+					// 続報において、新たに本要素が出現する場合は子要素Revise に“追加”を、既出であった
+					// 本要素の内容が更新される場合は“更新”を記載する。
+					FirstHeight struct {
+						ArrivalTime string `xml:"ArrivalTime,omitempty"`
+						Initial     string `xml:"Initial,omitempty"`
+						Condition   string `xml:"Condition,omitempty"`
+						Revise      string `xml:"Revise,omitempty"`
+					} `xml:"FirstHeight"`
+
+					// 津波の最大波（観測値）
+					//
+					// 観測したこれまでの最大波について、子要素DateTime に観測時刻を、子要素
+					// jmx_eb:TsunamiHeight に観測した津波の高さを記載する。
+					// 子要素jmx_eb:TsunamiHeight の@type に“これまでの最大波の高さ”、@unit に津波の高さの
+					// 単位である“m”、@description に文字列表現を記載する。また、これまでの最大波の高さが測
+					// 定範囲を超え、「～以上」と表現する場合は、事例に示すとおり@description に記載する。水位
+					// が上昇中の場合は、子要素jmx_eb:TsunamiHeight に@condition が出現し、“上昇中”を記載
+					// する。
+					// 津波注意報の予報区（警報・注意報を解除した予報区も含む）において、観測されたこれま
+					// での最大波が非常に小さい場合は、子要素jmx_eb:TsunamiHeight に代わって子要素
+					// Condition が出現し、ここに“微弱”と記載する。また、津波警報以上の津波予報区において、
+					// 観測されたこれまでの最大波の高さが予想される高さに比べて十分小さい場合は、子要素
+					// DateTime 及び子要素jmx_eb:TsunamiHeight に代わって子要素Condition が出現し、ここに
+					// “観測中”と記載する。
+					// これまでの最大波の高さが大津波警報の基準を超え、追加あるいは更新された場合は、子
+					// 要素Condition を追加し、ここに“重要”と記載する。 続報において、新たに本要素が出現す
+					// る場合は子要素Revise に“追加”を、既出であった本要素の内容が更新される場合は“更新”
+					// を記載する。
+					MaxHeight struct {
+						ArrivalTime   string `xml:"ArrivalTime,omitempty"`
+						Condition     string `xml:"Condition,omitempty"`
+						Revise        string `xml:"Revise,omitempty"`
+						TsunamiHeight *struct {
+							Value       string `xml:",chardata"`
+							Type        string `xml:"type,attr"`
+							Unit        string `xml:"unit,attr"`
+							Condition   string `xml:"condition,attr"`
+							Description string `xml:"description,attr"`
+						} `xml:"TsunamiHeight,omitempty"`
+					} `xml:"MaxHeight"`
+				} `xml:"Station"`
+			} `xml:"Item"`
+		} `xml:"Estimation,omitempty"`
 	} `xml:"Tsunami,omitempty"`
 
 	// 地震の諸要素
