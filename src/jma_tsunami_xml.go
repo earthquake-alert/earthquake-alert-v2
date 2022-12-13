@@ -1,3 +1,6 @@
+// 気象庁電文のXML定義
+//
+// 津波関係のXMLの定義をしています。
 package src
 
 // 津波警報・注意報・予報、津波情報、沖合の津波観測に関する情報
@@ -481,7 +484,7 @@ type TsunamiBody struct {
 	// 地震の諸要素（発生日時、震央地名、震源要素、マグニチュード等）を記載する。複数の地
 	// 震が原因で本情報を発表する場合は、地震毎に本要素を記載する。
 	// ヘッダ部の「情報形態」（Head/InfoType）が“取消”の場合、本要素は出現しない。
-	Earthquake []Earthquake `xml:"Earthquake"`
+	Earthquake []EarthquakeElement `xml:"Earthquake"`
 
 	// テキスト要素
 	//

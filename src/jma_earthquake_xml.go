@@ -1,3 +1,10 @@
+// 気象庁電文のXML定義
+//
+// 地震関係の以下4種類のXMLを定義しています。
+// - 震度速報、震源に関する情報、震源・震度に関する情報
+// - 地震の活動状況等に関する情報
+// - 地震回数に関する情報
+// - 顕著な地震の震源要素更新のお知らせ
 package src
 
 type EarthquakeClass string
@@ -16,7 +23,7 @@ type EarthquakeJmaXml struct {
 }
 
 // 地震の活動状況等に関する情報
-type EarthquakeInfoJmaXml struct {
+type EarthquakeActivityJmaXml struct {
 	Control JmaXmlControl `xml:"Control"`
 
 	Head struct {
@@ -25,7 +32,7 @@ type EarthquakeInfoJmaXml struct {
 		Headline EarthquakeHeadline `xml:"Headline"`
 	} `xml:"Head"`
 
-	Body EarthquakeInfoBody `xml:"Body"`
+	Body EarthquakeActivityBody `xml:"Body"`
 }
 
 // 地震回数に関する情報
@@ -265,7 +272,7 @@ type EarthquakeBody struct {
 	//
 	// 地震の諸要素（発生日時、震央地名、震源要素、マグニチュード等）を記載する。
 	// ヘッダ部の「情報形態」（Head/InfoType）が“取消”の場合、本要素は出現しない。
-	Earthquake *Earthquake `xml:"Earthquake,omitempty"`
+	Earthquake *EarthquakeElement `xml:"Earthquake,omitempty"`
 
 	// テキスト要素
 	//
@@ -304,7 +311,7 @@ type EarthquakeBody struct {
 }
 
 // 地震の活動状況等に関する情報
-type EarthquakeInfoBody struct {
+type EarthquakeActivityBody struct {
 	// 命名地震
 	//
 	// 顕著な被害を起こした地震について命名した場合は、その名称を記載する。さらに、英語に

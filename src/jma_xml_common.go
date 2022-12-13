@@ -203,7 +203,7 @@ type Magnitude struct {
 //
 // 地震の諸要素（発生日時、震央地名、震源要素、マグニチュード等）を記載する。
 // ヘッダ部の「情報形態」（Head/InfoType）が“取消”の場合、本要素は出現しない。
-type Earthquake struct {
+type EarthquakeElement struct {
 	// 地震発生時刻
 	//
 	// 地震の発生した時刻を記載する。
