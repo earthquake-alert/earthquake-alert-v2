@@ -1,5 +1,6 @@
 package src
 
+// 津波警報・注意報・予報、津波情報、沖合の津波観測に関する情報
 type TsunamiJmaXml struct {
 	Control JmaXmlControl `xml:"Control"`
 
@@ -129,12 +130,7 @@ type TsunamiBody struct {
 			// 「津波の観測」（Body/Tsunami/Observation）以下で使用するコード体系を定義する。使用
 			// するコードの種類に応じて子要素Type が出現し、ここにコード種別を記載する。さらに、Type
 			// の@xpath として、定義したコードを使用する要素の相対的な出現位置を記載する。
-			CodeDefine struct {
-				Types []struct {
-					Value string `xml:",chardata"`
-					XPath string `xml:"xpath,attr"`
-				} `xml:"Type"`
-			} `xml:"CodeDefine"`
+			CodeDefine CodeDefine `xml:"CodeDefine"`
 
 			// 津波の観測値（津波予報区毎）
 			//
@@ -224,17 +220,7 @@ type TsunamiBody struct {
 			// 「津波の予測」（Body/Tsunami/Forecast）以下で使用するコード体系を定義する。使用する
 			// コードの種類に応じて子要素Type が出現し、ここにコード種別を記載する。さらに、Type の
 			// @xpath として、定義したコードを使用する要素の相対的な出現位置を記載する。
-			CodeDefine struct {
-				// <CodeDefine>
-				// <Type xpath="Item/Area/Code">津波予報区</Type>
-				// <Type xpath="Item/Category/Kind/Code">警報等情報要素／津波警報・注意報・予報</Type>
-				// <Type xpath="Item/Category/LastKind/Code">警報等情報要素／津波警報・注意報・予報</Type>
-				// </CodeDefine>
-				Type []struct {
-					XPath string `xml:"xpath,attr"`
-					Value string `xml:",chardata"`
-				} `xml:"Type"`
-			} `xml:"CodeDefine"`
+			CodeDefine CodeDefine `xml:"CodeDefine"`
 
 			// 津波の予測値（津波予報区毎）
 			//
@@ -351,7 +337,7 @@ type TsunamiBody struct {
 			} `xml:"Item"`
 		} `xml:"Forecast,omitempty"`
 
-		// 津波の推定値
+		// 津波の推定値（沖合の津波観測に関する情報のみ）
 		//
 		// 沖合の潮位観測点で観測された津波の情報に基づき、津波が到達すると推定される沿岸地
 		// 域について、津波の推定値に関する情報を記載する。
@@ -361,12 +347,7 @@ type TsunamiBody struct {
 			// 「津波の推定」（Body/Tsunami/Estimation）以下で使用するコード体系を定義する。使用す
 			// るコードの種類に応じて子要素Type が出現し、ここにコード種別を記載する。さらに、Type の
 			// @xpath として、定義したコードを使用する要素の相対的な出現位置を記載する。
-			CodeDefine struct {
-				Types []struct {
-					Value string `xml:",chardata"`
-					XPath string `xml:"xpath,attr"`
-				} `xml:"Type"`
-			} `xml:"CodeDefine"`
+			CodeDefine CodeDefine `xml:"CodeDefine"`
 
 			// 津波の推定値（沿岸地域毎）
 			//
@@ -500,107 +481,7 @@ type TsunamiBody struct {
 	// 地震の諸要素（発生日時、震央地名、震源要素、マグニチュード等）を記載する。複数の地
 	// 震が原因で本情報を発表する場合は、地震毎に本要素を記載する。
 	// ヘッダ部の「情報形態」（Head/InfoType）が“取消”の場合、本要素は出現しない。
-	Earthquake []struct {
-		// 地震発生時刻
-		//
-		// 地震の発生した時刻を記載する。
-		OriginTime string `xml:"OriginTime"`
-
-		// 地震発現時刻
-		//
-		// 観測点で地震を検知した時刻（発現時刻）を記載する。ただし、国外で発生した地震で発現
-		// 時刻が不明の場合、「地震発生時刻」（Body/Earthquake/OriginTime）の値を記載する。
-		ArrivalTime string `xml:"ArrivalTime"`
-
-		// 地震の位置要素
-		//
-		// 地震の位置に関する要素（震央地名、震源要素等）を記載する。
-		Hypocenter struct {
-			// 震源位置
-			//
-			// 震源の位置に関する情報を記載する。
-			Area struct {
-				// 震央地名
-				//
-				// 	震央地名を記載する。また、これに対応するコードを、後に続く要素Code に記載し、その
-				// @type にコード種別“震央地名”と記載する。具体的なコードの値については、別途提供するコ
-				// ード表を参照。
-				Name string `xml:"Name"`
-
-				Code struct {
-					Value string `xml:",chardata"`
-
-					Type string `xml:"type,attr"`
-				} `xml:"Code"`
-
-				// 震源要素
-				//
-				// 	ISO6709 の規格に従い、震源の緯度、経度を度単位で、深さをメートル単位で記載し、
-				// @description に文字列表現を記載する。本要素に記載する深さの値は、深さ700km より浅いと
-				// ころでは10,000 メートルの単位で有効であり、@description における深さは1,000 メートルの位
-				// を四捨五入して10km 単位で表現する。
-				// また、国内で発生した地震の場合は、@datum に“日本測地系”を記載するが、国外で発生し
-				// た地震の震源要素は世界測地系に基づき表現するため、@datum は出現しない。
-				// 深さが不明の場合等の例外的な表現については、事例にある例外表現のとおり。
-				Coordinate struct {
-					Value       string `xml:",chardata"`
-					Description string `xml:"description,attr"`
-					Datum       string `xml:"datum,attr,omitempty"`
-				} `xml:"Coordinate"`
-
-				// 詳細震央地名
-				//
-				// 	国外で発生した地震について、震源地の詳細な位置を発表する場合は、その名称を記載す
-				// る。また、これに対応するコードを、後に続くDetailedCode に記載し、その@type にコード種別
-				// “詳細震央地名”を記載する。具体的なコードの値については、別途提供するコード表を参
-				// 照。
-				DetailedName struct {
-					Value string `xml:",chardata"`
-					Type  string `xml:"type,attr,omitempty"`
-				} `xml:"DetailedName,omitempty"`
-
-				// 震央補助表現
-				//
-				// 	日本近海で発生し、津波警報・注意報を発表した地震について、震源地の詳細な位置を示
-				// すための目印となる地名を記載する。また、これに対応するコードを、後に続くMarkCode に記
-				// 載し、その@type にコード種別“震央補助”を記載する。具体的なコードの値については、別途
-				// 	提供するコード表を参照。また、後続のDirection に目印から見た震央の方向を16 方位で記
-				// 載し、Distance に目印から震央までの距離を10km 単位で記載する。Distance の@unit には距
-				// 離の単位“km”を記載する。
-				NameFromMark string `xml:"NameFromMark,omitempty"`
-				MarkCode     struct {
-					Value string `xml:",chardata"`
-					Type  string `xml:"type,attr"`
-				} `xml:"MarkCode,omitempty"`
-				Direction string `xml:"Direction,omitempty"`
-				Distance  struct {
-					Value string `xml:",chardata"`
-					Unit  string `xml:"unit,attr"`
-				} `xml:"Distance,omitempty"`
-			} `xml:"Area"`
-
-			// 震源決定機関
-			//
-			// 	国外で発生した地震について、気象庁以外の機関で決定された震源要素を採用して情報
-			// 発表する場合は、震源を採用した機関の略称を記載する。現行の運用では、本要素の取りう
-			// る値として、“ＰＴＷＣ”、“ＷＣＡＴＷＣ”、“ＵＳＧＳ”がある。
-			Source string `xml:"Source,omitempty"`
-		} `xml:"Hypocenter"`
-
-		// マグニチュード
-		//
-		// 地震のマグニチュードの値を記載する。@type にはマグニチュードの種別を、@descripion に
-		// は文字列表現を記載する。
-		// また、マグニチュードが不明の場合やマグニチュードが8 を超える巨大地震と推定される場
-		// 合は、これらの属性に代わって@condition が出現し、マグニチュードが不明である旨を示す固
-		// 定値“不明”を記載する。マグニチュードの値には“NaN”を記載する。
-		Magnitude struct {
-			Value       string `xml:",chardata"`
-			Type        string `xml:"type,attr"`
-			Description string `xml:"description,attr"`
-			Condition   string `xml:"condition,attr,omitempty"`
-		} `xml:"Magnitude"`
-	} `xml:"Earthquake"`
+	Earthquake []Earthquake `xml:"Earthquake"`
 
 	// テキスト要素
 	//
@@ -621,11 +502,7 @@ type TsunamiBody struct {
 		// @codeType には“固定付加文”を記載する。
 		// 複数の固定付加文を記載する場合、Text においては改行して空行を挿入し、Code におい
 		// てはxs:list 型によりコードを併記する。
-		WarningComment struct {
-			CodeType string `xml:"codeType,attr"`
-			Text     string `xml:"Text"`
-			Code     string `xml:"Code"`
-		} `xml:"WarningComment"`
+		WarningComment FixComment `xml:"WarningComment"`
 
 		// 自由付加文
 		// その他の付加的な情報を、自由付加文の形式で記載する。

@@ -134,9 +134,9 @@ func TestParseTsunamiWarning(t *testing.T) {
 			require.Nil(t, bodyTsunami.Estimation)
 
 			// CodeDefine
-			require.Len(t, bodyTsunami.Forecast.CodeDefine.Type, 3)
-			require.Equal(t, bodyTsunami.Forecast.CodeDefine.Type[0].XPath, "Item/Area/Code")
-			require.Equal(t, bodyTsunami.Forecast.CodeDefine.Type[0].Value, "津波予報区")
+			require.Len(t, bodyTsunami.Forecast.CodeDefine.Types, 3)
+			require.Equal(t, bodyTsunami.Forecast.CodeDefine.Types[0].XPath, "Item/Area/Code")
+			require.Equal(t, bodyTsunami.Forecast.CodeDefine.Types[0].Value, "津波予報区")
 
 			// Item
 			require.Len(t, bodyTsunami.Forecast.Item, 43)
@@ -298,9 +298,9 @@ func TestParseTsunamiWarning2(t *testing.T) {
 			require.Nil(t, bodyTsunami.Estimation)
 
 			// CodeDefine
-			require.Len(t, bodyTsunami.Forecast.CodeDefine.Type, 3)
-			require.Equal(t, bodyTsunami.Forecast.CodeDefine.Type[0].XPath, "Item/Area/Code")
-			require.Equal(t, bodyTsunami.Forecast.CodeDefine.Type[0].Value, "津波予報区")
+			require.Len(t, bodyTsunami.Forecast.CodeDefine.Types, 3)
+			require.Equal(t, bodyTsunami.Forecast.CodeDefine.Types[0].XPath, "Item/Area/Code")
+			require.Equal(t, bodyTsunami.Forecast.CodeDefine.Types[0].Value, "津波予報区")
 
 			// Item
 			require.Len(t, bodyTsunami.Forecast.Item, 7)
@@ -441,9 +441,9 @@ func TestParseTsunamiInfo(t *testing.T) {
 			require.Nil(t, bodyTsunami.Estimation)
 
 			// CodeDefine
-			require.Len(t, bodyTsunami.Forecast.CodeDefine.Type, 4)
-			require.Equal(t, bodyTsunami.Forecast.CodeDefine.Type[0].XPath, "Item/Area/Code")
-			require.Equal(t, bodyTsunami.Forecast.CodeDefine.Type[0].Value, "津波予報区")
+			require.Len(t, bodyTsunami.Forecast.CodeDefine.Types, 4)
+			require.Equal(t, bodyTsunami.Forecast.CodeDefine.Types[0].XPath, "Item/Area/Code")
+			require.Equal(t, bodyTsunami.Forecast.CodeDefine.Types[0].Value, "津波予報区")
 
 			// Item
 			require.Len(t, bodyTsunami.Forecast.Item, 43)
@@ -592,9 +592,9 @@ func TestParseTsunamiInfo2(t *testing.T) {
 			require.Nil(t, bodyTsunami.Observation.Item[0].Station[0].MaxHeight.TsunamiHeight)
 
 			// CodeDefine
-			require.Len(t, bodyTsunami.Forecast.CodeDefine.Type, 4)
-			require.Equal(t, bodyTsunami.Forecast.CodeDefine.Type[0].XPath, "Item/Area/Code")
-			require.Equal(t, bodyTsunami.Forecast.CodeDefine.Type[0].Value, "津波予報区")
+			require.Len(t, bodyTsunami.Forecast.CodeDefine.Types, 4)
+			require.Equal(t, bodyTsunami.Forecast.CodeDefine.Types[0].XPath, "Item/Area/Code")
+			require.Equal(t, bodyTsunami.Forecast.CodeDefine.Types[0].Value, "津波予報区")
 
 			// Item
 			require.Len(t, bodyTsunami.Forecast.Item, 43)
