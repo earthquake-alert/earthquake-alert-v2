@@ -1,15 +1,19 @@
-package parser
+package src
 
-import "encoding/xml"
+import (
+	"encoding/xml"
+
+	"github.com/earthquake-alert/erarthquake-alert-v2/src/jma"
+)
 
 // 地震の活動状況等に関する情報
 type EarthquakeActivity struct {
 	Row    string
-	Parsed *EarthquakeActivityJmaXml
+	Parsed *jma.EarthquakeActivityJmaXml
 }
 
 func ParseEarthquakeActivity(row []byte) (*EarthquakeActivity, error) {
-	earthquake := new(EarthquakeActivityJmaXml)
+	earthquake := new(jma.EarthquakeActivityJmaXml)
 	err := xml.Unmarshal(row, earthquake)
 	if err != nil {
 		return nil, err

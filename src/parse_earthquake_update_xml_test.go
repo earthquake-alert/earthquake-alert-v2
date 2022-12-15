@@ -1,4 +1,4 @@
-package parser_test
+package src_test
 
 import (
 	"fmt"
@@ -6,7 +6,7 @@ import (
 	"path/filepath"
 	"testing"
 
-	"github.com/earthquake-alert/erarthquake-alert-v2/src/parser"
+	"github.com/earthquake-alert/erarthquake-alert-v2/src"
 	"github.com/stretchr/testify/require"
 )
 
@@ -24,7 +24,7 @@ func TestParseEarthquakeUpdate(t *testing.T) {
 			row, err := os.ReadFile(testPath)
 			require.NoError(t, err)
 
-			_, err = parser.ParseEarthquakeUpdate(row)
+			_, err = src.ParseEarthquakeUpdate(row)
 			require.NoError(t, err)
 		})
 	}
@@ -32,7 +32,7 @@ func TestParseEarthquakeUpdate(t *testing.T) {
 	t.Run("failed", func(t *testing.T) {
 		row := "aaaaaaaa"
 
-		_, err := parser.ParseEarthquakeUpdate([]byte(row))
+		_, err := src.ParseEarthquakeUpdate([]byte(row))
 		require.Error(t, err)
 	})
 }

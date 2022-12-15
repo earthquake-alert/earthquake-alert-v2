@@ -1,4 +1,4 @@
-package parser
+package jma
 
 type Status int
 type InfoType int

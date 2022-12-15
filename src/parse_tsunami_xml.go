@@ -1,17 +1,19 @@
-package parser
+package src
 
 import (
 	"encoding/xml"
+
+	"github.com/earthquake-alert/erarthquake-alert-v2/src/jma"
 )
 
 type Tsunami struct {
 	Row    string
-	Parsed *TsunamiJmaXml
+	Parsed *jma.TsunamiJmaXml
 }
 
 // 気象庁の津波XML電文をパースする
 func ParseTsunami(row []byte) (*Tsunami, error) {
-	tsunami := new(TsunamiJmaXml)
+	tsunami := new(jma.TsunamiJmaXml)
 	err := xml.Unmarshal(row, tsunami)
 	if err != nil {
 		return nil, err
@@ -24,18 +26,18 @@ func ParseTsunami(row []byte) (*Tsunami, error) {
 }
 
 // 伝聞の形式を返す
-func (c *Tsunami) Status() Status {
+func (c *Tsunami) Status() jma.Status {
 	s := c.Parsed.Control.Status
 
 	switch s {
 	case "通常":
-		return Common
+		return jma.Common
 	case "訓練":
-		return Training
+		return jma.Training
 	case "試験":
-		return Test
+		return jma.Test
 	default:
-		return StatusUnknown
+		return jma.StatusUnknown
 	}
 }
 
@@ -45,7 +47,7 @@ func (c *Tsunami) IsCommon() bool {
 	s := c.Status()
 
 	switch s {
-	case Common:
+	case jma.Common:
 		return true
 	default:
 		return false
@@ -53,17 +55,17 @@ func (c *Tsunami) IsCommon() bool {
 }
 
 // 情報携帯を返す
-func (c *Tsunami) InfoType() InfoType {
+func (c *Tsunami) InfoType() jma.InfoType {
 	i := c.Parsed.Head.InfoType
 
 	switch i {
 	case "発表":
-		return Publication
+		return jma.Publication
 	case "訂正":
-		return Correction
+		return jma.Correction
 	case "取消":
-		return Cancel
+		return jma.Cancel
 	default:
-		return InfoTypeUnknown
+		return jma.InfoTypeUnknown
 	}
 }
