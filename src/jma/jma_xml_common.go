@@ -248,10 +248,11 @@ type EarthquakeElement struct {
 			// る。また、これに対応するコードを、後に続くDetailedCode に記載し、その@type にコード種別
 			// “詳細震央地名”を記載する。具体的なコードの値については、別途提供するコード表を参
 			// 照。
-			DetailedName struct {
+			DetailedName string `xml:"DetailedName,omitempty"`
+			DetailedCode *struct {
 				Value string `xml:",chardata"`
 				Type  string `xml:"type,attr,omitempty"`
-			} `xml:"DetailedName,omitempty"`
+			} `xml:"DetailedCode,omitempty"`
 
 			// 震央補助表現
 			//
@@ -264,7 +265,7 @@ type EarthquakeElement struct {
 			NameFromMark string      `xml:"NameFromMark,omitempty"`
 			MarkCode     *DetailCode `xml:"MarkCode,omitempty"`
 			Direction    string      `xml:"Direction,omitempty"`
-			Distance     struct {
+			Distance     *struct {
 				Value string `xml:",chardata"`
 				Unit  string `xml:"unit,attr"`
 			} `xml:"Distance,omitempty"`
