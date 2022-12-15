@@ -9,14 +9,14 @@ type Earthquake struct {
 }
 
 func ParseEarthquake(row []byte) (*Earthquake, error) {
-	tsunami := new(EarthquakeJmaXml)
-	err := xml.Unmarshal(row, tsunami)
+	earthquake := new(EarthquakeJmaXml)
+	err := xml.Unmarshal(row, earthquake)
 	if err != nil {
 		return nil, err
 	}
 
 	return &Earthquake{
 		Row:    string(row),
-		Parsed: tsunami,
+		Parsed: earthquake,
 	}, nil
 }
