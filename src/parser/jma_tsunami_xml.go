@@ -1,7 +1,7 @@
 // 気象庁電文のXML定義
 //
 // 津波関係のXMLの定義をしています。
-package src
+package parser
 
 // 津波警報・注意報・予報、津波情報、沖合の津波観測に関する情報
 type TsunamiJmaXml struct {

@@ -1,4 +1,4 @@
-package src_test
+package parser_test
 
 import (
 	"fmt"
@@ -6,11 +6,11 @@ import (
 	"path/filepath"
 	"testing"
 
-	"github.com/earthquake-alert/erarthquake-alert-v2/src"
+	"github.com/earthquake-alert/erarthquake-alert-v2/src/parser"
 	"github.com/stretchr/testify/require"
 )
 
-const TEST_DATA_PATH = "../test_data/jma_xml/"
+const TEST_DATA_PATH = "../../test_data/jma_xml/"
 
 // 津波情報のテストデータ
 var TestData = []string{
@@ -56,7 +56,7 @@ func TestParseTsunami(t *testing.T) {
 			row, err := os.ReadFile(testPath)
 			require.NoError(t, err)
 
-			_, err = src.ParseTsunami(row)
+			_, err = parser.ParseTsunami(row)
 			require.NoError(t, err)
 		})
 	}
@@ -64,7 +64,7 @@ func TestParseTsunami(t *testing.T) {
 	t.Run("failed", func(t *testing.T) {
 		row := "aaaaaaaa"
 
-		_, err := src.ParseTsunami([]byte(row))
+		_, err := parser.ParseTsunami([]byte(row))
 		require.Error(t, err)
 	})
 }
@@ -77,13 +77,13 @@ func TestParseTsunamiWarning(t *testing.T) {
 	row, err := os.ReadFile(testPath)
 	require.NoError(t, err)
 
-	tsunami, err := src.ParseTsunami(row)
+	tsunami, err := parser.ParseTsunami(row)
 	require.NoError(t, err)
 
 	t.Run("control", func(t *testing.T) {
 		control := tsunami.Parsed.Control
 
-		require.Equal(t, control, src.JmaXmlControl{
+		require.Equal(t, control, parser.JmaXmlControl{
 			Title:            "津波警報・注意報・予報a",
 			DateTime:         "2011-03-11T05:49:59Z",
 			Status:           "通常",
@@ -242,13 +242,13 @@ func TestParseTsunamiWarning2(t *testing.T) {
 	row, err := os.ReadFile(testPath)
 	require.NoError(t, err)
 
-	tsunami, err := src.ParseTsunami(row)
+	tsunami, err := parser.ParseTsunami(row)
 	require.NoError(t, err)
 
 	t.Run("control", func(t *testing.T) {
 		control := tsunami.Parsed.Control
 
-		require.Equal(t, control, src.JmaXmlControl{
+		require.Equal(t, control, parser.JmaXmlControl{
 			Title:            "津波警報・注意報・予報a",
 			DateTime:         "2018-12-04T09:03:00Z",
 			Status:           "訓練",
@@ -396,13 +396,13 @@ func TestParseTsunamiInfo(t *testing.T) {
 	row, err := os.ReadFile(testPath)
 	require.NoError(t, err)
 
-	tsunami, err := src.ParseTsunami(row)
+	tsunami, err := parser.ParseTsunami(row)
 	require.NoError(t, err)
 
 	t.Run("control", func(t *testing.T) {
 		control := tsunami.Parsed.Control
 
-		require.Equal(t, control, src.JmaXmlControl{
+		require.Equal(t, control, parser.JmaXmlControl{
 			Title:            "津波情報a",
 			DateTime:         "2011-03-11T05:50:46Z",
 			Status:           "通常",
@@ -528,13 +528,13 @@ func TestParseTsunamiInfo2(t *testing.T) {
 	row, err := os.ReadFile(testPath)
 	require.NoError(t, err)
 
-	tsunami, err := src.ParseTsunami(row)
+	tsunami, err := parser.ParseTsunami(row)
 	require.NoError(t, err)
 
 	t.Run("control", func(t *testing.T) {
 		control := tsunami.Parsed.Control
 
-		require.Equal(t, control, src.JmaXmlControl{
+		require.Equal(t, control, parser.JmaXmlControl{
 			Title:            "津波情報a",
 			DateTime:         "2011-03-11T05:59:27Z",
 			Status:           "通常",
@@ -683,13 +683,13 @@ func TestParseTsunamiInfo3(t *testing.T) {
 	row, err := os.ReadFile(testPath)
 	require.NoError(t, err)
 
-	tsunami, err := src.ParseTsunami(row)
+	tsunami, err := parser.ParseTsunami(row)
 	require.NoError(t, err)
 
 	t.Run("control", func(t *testing.T) {
 		control := tsunami.Parsed.Control
 
-		require.Equal(t, control, src.JmaXmlControl{
+		require.Equal(t, control, parser.JmaXmlControl{
 			Title:            "津波情報a",
 			DateTime:         "2021-08-05T03:56:58Z",
 			Status:           "通常",
@@ -733,13 +733,13 @@ func TestParseTsunamiOffshoreInfo(t *testing.T) {
 	row, err := os.ReadFile(testPath)
 	require.NoError(t, err)
 
-	tsunami, err := src.ParseTsunami(row)
+	tsunami, err := parser.ParseTsunami(row)
 	require.NoError(t, err)
 
 	t.Run("control", func(t *testing.T) {
 		control := tsunami.Parsed.Control
 
-		require.Equal(t, control, src.JmaXmlControl{
+		require.Equal(t, control, parser.JmaXmlControl{
 			Title:            "沖合の津波観測に関する情報",
 			DateTime:         "2016-08-31T22:15:30Z",
 			Status:           "訓練",
@@ -875,9 +875,9 @@ func TestParseTsunamiOffshoreInfo(t *testing.T) {
 }
 
 func TestStatus(t *testing.T) {
-	statusData := map[string]src.Status{
-		"32-39_11_02_120615_VTSE41.xml": src.Common,
-		"32-39_12_05_191025_VTSE52.xml": src.Training,
+	statusData := map[string]parser.Status{
+		"32-39_11_02_120615_VTSE41.xml": parser.Common,
+		"32-39_12_05_191025_VTSE52.xml": parser.Training,
 	}
 
 	for d, s := range statusData {
@@ -887,7 +887,7 @@ func TestStatus(t *testing.T) {
 			row, err := os.ReadFile(testPath)
 			require.NoError(t, err)
 
-			tsunami, err := src.ParseTsunami(row)
+			tsunami, err := parser.ParseTsunami(row)
 			require.NoError(t, err)
 
 			require.Equal(t, tsunami.Status(), s)
@@ -908,7 +908,7 @@ func TestIsCommon(t *testing.T) {
 			row, err := os.ReadFile(testPath)
 			require.NoError(t, err)
 
-			tsunami, err := src.ParseTsunami(row)
+			tsunami, err := parser.ParseTsunami(row)
 			require.NoError(t, err)
 
 			require.Equal(t, tsunami.IsCommon(), s)
@@ -917,9 +917,9 @@ func TestIsCommon(t *testing.T) {
 }
 
 func TestInfoType(t *testing.T) {
-	statusData := map[string]src.InfoType{
-		"32-35_01_01_100806_VXSE51.xml": src.Publication,
-		"38-39_03_01_210805_VTSE41.xml": src.Cancel,
+	statusData := map[string]parser.InfoType{
+		"32-35_01_01_100806_VXSE51.xml": parser.Publication,
+		"38-39_03_01_210805_VTSE41.xml": parser.Cancel,
 	}
 
 	for d, s := range statusData {
@@ -929,7 +929,7 @@ func TestInfoType(t *testing.T) {
 			row, err := os.ReadFile(testPath)
 			require.NoError(t, err)
 
-			tsunami, err := src.ParseTsunami(row)
+			tsunami, err := parser.ParseTsunami(row)
 			require.NoError(t, err)
 
 			require.Equal(t, tsunami.InfoType(), s)

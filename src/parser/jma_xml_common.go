@@ -1,4 +1,4 @@
-package src
+package parser
 
 type Status int
 type InfoType int

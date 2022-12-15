@@ -5,7 +5,7 @@
 // - 地震の活動状況等に関する情報
 // - 地震回数に関する情報
 // - 顕著な地震の震源要素更新のお知らせ
-package src
+package parser
 
 type EarthquakeClass string
 

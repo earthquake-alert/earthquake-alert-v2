@@ -1,4 +1,4 @@
-package src
+package parser
 
 import "encoding/xml"
 
@@ -6,24 +6,6 @@ import "encoding/xml"
 type Earthquake struct {
 	Row    string
 	Parsed *EarthquakeJmaXml
-}
-
-// 地震の活動状況等に関する情報
-type EarthquakeActivity struct {
-	Row    string
-	Parsed *EarthquakeActivityJmaXml
-}
-
-// 地震回数に関する情報
-type EarthquakeCount struct {
-	Row    string
-	Parsed *EarthquakeCountInfoJmaXml
-}
-
-// 顕著な地震の震源要素更新のお知らせ
-type EarthquakeUpdate struct {
-	Row    string
-	Parsed *EarthquakeUpdateInfoJmaXml
 }
 
 func ParseEarthquake(row []byte) (*Earthquake, error) {
