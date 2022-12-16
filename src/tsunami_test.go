@@ -87,7 +87,7 @@ func TestParseTsunamiWarning(t *testing.T) {
 		require.Equal(t, control, jma.JmaXmlControl{
 			Title:            "津波警報・注意報・予報a",
 			DateTime:         "2011-03-11T05:49:59Z",
-			Status:           "通常",
+			Status:           jma.Common,
 			EditorialOffice:  "大阪管区気象台",
 			PublishingOffice: "気象庁",
 		})
@@ -100,7 +100,7 @@ func TestParseTsunamiWarning(t *testing.T) {
 		require.Equal(t, head.ReportDateTime, "2011-03-11T14:49:00+09:00")
 		require.Equal(t, head.TargetDateTime, "2011-03-11T14:49:00+09:00")
 		require.Equal(t, head.EventID, "20110311144640")
-		require.Equal(t, head.InfoType, "発表")
+		require.Equal(t, head.InfoType, jma.Publication)
 		require.Equal(t, head.Serial, "")
 		require.Equal(t, head.InfoKind, "津波警報・注意報・予報")
 		require.Equal(t, head.InfoKindVersion, "1.0_1")
@@ -252,7 +252,7 @@ func TestParseTsunamiWarning2(t *testing.T) {
 		require.Equal(t, control, jma.JmaXmlControl{
 			Title:            "津波警報・注意報・予報a",
 			DateTime:         "2018-12-04T09:03:00Z",
-			Status:           "訓練",
+			Status:           jma.Training,
 			EditorialOffice:  "気象庁本庁",
 			PublishingOffice: "気象庁",
 		})
@@ -265,7 +265,7 @@ func TestParseTsunamiWarning2(t *testing.T) {
 		require.Equal(t, head.ReportDateTime, "2018-12-04T18:03:00+09:00")
 		require.Equal(t, head.TargetDateTime, "2018-12-04T18:03:00+09:00")
 		require.Equal(t, head.EventID, "20181204180000")
-		require.Equal(t, head.InfoType, "発表")
+		require.Equal(t, head.InfoType, jma.Publication)
 		require.Equal(t, head.Serial, "")
 		require.Equal(t, head.InfoKind, "津波警報・注意報・予報")
 		require.Equal(t, head.InfoKindVersion, "1.0_1")
@@ -406,7 +406,7 @@ func TestParseTsunamiInfo(t *testing.T) {
 		require.Equal(t, control, jma.JmaXmlControl{
 			Title:            "津波情報a",
 			DateTime:         "2011-03-11T05:50:46Z",
-			Status:           "通常",
+			Status:           jma.Common,
 			EditorialOffice:  "大阪管区気象台",
 			PublishingOffice: "気象庁",
 		})
@@ -419,7 +419,7 @@ func TestParseTsunamiInfo(t *testing.T) {
 		require.Equal(t, head.ReportDateTime, "2011-03-11T14:50:00+09:00")
 		require.Equal(t, head.TargetDateTime, "2011-03-11T14:50:00+09:00")
 		require.Equal(t, head.EventID, "20110311144640")
-		require.Equal(t, head.InfoType, "発表")
+		require.Equal(t, head.InfoType, jma.Publication)
 		require.Equal(t, head.Serial, "1")
 		require.Equal(t, head.InfoKind, "津波情報")
 		require.Equal(t, head.InfoKindVersion, "1.0_1")
@@ -538,7 +538,7 @@ func TestParseTsunamiInfo2(t *testing.T) {
 		require.Equal(t, control, jma.JmaXmlControl{
 			Title:            "津波情報a",
 			DateTime:         "2011-03-11T05:59:27Z",
-			Status:           "通常",
+			Status:           jma.Common,
 			EditorialOffice:  "大阪管区気象台",
 			PublishingOffice: "気象庁",
 		})
@@ -551,7 +551,7 @@ func TestParseTsunamiInfo2(t *testing.T) {
 		require.Equal(t, head.ReportDateTime, "2011-03-11T14:59:00+09:00")
 		require.Equal(t, head.TargetDateTime, "2011-03-11T14:58:00+09:00")
 		require.Equal(t, head.EventID, "20110311144640")
-		require.Equal(t, head.InfoType, "発表")
+		require.Equal(t, head.InfoType, jma.Publication)
 		require.Equal(t, head.Serial, "2")
 		require.Equal(t, head.InfoKind, "津波情報")
 		require.Equal(t, head.InfoKindVersion, "1.0_1")
@@ -693,7 +693,7 @@ func TestParseTsunamiInfo3(t *testing.T) {
 		require.Equal(t, control, jma.JmaXmlControl{
 			Title:            "津波情報a",
 			DateTime:         "2021-08-05T03:56:58Z",
-			Status:           "通常",
+			Status:           jma.Common,
 			EditorialOffice:  "気象庁本庁",
 			PublishingOffice: "気象庁",
 		})
@@ -706,7 +706,7 @@ func TestParseTsunamiInfo3(t *testing.T) {
 		require.Equal(t, head.ReportDateTime, "2021-08-05T12:56:00+09:00")
 		require.Equal(t, head.TargetDateTime, "2021-08-05T13:05:00+09:00")
 		require.Equal(t, head.EventID, "20210805103531")
-		require.Equal(t, head.InfoType, "取消")
+		require.Equal(t, head.InfoType, jma.Cancel)
 		require.Equal(t, head.Serial, "1")
 		require.Equal(t, head.InfoKind, "津波情報")
 		require.Equal(t, head.InfoKindVersion, "1.0_1")
@@ -743,7 +743,7 @@ func TestParseTsunamiOffshoreInfo(t *testing.T) {
 		require.Equal(t, control, jma.JmaXmlControl{
 			Title:            "沖合の津波観測に関する情報",
 			DateTime:         "2016-08-31T22:15:30Z",
-			Status:           "訓練",
+			Status:           jma.Training,
 			EditorialOffice:  "気象庁本庁",
 			PublishingOffice: "気象庁",
 		})
@@ -756,7 +756,7 @@ func TestParseTsunamiOffshoreInfo(t *testing.T) {
 		require.Equal(t, head.ReportDateTime, "2016-09-01T07:15:00+09:00")
 		require.Equal(t, head.TargetDateTime, "2016-09-01T07:15:00+09:00")
 		require.Equal(t, head.EventID, "20160901071000")
-		require.Equal(t, head.InfoType, "発表")
+		require.Equal(t, head.InfoType, jma.Publication)
 		require.Equal(t, head.Serial, "1")
 		require.Equal(t, head.InfoKind, "津波情報")
 		require.Equal(t, head.InfoKindVersion, "1.0_1")
@@ -933,7 +933,7 @@ func TestInfoType(t *testing.T) {
 			tsunami, err := src.ParseTsunami(row)
 			require.NoError(t, err)
 
-			require.Equal(t, tsunami.InfoType(), s)
+			require.Equal(t, tsunami.GetInfoType(), s)
 		})
 	}
 }

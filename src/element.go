@@ -30,5 +30,6 @@ type JmaElement interface {
 	// 画像を返す
 	GetImages() []string
 
+	// EventIDを返す
 	GetEventId() string
 }

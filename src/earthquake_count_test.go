@@ -54,7 +54,7 @@ func TestParseEarthquakeCount1(t *testing.T) {
 		require.Equal(t, control, jma.JmaXmlControl{
 			Title:            "地震回数に関する情報",
 			DateTime:         "2008-08-26T03:00:15Z",
-			Status:           "通常",
+			Status:           jma.Common,
 			EditorialOffice:  "気象庁本庁",
 			PublishingOffice: "気象庁",
 		})
@@ -67,7 +67,7 @@ func TestParseEarthquakeCount1(t *testing.T) {
 		require.Equal(t, head.ReportDateTime, "2008-08-26T12:00:00+09:00")
 		require.Equal(t, head.TargetDateTime, "2008-08-26T12:00:00+09:00")
 		require.Equal(t, head.EventID, "20080824150500")
-		require.Equal(t, head.InfoType, "発表")
+		require.Equal(t, head.InfoType, jma.Publication)
 		require.Equal(t, head.Serial, "1")
 		require.Equal(t, head.InfoKind, "地震回数情報")
 		require.Equal(t, head.InfoKindVersion, "1.0_0")
@@ -120,7 +120,7 @@ func TestParseEarthquakeCount2(t *testing.T) {
 		require.Equal(t, control, jma.JmaXmlControl{
 			Title:            "地震回数に関する情報",
 			DateTime:         "2022-05-10T09:49:07Z",
-			Status:           "通常",
+			Status:           jma.Common,
 			EditorialOffice:  "気象庁本庁",
 			PublishingOffice: "気象庁",
 		})
@@ -133,7 +133,7 @@ func TestParseEarthquakeCount2(t *testing.T) {
 		require.Equal(t, head.ReportDateTime, "2022-05-10T18:49:00+09:00")
 		require.Equal(t, head.TargetDateTime, "2022-05-10T18:49:00+09:00")
 		require.Equal(t, head.EventID, "20220510173400")
-		require.Equal(t, head.InfoType, "取消")
+		require.Equal(t, head.InfoType, jma.Cancel)
 		require.Equal(t, head.Serial, "")
 		require.Equal(t, head.InfoKind, "地震回数情報")
 		require.Equal(t, head.InfoKindVersion, "1.0_0")

@@ -55,7 +55,7 @@ func TestParseEarthquakeUpdate1(t *testing.T) {
 		require.Equal(t, control, jma.JmaXmlControl{
 			Title:            "顕著な地震の震源要素更新のお知らせ",
 			DateTime:         "2008-06-14T03:30:00Z",
-			Status:           "通常",
+			Status:           jma.Common,
 			EditorialOffice:  "気象庁本庁",
 			PublishingOffice: "気象庁",
 		})
@@ -68,7 +68,7 @@ func TestParseEarthquakeUpdate1(t *testing.T) {
 		require.Equal(t, head.ReportDateTime, "2008-06-14T12:30:00+09:00")
 		require.Equal(t, head.TargetDateTime, "2008-06-14T12:30:00+09:00")
 		require.Equal(t, head.EventID, "20080614084350")
-		require.Equal(t, head.InfoType, "発表")
+		require.Equal(t, head.InfoType, jma.Publication)
 		require.Equal(t, head.Serial, "")
 		require.Equal(t, head.InfoKind, "震源要素更新のお知らせ")
 		require.Equal(t, head.InfoKindVersion, "1.0_0")
@@ -126,7 +126,7 @@ func TestParseEarthquakeUpdate2(t *testing.T) {
 		require.Equal(t, control, jma.JmaXmlControl{
 			Title:            "顕著な地震の震源要素更新のお知らせ",
 			DateTime:         "2008-06-14T03:35:00Z",
-			Status:           "通常",
+			Status:           jma.Common,
 			EditorialOffice:  "気象庁本庁",
 			PublishingOffice: "気象庁",
 		})
@@ -139,7 +139,7 @@ func TestParseEarthquakeUpdate2(t *testing.T) {
 		require.Equal(t, head.ReportDateTime, "2008-06-14T12:35:00+09:00")
 		require.Equal(t, head.TargetDateTime, "2008-06-14T12:35:00+09:00")
 		require.Equal(t, head.EventID, "20080614084350")
-		require.Equal(t, head.InfoType, "取消")
+		require.Equal(t, head.InfoType, jma.Cancel)
 		require.Equal(t, head.Serial, "")
 		require.Equal(t, head.InfoKind, "震源要素更新のお知らせ")
 		require.Equal(t, head.InfoKindVersion, "1.0_0")
@@ -176,7 +176,7 @@ func TestParseEarthquakeUpdate3(t *testing.T) {
 		require.Equal(t, control, jma.JmaXmlControl{
 			Title:            "顕著な地震の震源要素更新のお知らせ",
 			DateTime:         "2009-08-10T23:55:00Z",
-			Status:           "通常",
+			Status:           jma.Common,
 			EditorialOffice:  "気象庁本庁",
 			PublishingOffice: "気象庁",
 		})
@@ -189,7 +189,7 @@ func TestParseEarthquakeUpdate3(t *testing.T) {
 		require.Equal(t, head.ReportDateTime, "2009-08-11T08:55:00+09:00")
 		require.Equal(t, head.TargetDateTime, "2009-08-11T06:45:00+09:00")
 		require.Equal(t, head.EventID, "20090811050711")
-		require.Equal(t, head.InfoType, "発表")
+		require.Equal(t, head.InfoType, jma.Publication)
 		require.Equal(t, head.Serial, "")
 		require.Equal(t, head.InfoKind, "震源要素更新のお知らせ")
 		require.Equal(t, head.InfoKindVersion, "1.0_0")

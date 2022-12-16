@@ -1,20 +1,20 @@
 package jma
 
-type Status int
-type InfoType int
+type Status string
+type InfoType string
 
 const (
-	Common Status = iota
-	Training
-	Test
-	StatusUnknown
+	Common        Status = "通常"
+	Training      Status = "訓練"
+	Test          Status = "試験"
+	StatusUnknown Status = ""
 )
 
 const (
-	Publication InfoType = iota
-	Correction
-	Cancel
-	InfoTypeUnknown
+	Publication     InfoType = "発表"
+	Correction      InfoType = "更新"
+	Cancel          InfoType = "取消"
+	InfoTypeUnknown InfoType = ""
 )
 
 // 管理部
@@ -34,7 +34,7 @@ type JmaXmlControl struct {
 	// - 通常の運用で発表する情報: 通常
 	// - 事前に日時を定めて行う業務訓練等で発表する情報: 訓練
 	// - 定期または臨時に伝聞疎通確認等を目的として発表する緊急地震速報の配信テスト伝聞: 試験
-	Status string `xml:"Status"`
+	Status Status `xml:"Status"`
 
 	// 編集官署名
 	// 	本要素は、「独立した情報単位」判別のキーとしても用いられるが、地震・津波に関連する情
@@ -146,7 +146,7 @@ type JmaXmlHeader struct {
 	// いるControl/DateTime の最も新しい電文を訂正する場合は“訂正”を、「独立した情報単位」
 	// 全体を取り消す場合は“取消”を記載する。取消電文の運用については、（ⅲ）共通別紙ウ．
 	// 「取消電文の運用」を参照。
-	InfoType string `xml:"InfoType"`
+	InfoType InfoType `xml:"InfoType"`
 
 	// 情報番号
 	// 続報を発表し、内容を更新する情報については、情報番号を記載する。続報を発表する度
