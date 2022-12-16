@@ -164,7 +164,7 @@ type EarthquakeBody struct {
 			//
 			// 本情報で発表する最大の震度を記載する。
 			// 値：“3”/“4”/“5-”/“5+”/“6-”/“6+”/“7”
-			MaxInt string `xml:"MaxInt"`
+			MaxInt EarthquakeIntensity `xml:"MaxInt"`
 
 			// 都道府県
 			//
@@ -182,7 +182,7 @@ type EarthquakeBody struct {
 				// 当該都道府県における最大震度を記載する。
 				// 震度速報：“3”/“4”/“5-”/“5+”/“6-”/“6+”/“7”
 				// 震源・震度に関する情報：“1”/“2”/“3”/“4”/“5-”/“5+”/“6-”/“6+”/“7”
-				MaxInt string `xml:"MaxInt"`
+				MaxInt EarthquakeIntensity `xml:"MaxInt"`
 
 				// 情報の更新（都道府県）
 				//
@@ -207,7 +207,7 @@ type EarthquakeBody struct {
 					// 当該地域における最大震度を記載する。
 					// 震度速報：“3”/“4”/“5-”/“5+”/“6-”/“6+”/“7”
 					// 震源・震度に関する情報：“1”/“2”/“3”/“4”/“5-”/“5+”/“6-”/“6+”/“7”
-					MaxInt string `xml:"MaxInt"`
+					MaxInt EarthquakeIntensity `xml:"MaxInt"`
 
 					// 情報の更新（地域）
 					//
@@ -241,7 +241,7 @@ type EarthquakeBody struct {
 						// 震度５弱以上とする）と考えられるが震度の値を入手していない震度観測点のみしか存在しな
 						// い場合、本要素は出現しない。
 						// 値：“1”/“2”/“3”/“4”/“5-”/“5+”/“6-”/“6+”/“7”
-						MaxInt string `xml:"MaxInt"`
+						MaxInt EarthquakeIntensity `xml:"MaxInt"`
 
 						// 情報の更新（市町村）
 						//
@@ -257,10 +257,10 @@ type EarthquakeBody struct {
 						// 子要素Name に観測点名を記載し、対応するコードを子要素Code に記載する。対応するコ
 						// ードは、「コード体系の定義」（Body/Intensity/Observation/CodeDefine）で定義されている。
 						IntensityStation []struct {
-							Name   string `xml:"Name"`
-							Code   string `xml:"Code"`
-							Int    string `xml:"Int"`
-							Revise string `xml:"Revise,omitempty"`
+							Name   string              `xml:"Name"`
+							Code   string              `xml:"Code"`
+							Int    EarthquakeIntensity `xml:"Int"`
+							Revise string              `xml:"Revise,omitempty"`
 						} `xml:"IntensityStation"`
 					} `xml:"City"`
 				} `xml:"Area"`

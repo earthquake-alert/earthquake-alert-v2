@@ -3,6 +3,7 @@ package jma
 type Status string
 type InfoType string
 type MagnitudeType string
+type EarthquakeIntensity string
 
 const (
 	Common        Status = "通常"
@@ -21,6 +22,20 @@ const (
 const (
 	JMAMagnitude    MagnitudeType = "Mj"
 	MomentMagnitude MagnitudeType = "M"
+)
+
+const (
+	Int7       EarthquakeIntensity = "7"
+	Int6u      EarthquakeIntensity = "6+"
+	Int6l      EarthquakeIntensity = "6-"
+	Int5u      EarthquakeIntensity = "5+"
+	Int5l      EarthquakeIntensity = "5-"
+	Int4       EarthquakeIntensity = "4"
+	Int3       EarthquakeIntensity = "3"
+	Int2       EarthquakeIntensity = "2"
+	Int1       EarthquakeIntensity = "1"
+	Int0       EarthquakeIntensity = "0"
+	IntUnknown EarthquakeIntensity = ""
 )
 
 // 管理部

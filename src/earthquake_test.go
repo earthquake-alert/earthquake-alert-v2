@@ -145,17 +145,17 @@ func TestParseEarthquakeReport1(t *testing.T) {
 			require.Equal(t, intensity.Observation.CodeDefine.Types[0].Value, "地震情報／都道府県等")
 			require.Equal(t, intensity.Observation.CodeDefine.Types[0].XPath, "Pref/Code")
 
-			require.Equal(t, intensity.Observation.MaxInt, "6-")
+			require.Equal(t, intensity.Observation.MaxInt, jma.Int6l)
 
 			require.Len(t, intensity.Observation.Pref, 16)
 			require.Equal(t, intensity.Observation.Pref[0].Name, "静岡県")
 			require.Equal(t, intensity.Observation.Pref[0].Code, "22")
-			require.Equal(t, intensity.Observation.Pref[0].MaxInt, "6-")
+			require.Equal(t, intensity.Observation.Pref[0].MaxInt, jma.Int6l)
 
 			require.Len(t, intensity.Observation.Pref[0].Area, 4)
 			require.Equal(t, intensity.Observation.Pref[0].Area[0].Name, "静岡県中部")
 			require.Equal(t, intensity.Observation.Pref[0].Area[0].Code, "442")
-			require.Equal(t, intensity.Observation.Pref[0].Area[0].MaxInt, "6-")
+			require.Equal(t, intensity.Observation.Pref[0].Area[0].MaxInt, jma.Int6l)
 		})
 
 		require.Equal(t, body.Text, "")
@@ -228,17 +228,17 @@ func TestParseEarthquakeReport2(t *testing.T) {
 			require.Equal(t, intensity.Observation.CodeDefine.Types[0].Value, "地震情報／都道府県等")
 			require.Equal(t, intensity.Observation.CodeDefine.Types[0].XPath, "Pref/Code")
 
-			require.Equal(t, intensity.Observation.MaxInt, "6+")
+			require.Equal(t, intensity.Observation.MaxInt, jma.Int6u)
 
 			require.Len(t, intensity.Observation.Pref, 6)
 			require.Equal(t, intensity.Observation.Pref[0].Name, "宮城県")
 			require.Equal(t, intensity.Observation.Pref[0].Code, "04")
-			require.Equal(t, intensity.Observation.Pref[0].MaxInt, "6+")
+			require.Equal(t, intensity.Observation.Pref[0].MaxInt, jma.Int6u)
 
 			require.Len(t, intensity.Observation.Pref[0].Area, 3)
 			require.Equal(t, intensity.Observation.Pref[0].Area[0].Name, "宮城県北部")
 			require.Equal(t, intensity.Observation.Pref[0].Area[0].Code, "220")
-			require.Equal(t, intensity.Observation.Pref[0].Area[0].MaxInt, "6+")
+			require.Equal(t, intensity.Observation.Pref[0].Area[0].MaxInt, jma.Int6u)
 		})
 
 		require.Equal(t, body.Text, "")
@@ -562,26 +562,26 @@ func TestParseEarthquakeDetails1(t *testing.T) {
 			require.Equal(t, intensity.Observation.CodeDefine.Types[0].Value, "地震情報／都道府県等")
 			require.Equal(t, intensity.Observation.CodeDefine.Types[0].XPath, "Pref/Code")
 
-			require.Equal(t, intensity.Observation.MaxInt, "5-")
+			require.Equal(t, intensity.Observation.MaxInt, jma.Int5l)
 
 			require.Len(t, intensity.Observation.Pref, 8)
 			require.Equal(t, intensity.Observation.Pref[0].Name, "静岡県")
 			require.Equal(t, intensity.Observation.Pref[0].Code, "22")
-			require.Equal(t, intensity.Observation.Pref[0].MaxInt, "5-")
+			require.Equal(t, intensity.Observation.Pref[0].MaxInt, jma.Int5l)
 
 			require.Len(t, intensity.Observation.Pref[0].Area, 4)
 			require.Equal(t, intensity.Observation.Pref[0].Area[0].Name, "静岡県伊豆")
 			require.Equal(t, intensity.Observation.Pref[0].Area[0].Code, "440")
-			require.Equal(t, intensity.Observation.Pref[0].Area[0].MaxInt, "5-")
+			require.Equal(t, intensity.Observation.Pref[0].Area[0].MaxInt, jma.Int5l)
 
 			require.Len(t, intensity.Observation.Pref[0].Area[0].City, 10)
 			require.Equal(t, intensity.Observation.Pref[0].Area[0].City[0].Name, "西伊豆町")
 			require.Equal(t, intensity.Observation.Pref[0].Area[0].City[0].Code, "2230600")
-			require.Equal(t, intensity.Observation.Pref[0].Area[0].City[0].MaxInt, "5-")
+			require.Equal(t, intensity.Observation.Pref[0].Area[0].City[0].MaxInt, jma.Int5l)
 			require.Len(t, intensity.Observation.Pref[0].Area[0].City[0].IntensityStation, 1)
 			require.Equal(t, intensity.Observation.Pref[0].Area[0].City[0].IntensityStation[0].Name, "西伊豆町仁科＊")
 			require.Equal(t, intensity.Observation.Pref[0].Area[0].City[0].IntensityStation[0].Code, "2230630")
-			require.Equal(t, intensity.Observation.Pref[0].Area[0].City[0].IntensityStation[0].Int, "5-")
+			require.Equal(t, intensity.Observation.Pref[0].Area[0].City[0].IntensityStation[0].Int, jma.Int5l)
 
 		})
 
@@ -687,26 +687,26 @@ func TestParseEarthquakeDetails2(t *testing.T) {
 			require.Equal(t, intensity.Observation.CodeDefine.Types[0].Value, "地震情報／都道府県等")
 			require.Equal(t, intensity.Observation.CodeDefine.Types[0].XPath, "Pref/Code")
 
-			require.Equal(t, intensity.Observation.MaxInt, "7")
+			require.Equal(t, intensity.Observation.MaxInt, jma.Int7)
 
 			require.Len(t, intensity.Observation.Pref, 41)
 			require.Equal(t, intensity.Observation.Pref[0].Name, "宮城県")
 			require.Equal(t, intensity.Observation.Pref[0].Code, "04")
-			require.Equal(t, intensity.Observation.Pref[0].MaxInt, "7")
+			require.Equal(t, intensity.Observation.Pref[0].MaxInt, jma.Int7)
 
 			require.Len(t, intensity.Observation.Pref[0].Area, 3)
 			require.Equal(t, intensity.Observation.Pref[0].Area[0].Name, "宮城県北部")
 			require.Equal(t, intensity.Observation.Pref[0].Area[0].Code, "220")
-			require.Equal(t, intensity.Observation.Pref[0].Area[0].MaxInt, "7")
+			require.Equal(t, intensity.Observation.Pref[0].Area[0].MaxInt, jma.Int7)
 
 			require.Len(t, intensity.Observation.Pref[0].Area[0].City, 8)
 			require.Equal(t, intensity.Observation.Pref[0].Area[0].City[0].Name, "栗原市")
 			require.Equal(t, intensity.Observation.Pref[0].Area[0].City[0].Code, "0421300")
-			require.Equal(t, intensity.Observation.Pref[0].Area[0].City[0].MaxInt, "7")
+			require.Equal(t, intensity.Observation.Pref[0].Area[0].City[0].MaxInt, jma.Int7)
 			require.Len(t, intensity.Observation.Pref[0].Area[0].City[0].IntensityStation, 2)
 			require.Equal(t, intensity.Observation.Pref[0].Area[0].City[0].IntensityStation[0].Name, "栗原市築館＊")
 			require.Equal(t, intensity.Observation.Pref[0].Area[0].City[0].IntensityStation[0].Code, "0421320")
-			require.Equal(t, intensity.Observation.Pref[0].Area[0].City[0].IntensityStation[0].Int, "7")
+			require.Equal(t, intensity.Observation.Pref[0].Area[0].City[0].IntensityStation[0].Int, jma.Int7)
 
 		})
 
