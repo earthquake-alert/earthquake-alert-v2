@@ -124,7 +124,7 @@ type JmaXmlHeader struct {
 	// 時刻から概ね6 時間後となる。
 	// 存在しない場合はnil
 	// Optional
-	ValidDateTim string `xml:"ValidDateTim,omitempty"`
+	ValidDateTime string `xml:"ValidDateTime,omitempty"`
 
 	// 識別情報
 	// 地震・津波に関連する情報については、ある特定の地震を識別するための地震識別番号
