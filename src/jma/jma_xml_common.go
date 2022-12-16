@@ -2,6 +2,7 @@ package jma
 
 type Status string
 type InfoType string
+type MagnitudeType string
 
 const (
 	Common        Status = "通常"
@@ -15,6 +16,11 @@ const (
 	Correction      InfoType = "更新"
 	Cancel          InfoType = "取消"
 	InfoTypeUnknown InfoType = ""
+)
+
+const (
+	JMAMagnitude    MagnitudeType = "Mj"
+	MomentMagnitude MagnitudeType = "M"
 )
 
 // 管理部
@@ -193,10 +199,10 @@ type Coordinate struct {
 
 // マグニチュード
 type Magnitude struct {
-	Value       string `xml:",chardata"`
-	Type        string `xml:"type,attr"`
-	Description string `xml:"description,attr"`
-	Condition   string `xml:"condition,attr,omitempty"`
+	Value       string        `xml:",chardata"`
+	Type        MagnitudeType `xml:"type,attr"`
+	Description string        `xml:"description,attr"`
+	Condition   string        `xml:"condition,attr,omitempty"`
 }
 
 // 地震の諸要素（震源に関する情報、震源・震度に関する情報

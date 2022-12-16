@@ -98,7 +98,7 @@ func TestParseEarthquakeUpdate1(t *testing.T) {
 			require.Equal(t, earthquake.Hypocenter.Area.Coordinate[0].Type, "")
 
 			require.Equal(t, earthquake.Magnitude.Condition, "")
-			require.Equal(t, earthquake.Magnitude.Type, "Mj")
+			require.Equal(t, earthquake.Magnitude.Type, jma.JMAMagnitude)
 			require.Equal(t, earthquake.Magnitude.Description, "Ｍ７．２")
 			require.Equal(t, earthquake.Magnitude.Value, "7.2")
 		})
@@ -219,7 +219,7 @@ func TestParseEarthquakeUpdate3(t *testing.T) {
 			require.Equal(t, earthquake.Hypocenter.Area.Coordinate[0].Type, "")
 
 			require.Equal(t, earthquake.Magnitude.Condition, "")
-			require.Equal(t, earthquake.Magnitude.Type, "Mj")
+			require.Equal(t, earthquake.Magnitude.Type, jma.JMAMagnitude)
 			require.Equal(t, earthquake.Magnitude.Description, "Ｍ６．５")
 			require.Equal(t, earthquake.Magnitude.Value, "6.5")
 		})

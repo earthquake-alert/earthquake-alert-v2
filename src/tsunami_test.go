@@ -190,7 +190,7 @@ func TestParseTsunamiWarning(t *testing.T) {
 			require.Equal(t, bodyEarthquake[0].Hypocenter.Source, "")
 
 			require.Equal(t, bodyEarthquake[0].Magnitude.Value, "NaN")
-			require.Equal(t, bodyEarthquake[0].Magnitude.Type, "Mj")
+			require.Equal(t, bodyEarthquake[0].Magnitude.Type, jma.JMAMagnitude)
 			require.Equal(t, bodyEarthquake[0].Magnitude.Description, "Ｍ８を超える巨大地震")
 			require.Equal(t, bodyEarthquake[0].Magnitude.Condition, "不明")
 		})
@@ -354,7 +354,7 @@ func TestParseTsunamiWarning2(t *testing.T) {
 			require.Equal(t, bodyEarthquake[0].Hypocenter.Source, "")
 
 			require.Equal(t, bodyEarthquake[0].Magnitude.Value, "7.3")
-			require.Equal(t, bodyEarthquake[0].Magnitude.Type, "Mj")
+			require.Equal(t, bodyEarthquake[0].Magnitude.Type, jma.JMAMagnitude)
 			require.Equal(t, bodyEarthquake[0].Magnitude.Description, "Ｍ７．３")
 			require.Equal(t, bodyEarthquake[0].Magnitude.Condition, "")
 		})
@@ -500,7 +500,7 @@ func TestParseTsunamiInfo(t *testing.T) {
 			require.Equal(t, bodyEarthquake[0].Hypocenter.Source, "")
 
 			require.Equal(t, bodyEarthquake[0].Magnitude.Value, "NaN")
-			require.Equal(t, bodyEarthquake[0].Magnitude.Type, "Mj")
+			require.Equal(t, bodyEarthquake[0].Magnitude.Type, jma.JMAMagnitude)
 			require.Equal(t, bodyEarthquake[0].Magnitude.Description, "Ｍ８を超える巨大地震")
 			require.Equal(t, bodyEarthquake[0].Magnitude.Condition, "不明")
 		})
@@ -651,7 +651,7 @@ func TestParseTsunamiInfo2(t *testing.T) {
 			require.Equal(t, bodyEarthquake[0].Hypocenter.Source, "")
 
 			require.Equal(t, bodyEarthquake[0].Magnitude.Value, "NaN")
-			require.Equal(t, bodyEarthquake[0].Magnitude.Type, "Mj")
+			require.Equal(t, bodyEarthquake[0].Magnitude.Type, jma.JMAMagnitude)
 			require.Equal(t, bodyEarthquake[0].Magnitude.Description, "Ｍ８を超える巨大地震")
 			require.Equal(t, bodyEarthquake[0].Magnitude.Condition, "不明")
 		})
@@ -854,7 +854,7 @@ func TestParseTsunamiOffshoreInfo(t *testing.T) {
 			require.Equal(t, bodyEarthquake[0].Hypocenter.Source, "")
 
 			require.Equal(t, bodyEarthquake[0].Magnitude.Value, "NaN")
-			require.Equal(t, bodyEarthquake[0].Magnitude.Type, "Mj")
+			require.Equal(t, bodyEarthquake[0].Magnitude.Type, jma.JMAMagnitude)
 			require.Equal(t, bodyEarthquake[0].Magnitude.Description, "Ｍ８を超える巨大地震")
 			require.Equal(t, bodyEarthquake[0].Magnitude.Condition, "不明")
 		})

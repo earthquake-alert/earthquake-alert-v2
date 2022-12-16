@@ -371,7 +371,7 @@ func TestParseEarthquakeEpicenter1(t *testing.T) {
 			require.Equal(t, earthquake.Hypocenter.Source, "")
 
 			require.Equal(t, earthquake.Magnitude.Condition, "")
-			require.Equal(t, earthquake.Magnitude.Type, "Mj")
+			require.Equal(t, earthquake.Magnitude.Type, jma.JMAMagnitude)
 			require.Equal(t, earthquake.Magnitude.Description, "Ｍ６．６")
 			require.Equal(t, earthquake.Magnitude.Value, "6.6")
 
@@ -455,7 +455,7 @@ func TestParseEarthquakeEpicenter2(t *testing.T) {
 			require.Equal(t, earthquake.Hypocenter.Source, "")
 
 			require.Equal(t, earthquake.Magnitude.Condition, "不明")
-			require.Equal(t, earthquake.Magnitude.Type, "Mj")
+			require.Equal(t, earthquake.Magnitude.Type, jma.JMAMagnitude)
 			require.Equal(t, earthquake.Magnitude.Description, "Ｍ８を超える巨大地震")
 			require.Equal(t, earthquake.Magnitude.Value, "NaN")
 
@@ -547,7 +547,7 @@ func TestParseEarthquakeDetails1(t *testing.T) {
 			require.Equal(t, earthquake.Hypocenter.Source, "")
 
 			require.Equal(t, earthquake.Magnitude.Condition, "")
-			require.Equal(t, earthquake.Magnitude.Type, "Mj")
+			require.Equal(t, earthquake.Magnitude.Type, jma.JMAMagnitude)
 			require.Equal(t, earthquake.Magnitude.Description, "Ｍ５．９")
 			require.Equal(t, earthquake.Magnitude.Value, "5.9")
 
@@ -672,7 +672,7 @@ func TestParseEarthquakeDetails2(t *testing.T) {
 			require.Equal(t, earthquake.Hypocenter.Source, "")
 
 			require.Equal(t, earthquake.Magnitude.Condition, "不明")
-			require.Equal(t, earthquake.Magnitude.Type, "Mj")
+			require.Equal(t, earthquake.Magnitude.Type, jma.JMAMagnitude)
 			require.Equal(t, earthquake.Magnitude.Description, "Ｍ８を超える巨大地震")
 			require.Equal(t, earthquake.Magnitude.Value, "NaN")
 
@@ -792,7 +792,7 @@ func TestParseEarthquakeDetails3(t *testing.T) {
 			require.Equal(t, earthquake.Hypocenter.Source, "ＰＴＷＣ")
 
 			require.Equal(t, earthquake.Magnitude.Condition, "")
-			require.Equal(t, earthquake.Magnitude.Type, "M")
+			require.Equal(t, earthquake.Magnitude.Type, jma.MomentMagnitude)
 			require.Equal(t, earthquake.Magnitude.Description, "Ｍ７．１")
 			require.Equal(t, earthquake.Magnitude.Value, "7.1")
 
