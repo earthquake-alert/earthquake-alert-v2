@@ -53,7 +53,7 @@ func (h *Handler) HandleWrapper(hand func(ctx *gin.Context) error) func(ctx *gin
 // `/` のhandler
 // とりあえず接続確認用
 func (h *Handler) RootHandler(ctx *gin.Context) error {
-	// ctx.String(http.StatusOK, "Hello World")
+	ctx.String(http.StatusOK, "Hello World")
 
-	return httperror.NewStringError(400, "hoge")
+	return nil
 }

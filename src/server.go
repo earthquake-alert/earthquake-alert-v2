@@ -10,7 +10,7 @@ func Init(mode string) {
 	logging.InitLogging(mode)
 }
 
-func Server() error {
+func Server() {
 	r := gin.New()
 
 	r.Use(gin.LoggerWithFormatter(func(params gin.LogFormatterParams) string {
@@ -33,7 +33,6 @@ func Server() error {
 				zap.String("error_message", params.ErrorMessage),
 			)
 		}
-
 		return ""
 	}))
 	r.Use(gin.Recovery())
@@ -41,5 +40,7 @@ func Server() error {
 	h := NewHandler()
 	Routes(r, h)
 
-	return r.Run()
+	if err := r.Run(); err != nil {
+		logging.Sugar.Fatal(err)
+	}
 }
