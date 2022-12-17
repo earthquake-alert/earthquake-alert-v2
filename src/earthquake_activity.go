@@ -6,6 +6,8 @@ import (
 	"github.com/earthquake-alert/erarthquake-alert-v2/src/jma"
 )
 
+const EARTHQUAKE_ACTIVITY_TEMPLATE_FILE = "earthquake_activity.tmpl"
+
 // 地震の活動状況等に関する情報
 type EarthquakeActivity struct {
 	Row    string
@@ -23,4 +25,18 @@ func ParseEarthquakeActivity(row []byte) (*EarthquakeActivity, error) {
 		Row:    string(row),
 		Parsed: earthquake,
 	}, nil
+}
+
+func (e *EarthquakeActivity) GetText() (string, error) {
+	return Template(EARTHQUAKE_ACTIVITY_TEMPLATE_FILE, e)
+}
+
+// テンプレートに使用するやつ
+func (e *EarthquakeActivity) TempFormatHeadlineText() string {
+	return Convert(e.Parsed.Head.Headline.Text, false)
+}
+
+// テンプレートに使用するやつ
+func (e *EarthquakeActivity) TempFormatBodyText() string {
+	return Convert(e.Parsed.Body.Text, false)
 }

@@ -25,7 +25,7 @@ type JmaElement interface {
 	GetInfoType() jma.InfoType
 
 	// 本文を返す
-	GetText() string
+	GetText() (string, error)
 
 	// 画像を返す
 	GetImages() []string
