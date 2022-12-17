@@ -38,7 +38,8 @@ func Server() error {
 	}))
 	r.Use(gin.Recovery())
 
-	Routes(r)
+	h := NewHandler()
+	Routes(r, h)
 
 	return r.Run()
 }

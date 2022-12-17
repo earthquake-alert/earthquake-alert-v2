@@ -1,14 +1,10 @@
 package src
 
 import (
-	"net/http"
-
 	"github.com/gin-gonic/gin"
 )
 
-func Routes(r *gin.Engine) {
+func Routes(r *gin.Engine, h *Handler) {
 
-	r.GET("/", func(ctx *gin.Context) {
-		ctx.String(http.StatusOK, "Hello World")
-	})
+	r.GET("/", h.HandleWrapper(h.RootHandler))
 }
