@@ -19,7 +19,7 @@ type JmaElement interface {
 	GetTitle() string
 
 	// 対象の基点時刻を返す
-	GetTargetDate() time.Time
+	GetTargetDate() (time.Time, error)
 
 	// 運用種別を返す
 	GetInfoType() jma.InfoType

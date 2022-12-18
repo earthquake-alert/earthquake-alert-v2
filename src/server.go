@@ -1,6 +1,8 @@
 package src
 
 import (
+	"time"
+
 	"github.com/earthquake-alert/erarthquake-alert-v2/src/logging"
 	"github.com/gin-gonic/gin"
 	"go.uber.org/zap"
@@ -8,6 +10,11 @@ import (
 
 func Init(mode string) {
 	logging.InitLogging(mode)
+
+	_, err := time.LoadLocation("Asia/Tokyo")
+	if err != nil {
+		logging.Sugar.Fatal(err)
+	}
 }
 
 func Server() {
