@@ -8,12 +8,16 @@ import (
 	"github.com/ktnyt/go-moji"
 )
 
+var funcmap = template.FuncMap{
+	"convert": Convert,
+}
+
 const FILE_PATH = "../templates"
 
 func Template(fileName string, obj any) (string, error) {
 	path := filepath.Join(FILE_PATH, fileName)
 
-	templ, err := template.ParseFiles(path)
+	templ, err := template.New(fileName).Funcs(funcmap).ParseFiles(path)
 	if err != nil {
 		return "", err
 	}
@@ -34,6 +38,10 @@ func Template(fileName string, obj any) (string, error) {
 // - 全角英数字を半角英数字に変換する
 // - 全角スペースを半角スペースに変換する
 func Convert(text string, isDeleteReturns bool) string {
+	if text == "" {
+		return ""
+	}
+
 	if isDeleteReturns {
 		text = strings.ReplaceAll(text, "\n", "")
 	}

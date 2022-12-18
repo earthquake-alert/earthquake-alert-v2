@@ -44,7 +44,7 @@ func (e *EarthquakeActivity) SetImages() error {
 func (e *EarthquakeActivity) GetTitle() string {
 	title := e.Parsed.Control.Title
 
-	if e.Parsed.Head.InfoType == jma.Cancel {
+	if e.GetInfoType() == jma.Cancel {
 		title = fmt.Sprintf("【取消】%s", title)
 	}
 
@@ -72,14 +72,4 @@ func (e *EarthquakeActivity) GetImages() []string {
 
 func (e *EarthquakeActivity) GetEventId() string {
 	return e.Parsed.Head.EventID
-}
-
-// テンプレートに使用するやつ
-func (e *EarthquakeActivity) TempFormatHeadlineText() string {
-	return Convert(e.Parsed.Head.Headline.Text, false)
-}
-
-// テンプレートに使用するやつ
-func (e *EarthquakeActivity) TempFormatBodyText() string {
-	return Convert(e.Parsed.Body.Text, false)
 }
