@@ -26,7 +26,6 @@ func (h *Handler) HandleWrapper(hand func(ctx *gin.Context) error) func(ctx *gin
 	return func(ctx *gin.Context) {
 		err := hand(ctx)
 		if err != nil {
-
 			if castedErr, ok := httperror.CastHTTPError(err); ok {
 				ctx.AbortWithStatusJSON(castedErr.StatusCode,
 					ErrorResponse{
@@ -36,15 +35,15 @@ func (h *Handler) HandleWrapper(hand func(ctx *gin.Context) error) func(ctx *gin
 						Line:    castedErr.Line,
 					},
 				)
+			} else {
+				ctx.AbortWithStatusJSON(http.StatusInternalServerError,
+					ErrorResponse{
+						Status:  http.StatusInternalServerError,
+						Message: err.Error(),
+						File:    "",
+						Line:    0,
+					})
 			}
-		} else {
-			ctx.AbortWithStatusJSON(http.StatusInternalServerError,
-				ErrorResponse{
-					Status:  http.StatusInternalServerError,
-					Message: err.Error(),
-					File:    "",
-					Line:    0,
-				})
 		}
 	}
 
