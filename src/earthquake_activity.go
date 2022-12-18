@@ -8,7 +8,7 @@ import (
 	"github.com/earthquake-alert/erarthquake-alert-v2/src/jma"
 )
 
-const EARTHQUAKE_ACTIVITY_TEMPLATE_FILE = "earthquake_activity.tmpl"
+const EARTHQUAKE_ACTIVITY_TEMPLATE_FILE = "earthquake_activity.gtpl"
 
 // 地震の活動状況等に関する情報
 type EarthquakeActivity struct {

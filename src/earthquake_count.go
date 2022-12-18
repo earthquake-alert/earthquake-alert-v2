@@ -9,8 +9,8 @@ import (
 	"github.com/earthquake-alert/erarthquake-alert-v2/src/logging"
 )
 
-const EARTHQUAKE_COUNT_TEMPLATE_FILE = "earthquake_count.tmpl"
-const EARTHQUAKE_COUNT_CANCEL_TEMPLATE_FILE = "earthquake_count.tmpl"
+const EARTHQUAKE_COUNT_TEMPLATE_FILE = "earthquake_count.gtpl"
+const EARTHQUAKE_COUNT_CANCEL_TEMPLATE_FILE = "earthquake_count.gtpl"
 
 // 地震回数に関する情報
 type EarthquakeCount struct {

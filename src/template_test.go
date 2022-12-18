@@ -12,7 +12,7 @@ type TestTemplateObj struct {
 }
 
 func TestTemplate(t *testing.T) {
-	fileName := "test.tmpl"
+	fileName := "test.gtpl"
 
 	obj := TestTemplateObj{Test: "hoge"}
 
