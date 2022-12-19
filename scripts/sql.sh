@@ -4,4 +4,4 @@
 # 使用法:
 #  ./scripts/sql.sh
 
-docker-compose exec db bash -c "mysql -u docker -pdocker earthquake-alert"
+docker-compose -f docker-compose.db.yaml exec db bash -c "mysql -u docker -pdocker earthquake-alert"
