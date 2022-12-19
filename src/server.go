@@ -8,7 +8,10 @@ import (
 	"go.uber.org/zap"
 )
 
+var Mode = ""
+
 func Init(mode string) {
+	Mode = mode
 	logging.InitLogging(mode)
 
 	_, err := time.LoadLocation("Asia/Tokyo")
