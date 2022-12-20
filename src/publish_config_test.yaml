@@ -1,0 +1,26 @@
+twitter:
+  - name: twitter1
+    token: twitter-token
+  - name: twitter2
+    min_int: 5-
+    token: twitter-token-2
+discord:
+  - name: discord1
+    webhook_url: https://example.com/discord/webhook/1
+    min_int: 4
+    areas:
+      - 茨城県
+      - 埼玉県
+      - 東京都
+    is_tsunami: true
+  - name: discord2
+    webhook_url: https://example.com/discord/webhook/2
+  - name: discord3
+    webhook_url: https://example.com/discord/webhook/3
+slack:
+  - name: slack1
+    webhook_url: https://example.com/slack/webhook/1
+    channel: general
+line_notify:
+  - name: line1
+    token: line-token-1
