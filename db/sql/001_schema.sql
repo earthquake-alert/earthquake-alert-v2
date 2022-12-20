@@ -34,7 +34,7 @@ CREATE TABLE IF NOT EXISTS `Earthquakes` (
 
 # 津波情報と地震情報をつなげるやつ
 # 津波1に対して地震多or無があるので
-CREATE TABLE IF NOT EXISTS `Tsunami` (
+CREATE TABLE IF NOT EXISTS `TsunamiConnects` (
     `id` INT UNSIGNED AUTO_INCREMENT NOT NULL,
     `tsunami_id` INT NOT NULL,
     `event_id` INT NOT NULL,

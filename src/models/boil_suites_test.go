@@ -20,6 +20,7 @@ func TestParent(t *testing.T) {
 	t.Run("EarthquakeUpdates", testEarthquakeUpdates)
 	t.Run("Earthquakes", testEarthquakes)
 	t.Run("JmaXmlEntries", testJmaXmlEntries)
+	t.Run("TsunamiConnects", testTsunamiConnects)
 	t.Run("TsunamiInfos", testTsunamiInfos)
 	t.Run("TwitterThreads", testTwitterThreads)
 }
@@ -33,6 +34,7 @@ func TestDelete(t *testing.T) {
 	t.Run("EarthquakeUpdates", testEarthquakeUpdatesDelete)
 	t.Run("Earthquakes", testEarthquakesDelete)
 	t.Run("JmaXmlEntries", testJmaXmlEntriesDelete)
+	t.Run("TsunamiConnects", testTsunamiConnectsDelete)
 	t.Run("TsunamiInfos", testTsunamiInfosDelete)
 	t.Run("TwitterThreads", testTwitterThreadsDelete)
 }
@@ -46,6 +48,7 @@ func TestQueryDeleteAll(t *testing.T) {
 	t.Run("EarthquakeUpdates", testEarthquakeUpdatesQueryDeleteAll)
 	t.Run("Earthquakes", testEarthquakesQueryDeleteAll)
 	t.Run("JmaXmlEntries", testJmaXmlEntriesQueryDeleteAll)
+	t.Run("TsunamiConnects", testTsunamiConnectsQueryDeleteAll)
 	t.Run("TsunamiInfos", testTsunamiInfosQueryDeleteAll)
 	t.Run("TwitterThreads", testTwitterThreadsQueryDeleteAll)
 }
@@ -59,6 +62,7 @@ func TestSliceDeleteAll(t *testing.T) {
 	t.Run("EarthquakeUpdates", testEarthquakeUpdatesSliceDeleteAll)
 	t.Run("Earthquakes", testEarthquakesSliceDeleteAll)
 	t.Run("JmaXmlEntries", testJmaXmlEntriesSliceDeleteAll)
+	t.Run("TsunamiConnects", testTsunamiConnectsSliceDeleteAll)
 	t.Run("TsunamiInfos", testTsunamiInfosSliceDeleteAll)
 	t.Run("TwitterThreads", testTwitterThreadsSliceDeleteAll)
 }
@@ -72,6 +76,7 @@ func TestExists(t *testing.T) {
 	t.Run("EarthquakeUpdates", testEarthquakeUpdatesExists)
 	t.Run("Earthquakes", testEarthquakesExists)
 	t.Run("JmaXmlEntries", testJmaXmlEntriesExists)
+	t.Run("TsunamiConnects", testTsunamiConnectsExists)
 	t.Run("TsunamiInfos", testTsunamiInfosExists)
 	t.Run("TwitterThreads", testTwitterThreadsExists)
 }
@@ -85,6 +90,7 @@ func TestFind(t *testing.T) {
 	t.Run("EarthquakeUpdates", testEarthquakeUpdatesFind)
 	t.Run("Earthquakes", testEarthquakesFind)
 	t.Run("JmaXmlEntries", testJmaXmlEntriesFind)
+	t.Run("TsunamiConnects", testTsunamiConnectsFind)
 	t.Run("TsunamiInfos", testTsunamiInfosFind)
 	t.Run("TwitterThreads", testTwitterThreadsFind)
 }
@@ -98,6 +104,7 @@ func TestBind(t *testing.T) {
 	t.Run("EarthquakeUpdates", testEarthquakeUpdatesBind)
 	t.Run("Earthquakes", testEarthquakesBind)
 	t.Run("JmaXmlEntries", testJmaXmlEntriesBind)
+	t.Run("TsunamiConnects", testTsunamiConnectsBind)
 	t.Run("TsunamiInfos", testTsunamiInfosBind)
 	t.Run("TwitterThreads", testTwitterThreadsBind)
 }
@@ -111,6 +118,7 @@ func TestOne(t *testing.T) {
 	t.Run("EarthquakeUpdates", testEarthquakeUpdatesOne)
 	t.Run("Earthquakes", testEarthquakesOne)
 	t.Run("JmaXmlEntries", testJmaXmlEntriesOne)
+	t.Run("TsunamiConnects", testTsunamiConnectsOne)
 	t.Run("TsunamiInfos", testTsunamiInfosOne)
 	t.Run("TwitterThreads", testTwitterThreadsOne)
 }
@@ -124,6 +132,7 @@ func TestAll(t *testing.T) {
 	t.Run("EarthquakeUpdates", testEarthquakeUpdatesAll)
 	t.Run("Earthquakes", testEarthquakesAll)
 	t.Run("JmaXmlEntries", testJmaXmlEntriesAll)
+	t.Run("TsunamiConnects", testTsunamiConnectsAll)
 	t.Run("TsunamiInfos", testTsunamiInfosAll)
 	t.Run("TwitterThreads", testTwitterThreadsAll)
 }
@@ -137,6 +146,7 @@ func TestCount(t *testing.T) {
 	t.Run("EarthquakeUpdates", testEarthquakeUpdatesCount)
 	t.Run("Earthquakes", testEarthquakesCount)
 	t.Run("JmaXmlEntries", testJmaXmlEntriesCount)
+	t.Run("TsunamiConnects", testTsunamiConnectsCount)
 	t.Run("TsunamiInfos", testTsunamiInfosCount)
 	t.Run("TwitterThreads", testTwitterThreadsCount)
 }
@@ -150,6 +160,7 @@ func TestHooks(t *testing.T) {
 	t.Run("EarthquakeUpdates", testEarthquakeUpdatesHooks)
 	t.Run("Earthquakes", testEarthquakesHooks)
 	t.Run("JmaXmlEntries", testJmaXmlEntriesHooks)
+	t.Run("TsunamiConnects", testTsunamiConnectsHooks)
 	t.Run("TsunamiInfos", testTsunamiInfosHooks)
 	t.Run("TwitterThreads", testTwitterThreadsHooks)
 }
@@ -171,6 +182,8 @@ func TestInsert(t *testing.T) {
 	t.Run("Earthquakes", testEarthquakesInsertWhitelist)
 	t.Run("JmaXmlEntries", testJmaXmlEntriesInsert)
 	t.Run("JmaXmlEntries", testJmaXmlEntriesInsertWhitelist)
+	t.Run("TsunamiConnects", testTsunamiConnectsInsert)
+	t.Run("TsunamiConnects", testTsunamiConnectsInsertWhitelist)
 	t.Run("TsunamiInfos", testTsunamiInfosInsert)
 	t.Run("TsunamiInfos", testTsunamiInfosInsertWhitelist)
 	t.Run("TwitterThreads", testTwitterThreadsInsert)
@@ -226,6 +239,7 @@ func TestReload(t *testing.T) {
 	t.Run("EarthquakeUpdates", testEarthquakeUpdatesReload)
 	t.Run("Earthquakes", testEarthquakesReload)
 	t.Run("JmaXmlEntries", testJmaXmlEntriesReload)
+	t.Run("TsunamiConnects", testTsunamiConnectsReload)
 	t.Run("TsunamiInfos", testTsunamiInfosReload)
 	t.Run("TwitterThreads", testTwitterThreadsReload)
 }
@@ -239,6 +253,7 @@ func TestReloadAll(t *testing.T) {
 	t.Run("EarthquakeUpdates", testEarthquakeUpdatesReloadAll)
 	t.Run("Earthquakes", testEarthquakesReloadAll)
 	t.Run("JmaXmlEntries", testJmaXmlEntriesReloadAll)
+	t.Run("TsunamiConnects", testTsunamiConnectsReloadAll)
 	t.Run("TsunamiInfos", testTsunamiInfosReloadAll)
 	t.Run("TwitterThreads", testTwitterThreadsReloadAll)
 }
@@ -252,6 +267,7 @@ func TestSelect(t *testing.T) {
 	t.Run("EarthquakeUpdates", testEarthquakeUpdatesSelect)
 	t.Run("Earthquakes", testEarthquakesSelect)
 	t.Run("JmaXmlEntries", testJmaXmlEntriesSelect)
+	t.Run("TsunamiConnects", testTsunamiConnectsSelect)
 	t.Run("TsunamiInfos", testTsunamiInfosSelect)
 	t.Run("TwitterThreads", testTwitterThreadsSelect)
 }
@@ -265,6 +281,7 @@ func TestUpdate(t *testing.T) {
 	t.Run("EarthquakeUpdates", testEarthquakeUpdatesUpdate)
 	t.Run("Earthquakes", testEarthquakesUpdate)
 	t.Run("JmaXmlEntries", testJmaXmlEntriesUpdate)
+	t.Run("TsunamiConnects", testTsunamiConnectsUpdate)
 	t.Run("TsunamiInfos", testTsunamiInfosUpdate)
 	t.Run("TwitterThreads", testTwitterThreadsUpdate)
 }
@@ -278,6 +295,7 @@ func TestSliceUpdateAll(t *testing.T) {
 	t.Run("EarthquakeUpdates", testEarthquakeUpdatesSliceUpdateAll)
 	t.Run("Earthquakes", testEarthquakesSliceUpdateAll)
 	t.Run("JmaXmlEntries", testJmaXmlEntriesSliceUpdateAll)
+	t.Run("TsunamiConnects", testTsunamiConnectsSliceUpdateAll)
 	t.Run("TsunamiInfos", testTsunamiInfosSliceUpdateAll)
 	t.Run("TwitterThreads", testTwitterThreadsSliceUpdateAll)
 }

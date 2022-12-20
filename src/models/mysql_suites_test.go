@@ -22,6 +22,8 @@ func TestUpsert(t *testing.T) {
 
 	t.Run("JmaXmlEntries", testJmaXmlEntriesUpsert)
 
+	t.Run("TsunamiConnects", testTsunamiConnectsUpsert)
+
 	t.Run("TsunamiInfos", testTsunamiInfosUpsert)
 
 	t.Run("TwitterThreads", testTwitterThreadsUpsert)

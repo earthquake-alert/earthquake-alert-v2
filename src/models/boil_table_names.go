@@ -12,6 +12,7 @@ var TableNames = struct {
 	EarthquakeUpdate     string
 	Earthquakes          string
 	JmaXmlEntries        string
+	TsunamiConnects      string
 	TsunamiInfos         string
 	TwitterThreads       string
 }{
@@ -23,6 +24,7 @@ var TableNames = struct {
 	EarthquakeUpdate:     "EarthquakeUpdate",
 	Earthquakes:          "Earthquakes",
 	JmaXmlEntries:        "JmaXmlEntries",
+	TsunamiConnects:      "TsunamiConnects",
 	TsunamiInfos:         "TsunamiInfos",
 	TwitterThreads:       "TwitterThreads",
 }

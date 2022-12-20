@@ -57,6 +57,7 @@ func Server() {
 	if err != nil {
 		logging.Sugar.Fatal(err)
 	}
+	defer db.Close()
 	h := NewHandler(db)
 	Routes(r, h)
 

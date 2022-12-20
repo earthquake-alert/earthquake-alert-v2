@@ -3,6 +3,7 @@ package src
 import (
 	"encoding/xml"
 	"fmt"
+	"strconv"
 	"time"
 
 	"github.com/earthquake-alert/erarthquake-alert-v2/src/jma"
@@ -68,6 +69,10 @@ func (e *EarthquakeUpdate) GetImages() []string {
 	return e.Images
 }
 
-func (e *EarthquakeUpdate) GetEventId() string {
-	return e.Parsed.Head.EventID
+func (e *EarthquakeUpdate) GetEventId() ([]int, error) {
+	eventId, err := strconv.Atoi(e.Parsed.Head.EventID)
+	if err != nil {
+		return nil, err
+	}
+	return []int{eventId}, nil
 }

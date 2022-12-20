@@ -1,6 +1,8 @@
 package src
 
 import (
+	"context"
+	"database/sql"
 	"time"
 
 	"github.com/earthquake-alert/erarthquake-alert-v2/src/jma"
@@ -8,7 +10,7 @@ import (
 
 type JmaElement interface {
 	// DBに格納したり、DBから関連の地震・津波情報を取得してくるメソッド
-	Assembly() error
+	Assembly(ctx context.Context, db *sql.DB) error
 
 	// 震度分布図など様々な画像を生成するためのメソッド
 	//
@@ -31,5 +33,5 @@ type JmaElement interface {
 	GetImages() []string
 
 	// EventIDを返す
-	GetEventId() string
+	GetEventId() ([]int, error)
 }

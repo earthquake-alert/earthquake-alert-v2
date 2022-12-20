@@ -302,9 +302,10 @@ func TestGetEventId(t *testing.T) {
 		ea, err := src.ParseEarthquakeActivity(row)
 		require.NoError(t, err)
 
-		e := ea.GetEventId()
+		e, err := ea.GetEventId()
+		require.NoError(t, err)
 
-		require.Equal(t, e, "20191111170000")
+		require.Equal(t, e, []int{20191111170000})
 	})
 
 	t.Run("2", func(t *testing.T) {
@@ -317,9 +318,14 @@ func TestGetEventId(t *testing.T) {
 		ea, err := src.ParseEarthquakeActivity(row)
 		require.NoError(t, err)
 
-		e := ea.GetEventId()
+		e, err := ea.GetEventId()
+		require.NoError(t, err)
 
-		require.Equal(t, e, "20220316133000")
+		require.Equal(t, e, []int{20220316133000})
 
 	})
+}
+
+func TextAssembly(t *testing.T) {
+
 }

@@ -1,11 +1,16 @@
 package src
 
 import (
+	"context"
+	"database/sql"
 	"encoding/xml"
 	"fmt"
+	"strconv"
 	"time"
 
 	"github.com/earthquake-alert/erarthquake-alert-v2/src/jma"
+	"github.com/earthquake-alert/erarthquake-alert-v2/src/models"
+	"github.com/volatiletech/sqlboiler/v4/boil"
 )
 
 const EARTHQUAKE_ACTIVITY_TEMPLATE_FILE = "earthquake_activity.gtpl"
@@ -29,9 +34,23 @@ func ParseEarthquakeActivity(row []byte) (*EarthquakeActivity, error) {
 	}, nil
 }
 
-func (e *EarthquakeActivity) Assembly() error {
-	// 関連する情報がDB内にある場合などはここで引く
-	return nil
+func (e *EarthquakeActivity) Assembly(ctx context.Context, db *sql.DB) error {
+	eventId, err := e.GetEventId()
+	if err != nil {
+		return err
+	}
+	d, err := e.GetTargetDate()
+	if err != nil {
+		return err
+	}
+
+	activity := &models.EarthquakeActivity{
+		EventID: eventId[0],
+		Date:    d,
+		Row:     e.Row,
+	}
+
+	return activity.Insert(ctx, db, boil.Infer())
 }
 
 // 画像は生成しないのでなにもしない
@@ -70,6 +89,10 @@ func (e *EarthquakeActivity) GetImages() []string {
 	return []string{}
 }
 
-func (e *EarthquakeActivity) GetEventId() string {
-	return e.Parsed.Head.EventID
+func (e *EarthquakeActivity) GetEventId() ([]int, error) {
+	eventId, err := strconv.Atoi(e.Parsed.Head.EventID)
+	if err != nil {
+		return nil, err
+	}
+	return []int{eventId}, nil
 }
