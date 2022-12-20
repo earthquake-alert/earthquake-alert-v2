@@ -568,7 +568,7 @@ func testTsunamiConnectsSelect(t *testing.T) {
 }
 
 var (
-	tsunamiConnectDBTypes = map[string]string{`ID`: `int`, `TsunamiID`: `int`, `EventID`: `int`, `Created`: `datetime`}
+	tsunamiConnectDBTypes = map[string]string{`ID`: `int`, `TsunamiID`: `int`, `EventID`: `bigint`, `Created`: `datetime`}
 	_                     = bytes.MinRead
 )
 

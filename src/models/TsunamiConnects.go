@@ -25,7 +25,7 @@ import (
 type TsunamiConnect struct {
 	ID        uint      `boil:"id" json:"id" toml:"id" yaml:"id"`
 	TsunamiID int       `boil:"tsunami_id" json:"tsunami_id" toml:"tsunami_id" yaml:"tsunami_id"`
-	EventID   int       `boil:"event_id" json:"event_id" toml:"event_id" yaml:"event_id"`
+	EventID   int64     `boil:"event_id" json:"event_id" toml:"event_id" yaml:"event_id"`
 	Created   time.Time `boil:"created" json:"created" toml:"created" yaml:"created"`
 
 	R *tsunamiConnectR `boil:"-" json:"-" toml:"-" yaml:"-"`
@@ -61,12 +61,12 @@ var TsunamiConnectTableColumns = struct {
 var TsunamiConnectWhere = struct {
 	ID        whereHelperuint
 	TsunamiID whereHelperint
-	EventID   whereHelperint
+	EventID   whereHelperint64
 	Created   whereHelpertime_Time
 }{
 	ID:        whereHelperuint{field: "`TsunamiConnects`.`id`"},
 	TsunamiID: whereHelperint{field: "`TsunamiConnects`.`tsunami_id`"},
-	EventID:   whereHelperint{field: "`TsunamiConnects`.`event_id`"},
+	EventID:   whereHelperint64{field: "`TsunamiConnects`.`event_id`"},
 	Created:   whereHelpertime_Time{field: "`TsunamiConnects`.`created`"},
 }
 

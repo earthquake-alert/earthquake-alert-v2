@@ -568,7 +568,7 @@ func testTwitterThreadsSelect(t *testing.T) {
 }
 
 var (
-	twitterThreadDBTypes = map[string]string{`EventID`: `int`, `TweetID`: `varchar`, `Created`: `datetime`}
+	twitterThreadDBTypes = map[string]string{`EventID`: `bigint`, `TweetID`: `varchar`, `Created`: `datetime`}
 	_                    = bytes.MinRead
 )
 

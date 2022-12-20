@@ -24,7 +24,7 @@ import (
 // EarthquakeActivity is an object representing the database table.
 type EarthquakeActivity struct {
 	ID      uint      `boil:"id" json:"id" toml:"id" yaml:"id"`
-	EventID int       `boil:"event_id" json:"event_id" toml:"event_id" yaml:"event_id"`
+	EventID int64     `boil:"event_id" json:"event_id" toml:"event_id" yaml:"event_id"`
 	Date    time.Time `boil:"date" json:"date" toml:"date" yaml:"date"`
 	Created time.Time `boil:"created" json:"created" toml:"created" yaml:"created"`
 	Row     string    `boil:"row" json:"row" toml:"row" yaml:"row"`
@@ -86,22 +86,22 @@ func (w whereHelperuint) NIN(slice []uint) qm.QueryMod {
 	return qm.WhereNotIn(fmt.Sprintf("%s NOT IN ?", w.field), values...)
 }
 
-type whereHelperint struct{ field string }
+type whereHelperint64 struct{ field string }
 
-func (w whereHelperint) EQ(x int) qm.QueryMod  { return qmhelper.Where(w.field, qmhelper.EQ, x) }
-func (w whereHelperint) NEQ(x int) qm.QueryMod { return qmhelper.Where(w.field, qmhelper.NEQ, x) }
-func (w whereHelperint) LT(x int) qm.QueryMod  { return qmhelper.Where(w.field, qmhelper.LT, x) }
-func (w whereHelperint) LTE(x int) qm.QueryMod { return qmhelper.Where(w.field, qmhelper.LTE, x) }
-func (w whereHelperint) GT(x int) qm.QueryMod  { return qmhelper.Where(w.field, qmhelper.GT, x) }
-func (w whereHelperint) GTE(x int) qm.QueryMod { return qmhelper.Where(w.field, qmhelper.GTE, x) }
-func (w whereHelperint) IN(slice []int) qm.QueryMod {
+func (w whereHelperint64) EQ(x int64) qm.QueryMod  { return qmhelper.Where(w.field, qmhelper.EQ, x) }
+func (w whereHelperint64) NEQ(x int64) qm.QueryMod { return qmhelper.Where(w.field, qmhelper.NEQ, x) }
+func (w whereHelperint64) LT(x int64) qm.QueryMod  { return qmhelper.Where(w.field, qmhelper.LT, x) }
+func (w whereHelperint64) LTE(x int64) qm.QueryMod { return qmhelper.Where(w.field, qmhelper.LTE, x) }
+func (w whereHelperint64) GT(x int64) qm.QueryMod  { return qmhelper.Where(w.field, qmhelper.GT, x) }
+func (w whereHelperint64) GTE(x int64) qm.QueryMod { return qmhelper.Where(w.field, qmhelper.GTE, x) }
+func (w whereHelperint64) IN(slice []int64) qm.QueryMod {
 	values := make([]interface{}, 0, len(slice))
 	for _, value := range slice {
 		values = append(values, value)
 	}
 	return qm.WhereIn(fmt.Sprintf("%s IN ?", w.field), values...)
 }
-func (w whereHelperint) NIN(slice []int) qm.QueryMod {
+func (w whereHelperint64) NIN(slice []int64) qm.QueryMod {
 	values := make([]interface{}, 0, len(slice))
 	for _, value := range slice {
 		values = append(values, value)
@@ -155,13 +155,13 @@ func (w whereHelperstring) NIN(slice []string) qm.QueryMod {
 
 var EarthquakeActivityWhere = struct {
 	ID      whereHelperuint
-	EventID whereHelperint
+	EventID whereHelperint64
 	Date    whereHelpertime_Time
 	Created whereHelpertime_Time
 	Row     whereHelperstring
 }{
 	ID:      whereHelperuint{field: "`EarthquakeActivity`.`id`"},
-	EventID: whereHelperint{field: "`EarthquakeActivity`.`event_id`"},
+	EventID: whereHelperint64{field: "`EarthquakeActivity`.`event_id`"},
 	Date:    whereHelpertime_Time{field: "`EarthquakeActivity`.`date`"},
 	Created: whereHelpertime_Time{field: "`EarthquakeActivity`.`created`"},
 	Row:     whereHelperstring{field: "`EarthquakeActivity`.`row`"},

@@ -24,7 +24,7 @@ import (
 // EarthquakeReport is an object representing the database table.
 type EarthquakeReport struct {
 	ID      uint      `boil:"id" json:"id" toml:"id" yaml:"id"`
-	EventID int       `boil:"event_id" json:"event_id" toml:"event_id" yaml:"event_id"`
+	EventID int64     `boil:"event_id" json:"event_id" toml:"event_id" yaml:"event_id"`
 	MaxInt  string    `boil:"max_int" json:"max_int" toml:"max_int" yaml:"max_int"`
 	Date    time.Time `boil:"date" json:"date" toml:"date" yaml:"date"`
 	Created time.Time `boil:"created" json:"created" toml:"created" yaml:"created"`
@@ -70,14 +70,14 @@ var EarthquakeReportTableColumns = struct {
 
 var EarthquakeReportWhere = struct {
 	ID      whereHelperuint
-	EventID whereHelperint
+	EventID whereHelperint64
 	MaxInt  whereHelperstring
 	Date    whereHelpertime_Time
 	Created whereHelpertime_Time
 	Row     whereHelperstring
 }{
 	ID:      whereHelperuint{field: "`EarthquakeReports`.`id`"},
-	EventID: whereHelperint{field: "`EarthquakeReports`.`event_id`"},
+	EventID: whereHelperint64{field: "`EarthquakeReports`.`event_id`"},
 	MaxInt:  whereHelperstring{field: "`EarthquakeReports`.`max_int`"},
 	Date:    whereHelpertime_Time{field: "`EarthquakeReports`.`date`"},
 	Created: whereHelpertime_Time{field: "`EarthquakeReports`.`created`"},

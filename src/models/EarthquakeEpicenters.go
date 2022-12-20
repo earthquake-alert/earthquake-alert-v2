@@ -24,7 +24,7 @@ import (
 // EarthquakeEpicenter is an object representing the database table.
 type EarthquakeEpicenter struct {
 	ID            uint      `boil:"id" json:"id" toml:"id" yaml:"id"`
-	EventID       int       `boil:"event_id" json:"event_id" toml:"event_id" yaml:"event_id"`
+	EventID       int64     `boil:"event_id" json:"event_id" toml:"event_id" yaml:"event_id"`
 	Lat           int       `boil:"lat" json:"lat" toml:"lat" yaml:"lat"`
 	Lon           int       `boil:"lon" json:"lon" toml:"lon" yaml:"lon"`
 	Depth         int       `boil:"depth" json:"depth" toml:"depth" yaml:"depth"`
@@ -93,9 +93,32 @@ var EarthquakeEpicenterTableColumns = struct {
 
 // Generated where
 
+type whereHelperint struct{ field string }
+
+func (w whereHelperint) EQ(x int) qm.QueryMod  { return qmhelper.Where(w.field, qmhelper.EQ, x) }
+func (w whereHelperint) NEQ(x int) qm.QueryMod { return qmhelper.Where(w.field, qmhelper.NEQ, x) }
+func (w whereHelperint) LT(x int) qm.QueryMod  { return qmhelper.Where(w.field, qmhelper.LT, x) }
+func (w whereHelperint) LTE(x int) qm.QueryMod { return qmhelper.Where(w.field, qmhelper.LTE, x) }
+func (w whereHelperint) GT(x int) qm.QueryMod  { return qmhelper.Where(w.field, qmhelper.GT, x) }
+func (w whereHelperint) GTE(x int) qm.QueryMod { return qmhelper.Where(w.field, qmhelper.GTE, x) }
+func (w whereHelperint) IN(slice []int) qm.QueryMod {
+	values := make([]interface{}, 0, len(slice))
+	for _, value := range slice {
+		values = append(values, value)
+	}
+	return qm.WhereIn(fmt.Sprintf("%s IN ?", w.field), values...)
+}
+func (w whereHelperint) NIN(slice []int) qm.QueryMod {
+	values := make([]interface{}, 0, len(slice))
+	for _, value := range slice {
+		values = append(values, value)
+	}
+	return qm.WhereNotIn(fmt.Sprintf("%s NOT IN ?", w.field), values...)
+}
+
 var EarthquakeEpicenterWhere = struct {
 	ID            whereHelperuint
-	EventID       whereHelperint
+	EventID       whereHelperint64
 	Lat           whereHelperint
 	Lon           whereHelperint
 	Depth         whereHelperint
@@ -107,7 +130,7 @@ var EarthquakeEpicenterWhere = struct {
 	Row           whereHelperstring
 }{
 	ID:            whereHelperuint{field: "`EarthquakeEpicenters`.`id`"},
-	EventID:       whereHelperint{field: "`EarthquakeEpicenters`.`event_id`"},
+	EventID:       whereHelperint64{field: "`EarthquakeEpicenters`.`event_id`"},
 	Lat:           whereHelperint{field: "`EarthquakeEpicenters`.`lat`"},
 	Lon:           whereHelperint{field: "`EarthquakeEpicenters`.`lon`"},
 	Depth:         whereHelperint{field: "`EarthquakeEpicenters`.`depth`"},

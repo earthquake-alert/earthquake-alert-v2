@@ -568,7 +568,7 @@ func testEarthquakeUpdatesSelect(t *testing.T) {
 }
 
 var (
-	earthquakeUpdateDBTypes = map[string]string{`ID`: `int`, `EventID`: `int`, `Date`: `datetime`, `Created`: `datetime`, `Row`: `text`}
+	earthquakeUpdateDBTypes = map[string]string{`ID`: `int`, `EventID`: `bigint`, `Date`: `datetime`, `Created`: `datetime`, `Row`: `text`}
 	_                       = bytes.MinRead
 )
 

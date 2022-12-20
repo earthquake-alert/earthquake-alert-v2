@@ -1,6 +1,7 @@
 package src_test
 
 import (
+	"context"
 	"fmt"
 	"os"
 	"path/filepath"
@@ -8,6 +9,7 @@ import (
 
 	"github.com/earthquake-alert/erarthquake-alert-v2/src"
 	"github.com/earthquake-alert/erarthquake-alert-v2/src/jma"
+	"github.com/earthquake-alert/erarthquake-alert-v2/src/models"
 	"github.com/stretchr/testify/require"
 )
 
@@ -326,6 +328,56 @@ func TestGetEventId(t *testing.T) {
 	})
 }
 
-func TextAssembly(t *testing.T) {
+func TestAssembly(t *testing.T) {
+	ctx := context.Background()
+	db, err := src.NewConnectMySQL(ctx)
+	require.NoError(t, err)
 
+	t.Run("DBに格納される", func(t *testing.T) {
+		t.Run("1", func(t *testing.T) {
+			target := "32-35_09_01_191111_VXSE56.xml"
+
+			testPath := filepath.Join(TEST_DATA_PATH, target)
+			row, err := os.ReadFile(testPath)
+			require.NoError(t, err)
+
+			ea, err := src.ParseEarthquakeActivity(row)
+			require.NoError(t, err)
+
+			err = ea.Assembly(ctx, db)
+			require.NoError(t, err)
+
+			eventIds, err := ea.GetEventId()
+			require.NoError(t, err)
+
+			exists, err := models.EarthquakeActivities(
+				models.EarthquakeActivityWhere.EventID.EQ(int64(eventIds[0])),
+			).Exists(ctx, db)
+			require.NoError(t, err)
+			require.True(t, exists)
+		})
+
+		t.Run("2", func(t *testing.T) {
+			target := "32-35_09_02_220316_VXSE56.xml"
+
+			testPath := filepath.Join(TEST_DATA_PATH, target)
+			row, err := os.ReadFile(testPath)
+			require.NoError(t, err)
+
+			ea, err := src.ParseEarthquakeActivity(row)
+			require.NoError(t, err)
+
+			err = ea.Assembly(ctx, db)
+			require.NoError(t, err)
+
+			eventIds, err := ea.GetEventId()
+			require.NoError(t, err)
+
+			exists, err := models.EarthquakeActivities(
+				models.EarthquakeActivityWhere.EventID.EQ(int64(eventIds[0])),
+			).Exists(ctx, db)
+			require.NoError(t, err)
+			require.True(t, exists)
+		})
+	})
 }

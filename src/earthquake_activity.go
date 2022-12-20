@@ -45,7 +45,7 @@ func (e *EarthquakeActivity) Assembly(ctx context.Context, db *sql.DB) error {
 	}
 
 	activity := &models.EarthquakeActivity{
-		EventID: eventId[0],
+		EventID: int64(eventId[0]),
 		Date:    d,
 		Row:     e.Row,
 	}

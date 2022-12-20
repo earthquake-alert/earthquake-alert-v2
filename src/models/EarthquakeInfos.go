@@ -25,7 +25,7 @@ import (
 // EarthquakeInfo is an object representing the database table.
 type EarthquakeInfo struct {
 	ID            uint        `boil:"id" json:"id" toml:"id" yaml:"id"`
-	EventID       int         `boil:"event_id" json:"event_id" toml:"event_id" yaml:"event_id"`
+	EventID       int64       `boil:"event_id" json:"event_id" toml:"event_id" yaml:"event_id"`
 	Lat           int         `boil:"lat" json:"lat" toml:"lat" yaml:"lat"`
 	Lon           int         `boil:"lon" json:"lon" toml:"lon" yaml:"lon"`
 	Depth         int         `boil:"depth" json:"depth" toml:"depth" yaml:"depth"`
@@ -139,7 +139,7 @@ func (w whereHelpernull_String) IsNotNull() qm.QueryMod { return qmhelper.WhereI
 
 var EarthquakeInfoWhere = struct {
 	ID            whereHelperuint
-	EventID       whereHelperint
+	EventID       whereHelperint64
 	Lat           whereHelperint
 	Lon           whereHelperint
 	Depth         whereHelperint
@@ -152,7 +152,7 @@ var EarthquakeInfoWhere = struct {
 	Row           whereHelperstring
 }{
 	ID:            whereHelperuint{field: "`EarthquakeInfos`.`id`"},
-	EventID:       whereHelperint{field: "`EarthquakeInfos`.`event_id`"},
+	EventID:       whereHelperint64{field: "`EarthquakeInfos`.`event_id`"},
 	Lat:           whereHelperint{field: "`EarthquakeInfos`.`lat`"},
 	Lon:           whereHelperint{field: "`EarthquakeInfos`.`lon`"},
 	Depth:         whereHelperint{field: "`EarthquakeInfos`.`depth`"},
