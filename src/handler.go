@@ -1,6 +1,7 @@
 package src
 
 import (
+	"database/sql"
 	"net/http"
 
 	"github.com/cateiru/go-http-error/httperror"
@@ -15,10 +16,13 @@ type ErrorResponse struct {
 }
 
 type Handler struct {
+	DB *sql.DB
 }
 
-func NewHandler() *Handler {
-	return &Handler{}
+func NewHandler(db *sql.DB) *Handler {
+	return &Handler{
+		DB: db,
+	}
 }
 
 // ginでエラー処理を"イイカンジ"にするやつ

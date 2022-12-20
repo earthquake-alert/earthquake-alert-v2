@@ -1,6 +1,7 @@
 package src
 
 import (
+	"context"
 	"time"
 
 	"github.com/earthquake-alert/erarthquake-alert-v2/src/logging"
@@ -25,6 +26,7 @@ func Init(mode string) {
 }
 
 func Server() {
+	ctx := context.Background()
 	r := gin.New()
 
 	r.Use(gin.LoggerWithFormatter(func(params gin.LogFormatterParams) string {
@@ -51,7 +53,11 @@ func Server() {
 	}))
 	r.Use(gin.Recovery())
 
-	h := NewHandler()
+	db, err := NewConnectMySQL(ctx)
+	if err != nil {
+		logging.Sugar.Fatal(err)
+	}
+	h := NewHandler(db)
 	Routes(r, h)
 
 	if err := r.Run(); err != nil {
