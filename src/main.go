@@ -13,8 +13,12 @@ var Mode = ""
 func Init(mode string) {
 	Mode = mode
 	logging.InitLogging(mode)
+	err := InitConfig(mode)
+	if err != nil {
+		logging.Sugar.Fatal(err)
+	}
 
-	_, err := time.LoadLocation("Asia/Tokyo")
+	_, err = time.LoadLocation("Asia/Tokyo")
 	if err != nil {
 		logging.Sugar.Fatal(err)
 	}
