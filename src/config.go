@@ -77,12 +77,13 @@ type PublishConfig struct {
 
 var LocalConfig = &Config{
 	DatabaseConfig: &mysql.Config{
-		DBName:    "earthquake-alert",
-		User:      "docker",
-		Passwd:    "docker",
-		Addr:      "localhost:3306",
-		Net:       "tcp",
-		ParseTime: true,
+		DBName:               "earthquake-alert",
+		User:                 "docker",
+		Passwd:               "docker",
+		Addr:                 "localhost:3306",
+		Net:                  "tcp",
+		ParseTime:            true,
+		AllowNativePasswords: true,
 	},
 	PublishConfigName: "publish_config.yaml",
 	PublishConfigPath: ".",
@@ -90,12 +91,13 @@ var LocalConfig = &Config{
 }
 var TestConfig = &Config{
 	DatabaseConfig: &mysql.Config{
-		DBName:    "earthquake-alert-test",
-		User:      "docker",
-		Passwd:    "docker",
-		Addr:      "localhost:3306",
-		Net:       "tcp",
-		ParseTime: true,
+		DBName:               "earthquake-alert-test",
+		User:                 "docker",
+		Passwd:               "docker",
+		Addr:                 "localhost:3306",
+		Net:                  "tcp",
+		ParseTime:            true,
+		AllowNativePasswords: true,
 	},
 	PublishConfigName: "publish_config_test.yaml",
 	PublishConfigPath: ".",
@@ -103,12 +105,13 @@ var TestConfig = &Config{
 }
 var ProdConfig = &Config{
 	DatabaseConfig: &mysql.Config{
-		DBName:    "earthquake-alert",
-		User:      "docker",
-		Passwd:    "docker",
-		Addr:      "localhost:3306",
-		Net:       "tcp",
-		ParseTime: true,
+		DBName:               "earthquake-alert",
+		User:                 "docker",
+		Passwd:               "docker",
+		Addr:                 "localhost:3306",
+		Net:                  "tcp",
+		ParseTime:            true,
+		AllowNativePasswords: true,
 	},
 	PublishConfigName: "publish_config.yaml",
 	PublishConfigPath: ".",
