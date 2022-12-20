@@ -76,19 +76,40 @@ type PublishConfig struct {
 }
 
 var LocalConfig = &Config{
-	DatabaseConfig:    &mysql.Config{},
+	DatabaseConfig: &mysql.Config{
+		DBName:    "earthquake-alert",
+		User:      "docker",
+		Passwd:    "docker",
+		Addr:      "localhost:3306",
+		Net:       "tcp",
+		ParseTime: true,
+	},
 	PublishConfigName: "publish_config.yaml",
 	PublishConfigPath: ".",
 	PublishConfig:     nil,
 }
 var TestConfig = &Config{
-	DatabaseConfig:    &mysql.Config{},
+	DatabaseConfig: &mysql.Config{
+		DBName:    "earthquake-alert-test",
+		User:      "docker",
+		Passwd:    "docker",
+		Addr:      "localhost:3306",
+		Net:       "tcp",
+		ParseTime: true,
+	},
 	PublishConfigName: "publish_config_test.yaml",
 	PublishConfigPath: ".",
 	PublishConfig:     nil,
 }
 var ProdConfig = &Config{
-	DatabaseConfig:    &mysql.Config{},
+	DatabaseConfig: &mysql.Config{
+		DBName:    "earthquake-alert",
+		User:      "docker",
+		Passwd:    "docker",
+		Addr:      "localhost:3306",
+		Net:       "tcp",
+		ParseTime: true,
+	},
 	PublishConfigName: "publish_config.yaml",
 	PublishConfigPath: ".",
 	PublishConfig:     nil,
