@@ -1,26 +1,35 @@
+# テスト用の公開設定の設定ファイル
+#
+# このフォーマットを使用して、Twitter、Slack、Discord、LINEに送信します。
+# このファイルは、テストで使用しているものです。実際に設定を書くときに参考にしてください。
+#
+# デフォルトの本番環境の公開設定ファイルは`./publish_config.yaml`です。
+# 設定ファイルには、トークンが含まれるため、本番環境ではGitで管理しないでください。
+# - カスタムパスを使用する場合、`./src/config.go`の`PublishConfigPath`を変更してください。
+# - 別のファイル名を使用する場合、`./scr/config.go`の`PublishConfigName`を変更してください。
 twitter:
-  - name: twitter1
-    token: twitter-token
+  - name: twitter1 # 送信クライアントごとに名前を定義します。この名前はログに使用するためであり名称は何でも良いです。
+    token: twitter-token # TwitterV2のアクセストークン
   - name: twitter2
-    min_int: 5-
+    min_int: 5- # `min_int`を指定することで、送信する最低震度を設定することが可能です。
     token: twitter-token-2
 discord:
   - name: discord1
-    webhook_url: https://example.com/discord/webhook/1
+    webhook_url: https://example.com/discord/webhook/1 # DiscordのWebhookURLを指定します。
     min_int: 4
-    areas:
+    areas: # `areas`を指定することでこの都道府県で震度1以上の地震を観測した場合のみ送信します。
       - 茨城県
       - 埼玉県
       - 東京都
-    is_tsunami: true
+    is_tsunami: true # `is_tsunami`をtrueにすることで津波情報を送信できるようになります。
   - name: discord2
     webhook_url: https://example.com/discord/webhook/2
   - name: discord3
     webhook_url: https://example.com/discord/webhook/3
 slack:
   - name: slack1
-    webhook_url: https://example.com/slack/webhook/1
-    channel: general
+    webhook_url: https://example.com/slack/webhook/1 # SlackのWebhookURLを指定します。
+    channel: general # 送信するSlackのチャンネルを指定します。
 line_notify:
   - name: line1
-    token: line-token-1
+    token: line-token-1 # LINE Notifyのトークンを指定します。
