@@ -28,7 +28,26 @@ func Init(mode string) {
 func Server() {
 	ctx := context.Background()
 	r := gin.New()
+	ServerMiddleWare(r)
+	g := BasicAuth(r)
 
+	db, err := NewConnectMySQL(ctx)
+	if err != nil {
+		logging.Sugar.Fatal(err)
+	}
+	defer db.Close()
+	h := NewHandler(db)
+
+	Routes(g, h)
+
+	if err := r.Run(); err != nil {
+		logging.Sugar.Fatal(err)
+	}
+}
+
+// Ginのミドルウェア
+func ServerMiddleWare(r *gin.Engine) {
+	// ログをzapで出す
 	r.Use(gin.LoggerWithFormatter(func(params gin.LogFormatterParams) string {
 		if params.StatusCode == 200 {
 			logging.Logger.Info("request",
@@ -52,16 +71,17 @@ func Server() {
 		return ""
 	}))
 	r.Use(gin.Recovery())
+}
 
-	db, err := NewConnectMySQL(ctx)
-	if err != nil {
-		logging.Sugar.Fatal(err)
+func BasicAuth(r *gin.Engine) *gin.RouterGroup {
+	// Basic AuthがConfigで設定されていない場合は使用しない
+	if C.AuthenticationUser == "" || C.AuthenticationPw == "" {
+		return r.Group("/")
 	}
-	defer db.Close()
-	h := NewHandler(db)
-	Routes(r, h)
 
-	if err := r.Run(); err != nil {
-		logging.Sugar.Fatal(err)
-	}
+	logging.Sugar.Info("Used BasicAuth")
+
+	return r.Group("/", gin.BasicAuth(gin.Accounts{
+		C.AuthenticationUser: C.AuthenticationPw,
+	}))
 }

@@ -22,6 +22,14 @@ type Config struct {
 	PublishConfigPath string
 
 	PublishConfig *PublishConfig
+
+	// 気象庁XML電文のURL
+	JmaXmlUrl string
+
+	// これを設定するとWebサーバーはBasic認証をします
+	// Webサーバーを外部に公開する際には必ず設定してください
+	AuthenticationUser string
+	AuthenticationPw   string
 }
 
 // 公開先の共通設定項目
@@ -88,6 +96,11 @@ var LocalConfig = &Config{
 	PublishConfigName: "publish_config.yaml",
 	PublishConfigPath: ".",
 	PublishConfig:     nil,
+
+	JmaXmlUrl: "",
+
+	AuthenticationUser: "user",
+	AuthenticationPw:   "password",
 }
 var TestConfig = &Config{
 	DatabaseConfig: &mysql.Config{
@@ -102,6 +115,11 @@ var TestConfig = &Config{
 	PublishConfigName: "publish_config_test.yaml",
 	PublishConfigPath: ".",
 	PublishConfig:     nil,
+
+	JmaXmlUrl: "",
+
+	AuthenticationUser: "",
+	AuthenticationPw:   "",
 }
 var ProdConfig = &Config{
 	DatabaseConfig: &mysql.Config{
@@ -116,6 +134,11 @@ var ProdConfig = &Config{
 	PublishConfigName: "publish_config.yaml",
 	PublishConfigPath: ".",
 	PublishConfig:     nil,
+
+	JmaXmlUrl: "",
+
+	AuthenticationUser: "",
+	AuthenticationPw:   "",
 }
 
 // 設定初期化
@@ -124,7 +147,7 @@ func InitConfig(mode string) error {
 	case "test":
 		C = TestConfig
 	case "local":
-		C = TestConfig
+		C = LocalConfig
 	case "prod":
 		C = ProdConfig
 	default:
