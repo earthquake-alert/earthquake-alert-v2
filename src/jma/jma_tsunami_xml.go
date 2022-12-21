@@ -3,6 +3,8 @@
 // 津波関係のXMLの定義をしています。
 package jma
 
+import "encoding/xml"
+
 // 津波警報・注意報・予報、津波情報、沖合の津波観測に関する情報
 type TsunamiJmaXml struct {
 	Control JmaXmlControl `xml:"Control"`
@@ -511,4 +513,14 @@ type TsunamiBody struct {
 		// その他の付加的な情報を、自由付加文の形式で記載する。
 		FreeFormComment string `xml:"FreeFormComment"`
 	} `xml:"Comments,omitempty"`
+}
+
+func ParseTsunami(row []byte) (*TsunamiJmaXml, error) {
+	tsunami := new(TsunamiJmaXml)
+	err := xml.Unmarshal(row, tsunami)
+	if err != nil {
+		return nil, err
+	}
+
+	return tsunami, nil
 }
