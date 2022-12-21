@@ -1275,3 +1275,40 @@ func TestParseEarthquakeDetails3(t *testing.T) {
 		require.Nil(t, body.Comments.VarComment)
 	})
 }
+
+// 震源・震度に関する情報のパーステスト（震源要素不明）
+func TestParseEarthquakeDetails4(t *testing.T) {
+	target := "32-39_05_01_100831_VXSE53_2.xml"
+
+	testPath := filepath.Join(TEST_DATA_PATH, target)
+	row, err := os.ReadFile(testPath)
+	require.NoError(t, err)
+
+	ea, err := jma.ParseEarthquake(row)
+	require.NoError(t, err)
+
+	t.Run("body", func(t *testing.T) {
+		body := ea.Body
+
+		t.Run("earthquake", func(t *testing.T) {
+			earthquake := body.Earthquake
+			require.NotNil(t, earthquake)
+
+			require.Equal(t, earthquake.Hypocenter.Area.Name, "南米西部")
+			require.Equal(t, earthquake.Hypocenter.Area.Code.Value, "946")
+			require.Equal(t, earthquake.Hypocenter.Area.Code.Type, "震央地名")
+			require.Equal(t, earthquake.Hypocenter.Area.Coordinate.Datum, "")
+			require.Equal(t, earthquake.Hypocenter.Area.Coordinate.Description, "震源要素不明")
+			require.Equal(t, earthquake.Hypocenter.Area.Coordinate.Value, "")
+			require.Equal(t, earthquake.Hypocenter.Area.NameFromMark, "")
+			require.Nil(t, earthquake.Hypocenter.Area.MarkCode)
+			require.Equal(t, earthquake.Hypocenter.Area.Direction, "")
+			require.Nil(t, earthquake.Hypocenter.Area.Distance)
+			require.Equal(t, earthquake.Hypocenter.Area.DetailedName, "チリ中部沿岸")
+			require.Equal(t, earthquake.Hypocenter.Area.DetailedCode.Type, "詳細震央地名")
+			require.Equal(t, earthquake.Hypocenter.Area.DetailedCode.Value, "1135")
+
+			require.Equal(t, earthquake.Hypocenter.Source, "ＰＴＷＣ")
+		})
+	})
+}

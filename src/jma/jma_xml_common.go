@@ -206,6 +206,17 @@ type DetailCode struct {
 }
 
 // 震源要素
+//
+// 例外表現1(全要素が不明の場合)
+// <jmx_eb:Coordinate description="震源要素不明" />
+// 例外表現2(深さの例外表現) ・震源の深さが 5km より浅い場合
+// <jmx_eb:Coordinate description="北緯37.5度 東経138.6度 ごく 浅い" datum="日本測地系">+37.5+138.6+0/</jmx_eb:Coordinate>
+// ・震源の深さが 0km の場合
+// <jmx_eb:Coordinate description="北緯37.5度 東経138.6度 ごく 浅い" datum="日本測地系">+37.5+138.6+0/</jmx_eb:Coordinate>
+// ・震源の深さが 700km 以上の場合
+// <jmx_eb:Coordinate description="北緯37.5度 東経138.6度 深さ は700km以上" datum="日本測地系">+37.5+138.6-700000/</jmx_eb:Coo rdinate>
+// ・震源の深さが不明の場合
+// <jmx_eb:Coordinate description="北緯37.5度 東経138.6度 深さ 不明" datum="日本測地系">+37.5+138.6/</jmx_eb:Coordinate>
 type Coordinate struct {
 	Value       string `xml:",chardata"`
 	Description string `xml:"description,attr"`
@@ -218,6 +229,69 @@ type Magnitude struct {
 	Type        MagnitudeType `xml:"type,attr"`
 	Description string        `xml:"description,attr"`
 	Condition   string        `xml:"condition,attr,omitempty"`
+}
+
+// 震源
+type Hypocenter struct {
+	// 震源位置
+	//
+	// 震源の位置に関する情報を記載する。
+	Area struct {
+		// 震央地名
+		//
+		// 	震央地名を記載する。また、これに対応するコードを、後に続く要素Code に記載し、その
+		// @type にコード種別“震央地名”と記載する。具体的なコードの値については、別途提供するコ
+		// ード表を参照。
+		Name string `xml:"Name"`
+
+		Code DetailCode `xml:"Code"`
+
+		// 震源要素
+		//
+		// 	ISO6709 の規格に従い、震源の緯度、経度を度単位で、深さをメートル単位で記載し、
+		// @description に文字列表現を記載する。本要素に記載する深さの値は、深さ700km より浅いと
+		// ころでは10,000 メートルの単位で有効であり、@description における深さは1,000 メートルの位
+		// を四捨五入して10km 単位で表現する。
+		// また、国内で発生した地震の場合は、@datum に“日本測地系”を記載するが、国外で発生し
+		// た地震の震源要素は世界測地系に基づき表現するため、@datum は出現しない。
+		// 深さが不明の場合等の例外的な表現については、事例にある例外表現のとおり。
+		Coordinate Coordinate `xml:"Coordinate"`
+
+		// 詳細震央地名
+		//
+		// 	国外で発生した地震について、震源地の詳細な位置を発表する場合は、その名称を記載す
+		// る。また、これに対応するコードを、後に続くDetailedCode に記載し、その@type にコード種別
+		// “詳細震央地名”を記載する。具体的なコードの値については、別途提供するコード表を参
+		// 照。
+		DetailedName string `xml:"DetailedName,omitempty"`
+		DetailedCode *struct {
+			Value string `xml:",chardata"`
+			Type  string `xml:"type,attr,omitempty"`
+		} `xml:"DetailedCode,omitempty"`
+
+		// 震央補助表現
+		//
+		// 	日本近海で発生し、津波警報・注意報を発表した地震について、震源地の詳細な位置を示
+		// すための目印となる地名を記載する。また、これに対応するコードを、後に続くMarkCode に記
+		// 載し、その@type にコード種別“震央補助”を記載する。具体的なコードの値については、別途
+		// 	提供するコード表を参照。また、後続のDirection に目印から見た震央の方向を16 方位で記
+		// 載し、Distance に目印から震央までの距離を10km 単位で記載する。Distance の@unit には距
+		// 離の単位“km”を記載する。
+		NameFromMark string      `xml:"NameFromMark,omitempty"`
+		MarkCode     *DetailCode `xml:"MarkCode,omitempty"`
+		Direction    string      `xml:"Direction,omitempty"`
+		Distance     *struct {
+			Value string `xml:",chardata"`
+			Unit  string `xml:"unit,attr"`
+		} `xml:"Distance,omitempty"`
+	} `xml:"Area"`
+
+	// 震源決定機関
+	//
+	// 	国外で発生した地震について、気象庁以外の機関で決定された震源要素を採用して情報
+	// 発表する場合は、震源を採用した機関の略称を記載する。現行の運用では、本要素の取りう
+	// る値として、“ＰＴＷＣ”、“ＷＣＡＴＷＣ”、“ＵＳＧＳ”がある。
+	Source string `xml:"Source,omitempty"`
 }
 
 // 地震の諸要素（震源に関する情報、震源・震度に関する情報
