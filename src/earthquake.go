@@ -1,7 +1,6 @@
 package src
 
 import (
-	"encoding/xml"
 	"time"
 
 	"github.com/earthquake-alert/erarthquake-alert-v2/src/jma"
@@ -14,15 +13,14 @@ type Earthquake struct {
 }
 
 func ParseEarthquake(row []byte) (*Earthquake, error) {
-	earthquake := new(jma.EarthquakeJmaXml)
-	err := xml.Unmarshal(row, earthquake)
+	e, err := jma.ParseEarthquake(row)
 	if err != nil {
 		return nil, err
 	}
 
 	return &Earthquake{
 		Row:    string(row),
-		Parsed: earthquake,
+		Parsed: e,
 	}, nil
 }
 

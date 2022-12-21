@@ -3,7 +3,6 @@ package src
 import (
 	"context"
 	"database/sql"
-	"encoding/xml"
 	"fmt"
 	"strconv"
 	"time"
@@ -31,15 +30,14 @@ type EarthquakeCountDetail struct {
 }
 
 func ParseEarthquakeCount(row []byte) (*EarthquakeCount, error) {
-	earthquake := new(jma.EarthquakeCountInfoJmaXml)
-	err := xml.Unmarshal(row, earthquake)
+	e, err := jma.ParseEarthquakeCount(row)
 	if err != nil {
 		return nil, err
 	}
 
 	return &EarthquakeCount{
 		Row:    string(row),
-		Parsed: earthquake,
+		Parsed: e,
 	}, nil
 }
 

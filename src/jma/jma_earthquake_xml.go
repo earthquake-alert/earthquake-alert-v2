@@ -7,6 +7,8 @@
 // - 顕著な地震の震源要素更新のお知らせ
 package jma
 
+import "encoding/xml"
+
 type EarthquakeClass string
 
 // 地震情報等におけるXML伝聞（NOT 緊急地震速報）
@@ -461,4 +463,48 @@ type EarthquakeUpdateBody struct {
 		// その他の付加的な情報を、自由付加文の形式で記載する。
 		FreeFormComment string `xml:"FreeFormComment"`
 	} `xml:"Comments,omitempty"`
+}
+
+// 地震回数に関する情報を構造化する
+func ParseEarthquakeCount(row []byte) (*EarthquakeCountInfoJmaXml, error) {
+	earthquake := new(EarthquakeCountInfoJmaXml)
+	err := xml.Unmarshal(row, earthquake)
+	if err != nil {
+		return nil, err
+	}
+
+	return earthquake, nil
+}
+
+// 地震の活動状況等に関する情報を構造化する
+func ParseEarthquakeActivity(row []byte) (*EarthquakeActivityJmaXml, error) {
+	earthquake := new(EarthquakeActivityJmaXml)
+	err := xml.Unmarshal(row, earthquake)
+	if err != nil {
+		return nil, err
+	}
+
+	return earthquake, nil
+}
+
+// 顕著な地震の震源要素更新のお知らせを構造化する
+func ParseEarthquakeUpdate(row []byte) (*EarthquakeUpdateInfoJmaXml, error) {
+	earthquake := new(EarthquakeUpdateInfoJmaXml)
+	err := xml.Unmarshal(row, earthquake)
+	if err != nil {
+		return nil, err
+	}
+
+	return earthquake, nil
+}
+
+// 震度速報、震源に関する情報、震源・震度に関する情報を構造化する
+func ParseEarthquake(row []byte) (*EarthquakeJmaXml, error) {
+	earthquake := new(EarthquakeJmaXml)
+	err := xml.Unmarshal(row, earthquake)
+	if err != nil {
+		return nil, err
+	}
+
+	return earthquake, nil
 }

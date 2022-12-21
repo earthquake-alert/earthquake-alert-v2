@@ -3,7 +3,6 @@ package src
 import (
 	"context"
 	"database/sql"
-	"encoding/xml"
 	"fmt"
 	"strconv"
 	"time"
@@ -22,15 +21,14 @@ type EarthquakeActivity struct {
 }
 
 func ParseEarthquakeActivity(row []byte) (*EarthquakeActivity, error) {
-	earthquake := new(jma.EarthquakeActivityJmaXml)
-	err := xml.Unmarshal(row, earthquake)
+	e, err := jma.ParseEarthquakeActivity(row)
 	if err != nil {
 		return nil, err
 	}
 
 	return &EarthquakeActivity{
 		Row:    string(row),
-		Parsed: earthquake,
+		Parsed: e,
 	}, nil
 }
 

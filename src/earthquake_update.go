@@ -1,7 +1,6 @@
 package src
 
 import (
-	"encoding/xml"
 	"fmt"
 	"strconv"
 	"time"
@@ -20,15 +19,14 @@ type EarthquakeUpdate struct {
 }
 
 func ParseEarthquakeUpdate(row []byte) (*EarthquakeUpdate, error) {
-	earthquake := new(jma.EarthquakeUpdateInfoJmaXml)
-	err := xml.Unmarshal(row, earthquake)
+	e, err := jma.ParseEarthquakeUpdate(row)
 	if err != nil {
 		return nil, err
 	}
 
 	return &EarthquakeUpdate{
 		Row:    string(row),
-		Parsed: earthquake,
+		Parsed: e,
 	}, nil
 }
 
