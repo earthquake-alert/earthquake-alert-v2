@@ -9,6 +9,8 @@ import (
 	"gopkg.in/yaml.v2"
 )
 
+// 設定項目です
+// この変数はデフォルトでnilですが、init()で上書きしています。
 var C *Config
 
 type Config struct {
