@@ -12,6 +12,8 @@ import (
 var C *Config
 
 type Config struct {
+	Mode string
+
 	// MySQLの設定
 	DatabaseConfig *mysql.Config
 
@@ -83,7 +85,11 @@ type PublishConfig struct {
 	} `yaml:"line_notify,omitempty"`
 }
 
+// ローカルの設定
+// `go run .`をしたときはこの設定が使用されます。
 var LocalConfig = &Config{
+	Mode: "local",
+
 	DatabaseConfig: &mysql.Config{
 		DBName:               "earthquake-alert",
 		User:                 "docker",
@@ -102,7 +108,12 @@ var LocalConfig = &Config{
 	AuthenticationUser: "user",
 	AuthenticationPw:   "password",
 }
+
+// テストの設定
+// `./scripts/test.sh`を使用してGoのテストを走らせたときにこの設定が使用されます。
 var TestConfig = &Config{
+	Mode: "test",
+
 	DatabaseConfig: &mysql.Config{
 		DBName:               "earthquake-alert-test",
 		User:                 "docker",
@@ -121,7 +132,12 @@ var TestConfig = &Config{
 	AuthenticationUser: "",
 	AuthenticationPw:   "",
 }
+
+// 本番環境の設定
+// Docker内部で実行するときなどはこの設定が使用されます。
 var ProdConfig = &Config{
+	Mode: "prod",
+
 	DatabaseConfig: &mysql.Config{
 		DBName:               "earthquake-alert",
 		User:                 "docker",

@@ -89,5 +89,5 @@ func ResetDBTable() error {
 }
 
 func TestMode(t *testing.T) {
-	require.Equal(t, src.Mode, "test")
+	require.Equal(t, src.C.Mode, "test")
 }
