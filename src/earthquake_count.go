@@ -1,6 +1,8 @@
 package src
 
 import (
+	"context"
+	"database/sql"
 	"encoding/xml"
 	"fmt"
 	"strconv"
@@ -8,6 +10,8 @@ import (
 
 	"github.com/earthquake-alert/erarthquake-alert-v2/src/jma"
 	"github.com/earthquake-alert/erarthquake-alert-v2/src/logging"
+	"github.com/earthquake-alert/erarthquake-alert-v2/src/models"
+	"github.com/volatiletech/sqlboiler/v4/boil"
 )
 
 const EARTHQUAKE_COUNT_TEMPLATE_FILE = "earthquake_count.gtpl"
@@ -39,9 +43,23 @@ func ParseEarthquakeCount(row []byte) (*EarthquakeCount, error) {
 	}, nil
 }
 
-func (e *EarthquakeCount) Assembly() error {
-	// 関連する情報がDB内にある場合などはここで引く
-	return nil
+func (e *EarthquakeCount) Assembly(ctx context.Context, db *sql.DB) error {
+	eventId, err := e.GetEventId()
+	if err != nil {
+		return err
+	}
+	d, err := e.GetTargetDate()
+	if err != nil {
+		return err
+	}
+
+	count := models.EarthquakeCount{
+		EventID: int64(eventId[0]),
+		Date:    d,
+		Row:     e.Row,
+	}
+
+	return count.Insert(ctx, db, boil.Infer())
 }
 
 // 画像は生成しない

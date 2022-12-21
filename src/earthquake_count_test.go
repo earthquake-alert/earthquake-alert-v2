@@ -1,6 +1,7 @@
 package src_test
 
 import (
+	"context"
 	"fmt"
 	"os"
 	"path/filepath"
@@ -8,6 +9,7 @@ import (
 
 	"github.com/earthquake-alert/erarthquake-alert-v2/src"
 	"github.com/earthquake-alert/erarthquake-alert-v2/src/jma"
+	"github.com/earthquake-alert/erarthquake-alert-v2/src/models"
 	"github.com/stretchr/testify/require"
 )
 
@@ -187,5 +189,87 @@ func TestEarthquakeCountGetText(t *testing.T) {
 		require.NoError(t, err)
 
 		require.Equal(t, text, "地震回数に関する情報を取り消します。\n先ほどの、地震回数に関する情報を取り消します。")
+	})
+}
+
+func TestEarthquakeCountAssembly(t *testing.T) {
+	ctx := context.Background()
+	db, err := src.NewConnectMySQL(ctx)
+	require.NoError(t, err)
+
+	t.Run("DBに格納される", func(t *testing.T) {
+		t.Run("1", func(t *testing.T) {
+			target := "32-35_03_01_100514_VXSE60.xml"
+
+			testPath := filepath.Join(TEST_DATA_PATH, target)
+			row, err := os.ReadFile(testPath)
+			require.NoError(t, err)
+
+			ea, err := src.ParseEarthquakeCount(row)
+			require.NoError(t, err)
+
+			err = ea.Assembly(ctx, db)
+			require.NoError(t, err)
+
+			eventIds, err := ea.GetEventId()
+			require.NoError(t, err)
+
+			exists, err := models.EarthquakeCounts(
+				models.EarthquakeCountWhere.EventID.EQ(int64(eventIds[0])),
+			).Exists(ctx, db)
+			require.NoError(t, err)
+			require.True(t, exists)
+		})
+
+		t.Run("2", func(t *testing.T) {
+			target := "32-35_10_02_220510_VXSE60.xml"
+
+			testPath := filepath.Join(TEST_DATA_PATH, target)
+			row, err := os.ReadFile(testPath)
+			require.NoError(t, err)
+
+			ea, err := src.ParseEarthquakeCount(row)
+			require.NoError(t, err)
+
+			err = ea.Assembly(ctx, db)
+			require.NoError(t, err)
+
+			eventIds, err := ea.GetEventId()
+			require.NoError(t, err)
+
+			exists, err := models.EarthquakeCounts(
+				models.EarthquakeCountWhere.EventID.EQ(int64(eventIds[0])),
+			).Exists(ctx, db)
+			require.NoError(t, err)
+			require.True(t, exists)
+		})
+
+		t.Run("正しく全て入っている", func(t *testing.T) {
+			target := "32-35_03_01_100514_VXSE60.xml"
+
+			testPath := filepath.Join(TEST_DATA_PATH, target)
+			row, err := os.ReadFile(testPath)
+			require.NoError(t, err)
+
+			ea, err := src.ParseEarthquakeCount(row)
+			require.NoError(t, err)
+
+			err = ea.Assembly(ctx, db)
+			require.NoError(t, err)
+
+			eventIds, err := ea.GetEventId()
+			require.NoError(t, err)
+
+			a, err := models.EarthquakeCounts(
+				models.EarthquakeCountWhere.EventID.EQ(int64(eventIds[0])),
+			).One(ctx, db)
+			require.NoError(t, err)
+
+			require.Equal(t, a.EventID, int64(eventIds[0]))
+			require.NotNil(t, a.Created)
+			require.NotNil(t, a.ID)
+			require.NotNil(t, a.Date)
+			require.Equal(t, a.Row, string(row))
+		})
 	})
 }

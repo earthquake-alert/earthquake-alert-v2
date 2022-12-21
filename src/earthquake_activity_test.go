@@ -226,7 +226,7 @@ func TestEarthquakeActivityGetText(t *testing.T) {
 	})
 }
 
-func TestGetTitle(t *testing.T) {
+func TestEarthquakeActivityGetTitle(t *testing.T) {
 	t.Run("1", func(t *testing.T) {
 		target := "32-35_09_01_191111_VXSE56.xml"
 
@@ -258,7 +258,7 @@ func TestGetTitle(t *testing.T) {
 	})
 }
 
-func TestGetTargetDate(t *testing.T) {
+func TestEarthquakeActivityGetTargetDate(t *testing.T) {
 	t.Run("1", func(t *testing.T) {
 		target := "32-35_09_01_191111_VXSE56.xml"
 
@@ -293,7 +293,7 @@ func TestGetTargetDate(t *testing.T) {
 	})
 }
 
-func TestGetEventId(t *testing.T) {
+func TestEarthquakeActivityGetEventId(t *testing.T) {
 	t.Run("1", func(t *testing.T) {
 		target := "32-35_09_01_191111_VXSE56.xml"
 
@@ -328,7 +328,7 @@ func TestGetEventId(t *testing.T) {
 	})
 }
 
-func TestAssembly(t *testing.T) {
+func TestEarthquakeActivityAssembly(t *testing.T) {
 	ctx := context.Background()
 	db, err := src.NewConnectMySQL(ctx)
 	require.NoError(t, err)
@@ -395,12 +395,6 @@ func TestAssembly(t *testing.T) {
 
 			eventIds, err := ea.GetEventId()
 			require.NoError(t, err)
-
-			exists, err := models.EarthquakeActivities(
-				models.EarthquakeActivityWhere.EventID.EQ(int64(eventIds[0])),
-			).Exists(ctx, db)
-			require.NoError(t, err)
-			require.True(t, exists)
 
 			a, err := models.EarthquakeActivities(
 				models.EarthquakeActivityWhere.EventID.EQ(int64(eventIds[0])),
