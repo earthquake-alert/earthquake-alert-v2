@@ -50,6 +50,49 @@ func TestFormatMagnitude(t *testing.T) {
 	})
 }
 
+func TestFormatDepth(t *testing.T) {
+	t.Run("通常", func(t *testing.T) {
+		d := -10000
+		require.Equal(t, src.FormatDepth(&d), "10km")
+	})
+
+	t.Run("小数点以下mは切り捨て", func(t *testing.T) {
+		d := -20050
+		require.Equal(t, src.FormatDepth(&d), "20km")
+	})
+
+	t.Run("5km以内", func(t *testing.T) {
+		d := 0
+		require.Equal(t, src.FormatDepth(&d), "ごく浅い")
+	})
+
+	t.Run("不明", func(t *testing.T) {
+		var d *int = nil
+		require.Equal(t, src.FormatDepth(d), "不明")
+	})
+
+	t.Run("不明2", func(t *testing.T) {
+		d := 1
+		require.Equal(t, src.FormatDepth(&d), "不明")
+	})
+
+	t.Run("700km以上", func(t *testing.T) {
+		d := -700000
+		require.Equal(t, src.FormatDepth(&d), "700km以上")
+	})
+
+	// 仕様的に無いが、一応
+	t.Run("m単位", func(t *testing.T) {
+		d := -500
+		require.Equal(t, src.FormatDepth(&d), "500m")
+	})
+
+	t.Run("1000m", func(t *testing.T) {
+		d := -1000
+		require.Equal(t, src.FormatDepth(&d), "1000m")
+	})
+}
+
 func TestConvert(t *testing.T) {
 	t.Run("全角英数を半角にする", func(t *testing.T) {
 		text := "ＡＢＣ１４０３"

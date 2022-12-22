@@ -1,6 +1,7 @@
 package src
 
 import (
+	"fmt"
 	"strings"
 
 	"github.com/earthquake-alert/erarthquake-alert-v2/src/jma"
@@ -25,6 +26,25 @@ func FormatMagnitude(m *jma.Magnitude) string {
 	}
 
 	return prefix + value
+}
+
+// 震源の深さをいい感じにする
+func FormatDepth(d *int) string {
+	if d == nil || *d == 1 {
+		return "不明"
+	}
+
+	if *d == 0 {
+		return "ごく浅い"
+	}
+	if *d <= -700000 {
+		return "700km以上"
+	}
+
+	if *d < -1000 {
+		return fmt.Sprintf("%dkm", -(*d)/1000)
+	}
+	return fmt.Sprintf("%dm", -(*d))
 }
 
 // 文字列をイイカンジに整形する

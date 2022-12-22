@@ -76,21 +76,7 @@ func ParseEpicenter(h *jma.Hypocenter) (*Epicenter, error) {
 
 // 深さを返す
 func (e *Epicenter) FormatDepth() string {
-	if e.Depth == nil || *e.Depth == 1 {
-		return "不明"
-	}
-
-	if *e.Depth == 0 {
-		return "ごく浅い"
-	}
-	if *e.Depth <= -700000 {
-		return "700km以上"
-	}
-
-	if *e.Depth < -1000 {
-		return fmt.Sprintf("%dkm", -(*e.Depth)/1000)
-	}
-	return fmt.Sprintf("%dm", -(*e.Depth))
+	return FormatDepth(e.Depth)
 }
 
 // 震源要素を解析する。
