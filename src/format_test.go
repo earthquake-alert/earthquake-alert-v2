@@ -93,6 +93,29 @@ func TestFormatDepth(t *testing.T) {
 	})
 }
 
+func TestFormatLatLonDepth(t *testing.T) {
+	t.Run("北緯東経", func(t *testing.T) {
+		d := -10000
+		require.Equal(t, src.FormatLatLonDepth(39.0, 140.9, &d), "北緯39.0度 東経140.9度 深さ 10km")
+	})
+
+	t.Run("南緯東経", func(t *testing.T) {
+		d := -570000
+		require.Equal(t, src.FormatLatLonDepth(-17.2, 178.6, &d), "南緯17.2度 東経178.6度 深さ 570km")
+	})
+
+	t.Run("南緯西経", func(t *testing.T) {
+		d := -60000
+		require.Equal(t, src.FormatLatLonDepth(-36.1, -072.6, &d), "南緯36.1度 西経72.6度 深さ 60km")
+
+	})
+
+	t.Run("深さ不明", func(t *testing.T) {
+		var d *int = nil
+		require.Equal(t, src.FormatLatLonDepth(39.0, 140.9, d), "北緯39.0度 東経140.9度 深さ 不明")
+	})
+}
+
 func TestConvert(t *testing.T) {
 	t.Run("全角英数を半角にする", func(t *testing.T) {
 		text := "ＡＢＣ１４０３"
