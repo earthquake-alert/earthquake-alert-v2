@@ -24,17 +24,16 @@ import (
 
 // Earthquake is an object representing the database table.
 type Earthquake struct {
-	EventID       int64       `boil:"event_id" json:"event_id" toml:"event_id" yaml:"event_id"`
-	Lat           null.Int    `boil:"lat" json:"lat,omitempty" toml:"lat" yaml:"lat,omitempty"`
-	Lon           null.Int    `boil:"lon" json:"lon,omitempty" toml:"lon" yaml:"lon,omitempty"`
-	Depth         null.Int    `boil:"depth" json:"depth,omitempty" toml:"depth" yaml:"depth,omitempty"`
-	EpicenterName null.String `boil:"epicenter_name" json:"epicenter_name,omitempty" toml:"epicenter_name" yaml:"epicenter_name,omitempty"`
-	MaxInt        string      `boil:"max_int" json:"max_int" toml:"max_int" yaml:"max_int"`
-	Magnitude     null.Int    `boil:"magnitude" json:"magnitude,omitempty" toml:"magnitude" yaml:"magnitude,omitempty"`
-	MagnitudeType null.String `boil:"magnitude_type" json:"magnitude_type,omitempty" toml:"magnitude_type" yaml:"magnitude_type,omitempty"`
-	Date          time.Time   `boil:"date" json:"date" toml:"date" yaml:"date"`
-	Created       time.Time   `boil:"created" json:"created" toml:"created" yaml:"created"`
-	Modified      time.Time   `boil:"modified" json:"modified" toml:"modified" yaml:"modified"`
+	EventID       int64        `boil:"event_id" json:"event_id" toml:"event_id" yaml:"event_id"`
+	Lat           null.Float64 `boil:"lat" json:"lat,omitempty" toml:"lat" yaml:"lat,omitempty"`
+	Lon           null.Float64 `boil:"lon" json:"lon,omitempty" toml:"lon" yaml:"lon,omitempty"`
+	Depth         null.Int     `boil:"depth" json:"depth,omitempty" toml:"depth" yaml:"depth,omitempty"`
+	EpicenterName null.String  `boil:"epicenter_name" json:"epicenter_name,omitempty" toml:"epicenter_name" yaml:"epicenter_name,omitempty"`
+	MaxInt        string       `boil:"max_int" json:"max_int" toml:"max_int" yaml:"max_int"`
+	Magnitude     null.String  `boil:"magnitude" json:"magnitude,omitempty" toml:"magnitude" yaml:"magnitude,omitempty"`
+	Date          time.Time    `boil:"date" json:"date" toml:"date" yaml:"date"`
+	Created       time.Time    `boil:"created" json:"created" toml:"created" yaml:"created"`
+	Modified      time.Time    `boil:"modified" json:"modified" toml:"modified" yaml:"modified"`
 
 	R *earthquakeR `boil:"-" json:"-" toml:"-" yaml:"-"`
 	L earthquakeL  `boil:"-" json:"-" toml:"-" yaml:"-"`
@@ -48,7 +47,6 @@ var EarthquakeColumns = struct {
 	EpicenterName string
 	MaxInt        string
 	Magnitude     string
-	MagnitudeType string
 	Date          string
 	Created       string
 	Modified      string
@@ -60,7 +58,6 @@ var EarthquakeColumns = struct {
 	EpicenterName: "epicenter_name",
 	MaxInt:        "max_int",
 	Magnitude:     "magnitude",
-	MagnitudeType: "magnitude_type",
 	Date:          "date",
 	Created:       "created",
 	Modified:      "modified",
@@ -74,7 +71,6 @@ var EarthquakeTableColumns = struct {
 	EpicenterName string
 	MaxInt        string
 	Magnitude     string
-	MagnitudeType string
 	Date          string
 	Created       string
 	Modified      string
@@ -86,7 +82,6 @@ var EarthquakeTableColumns = struct {
 	EpicenterName: "Earthquakes.epicenter_name",
 	MaxInt:        "Earthquakes.max_int",
 	Magnitude:     "Earthquakes.magnitude",
-	MagnitudeType: "Earthquakes.magnitude_type",
 	Date:          "Earthquakes.date",
 	Created:       "Earthquakes.created",
 	Modified:      "Earthquakes.modified",
@@ -94,65 +89,25 @@ var EarthquakeTableColumns = struct {
 
 // Generated where
 
-type whereHelpernull_Int struct{ field string }
-
-func (w whereHelpernull_Int) EQ(x null.Int) qm.QueryMod {
-	return qmhelper.WhereNullEQ(w.field, false, x)
-}
-func (w whereHelpernull_Int) NEQ(x null.Int) qm.QueryMod {
-	return qmhelper.WhereNullEQ(w.field, true, x)
-}
-func (w whereHelpernull_Int) LT(x null.Int) qm.QueryMod {
-	return qmhelper.Where(w.field, qmhelper.LT, x)
-}
-func (w whereHelpernull_Int) LTE(x null.Int) qm.QueryMod {
-	return qmhelper.Where(w.field, qmhelper.LTE, x)
-}
-func (w whereHelpernull_Int) GT(x null.Int) qm.QueryMod {
-	return qmhelper.Where(w.field, qmhelper.GT, x)
-}
-func (w whereHelpernull_Int) GTE(x null.Int) qm.QueryMod {
-	return qmhelper.Where(w.field, qmhelper.GTE, x)
-}
-func (w whereHelpernull_Int) IN(slice []int) qm.QueryMod {
-	values := make([]interface{}, 0, len(slice))
-	for _, value := range slice {
-		values = append(values, value)
-	}
-	return qm.WhereIn(fmt.Sprintf("%s IN ?", w.field), values...)
-}
-func (w whereHelpernull_Int) NIN(slice []int) qm.QueryMod {
-	values := make([]interface{}, 0, len(slice))
-	for _, value := range slice {
-		values = append(values, value)
-	}
-	return qm.WhereNotIn(fmt.Sprintf("%s NOT IN ?", w.field), values...)
-}
-
-func (w whereHelpernull_Int) IsNull() qm.QueryMod    { return qmhelper.WhereIsNull(w.field) }
-func (w whereHelpernull_Int) IsNotNull() qm.QueryMod { return qmhelper.WhereIsNotNull(w.field) }
-
 var EarthquakeWhere = struct {
 	EventID       whereHelperint64
-	Lat           whereHelpernull_Int
-	Lon           whereHelpernull_Int
+	Lat           whereHelpernull_Float64
+	Lon           whereHelpernull_Float64
 	Depth         whereHelpernull_Int
 	EpicenterName whereHelpernull_String
 	MaxInt        whereHelperstring
-	Magnitude     whereHelpernull_Int
-	MagnitudeType whereHelpernull_String
+	Magnitude     whereHelpernull_String
 	Date          whereHelpertime_Time
 	Created       whereHelpertime_Time
 	Modified      whereHelpertime_Time
 }{
 	EventID:       whereHelperint64{field: "`Earthquakes`.`event_id`"},
-	Lat:           whereHelpernull_Int{field: "`Earthquakes`.`lat`"},
-	Lon:           whereHelpernull_Int{field: "`Earthquakes`.`lon`"},
+	Lat:           whereHelpernull_Float64{field: "`Earthquakes`.`lat`"},
+	Lon:           whereHelpernull_Float64{field: "`Earthquakes`.`lon`"},
 	Depth:         whereHelpernull_Int{field: "`Earthquakes`.`depth`"},
 	EpicenterName: whereHelpernull_String{field: "`Earthquakes`.`epicenter_name`"},
 	MaxInt:        whereHelperstring{field: "`Earthquakes`.`max_int`"},
-	Magnitude:     whereHelpernull_Int{field: "`Earthquakes`.`magnitude`"},
-	MagnitudeType: whereHelpernull_String{field: "`Earthquakes`.`magnitude_type`"},
+	Magnitude:     whereHelpernull_String{field: "`Earthquakes`.`magnitude`"},
 	Date:          whereHelpertime_Time{field: "`Earthquakes`.`date`"},
 	Created:       whereHelpertime_Time{field: "`Earthquakes`.`created`"},
 	Modified:      whereHelpertime_Time{field: "`Earthquakes`.`modified`"},
@@ -175,8 +130,8 @@ func (*earthquakeR) NewStruct() *earthquakeR {
 type earthquakeL struct{}
 
 var (
-	earthquakeAllColumns            = []string{"event_id", "lat", "lon", "depth", "epicenter_name", "max_int", "magnitude", "magnitude_type", "date", "created", "modified"}
-	earthquakeColumnsWithoutDefault = []string{"event_id", "lat", "lon", "depth", "epicenter_name", "max_int", "magnitude", "magnitude_type", "date"}
+	earthquakeAllColumns            = []string{"event_id", "lat", "lon", "depth", "epicenter_name", "max_int", "magnitude", "date", "created", "modified"}
+	earthquakeColumnsWithoutDefault = []string{"event_id", "lat", "lon", "depth", "epicenter_name", "max_int", "magnitude", "date"}
 	earthquakeColumnsWithDefault    = []string{"created", "modified"}
 	earthquakePrimaryKeyColumns     = []string{"event_id"}
 	earthquakeGeneratedColumns      = []string{}

@@ -14,6 +14,7 @@ import (
 	"time"
 
 	"github.com/friendsofgo/errors"
+	"github.com/volatiletech/null/v8"
 	"github.com/volatiletech/sqlboiler/v4/boil"
 	"github.com/volatiletech/sqlboiler/v4/queries"
 	"github.com/volatiletech/sqlboiler/v4/queries/qm"
@@ -23,58 +24,86 @@ import (
 
 // EarthquakeUpdate is an object representing the database table.
 type EarthquakeUpdate struct {
-	ID      uint      `boil:"id" json:"id" toml:"id" yaml:"id"`
-	EventID int64     `boil:"event_id" json:"event_id" toml:"event_id" yaml:"event_id"`
-	Date    time.Time `boil:"date" json:"date" toml:"date" yaml:"date"`
-	Created time.Time `boil:"created" json:"created" toml:"created" yaml:"created"`
-	Row     string    `boil:"row" json:"row" toml:"row" yaml:"row"`
+	ID        uint         `boil:"id" json:"id" toml:"id" yaml:"id"`
+	EventID   int64        `boil:"event_id" json:"event_id" toml:"event_id" yaml:"event_id"`
+	Lat       null.Float64 `boil:"lat" json:"lat,omitempty" toml:"lat" yaml:"lat,omitempty"`
+	Lon       null.Float64 `boil:"lon" json:"lon,omitempty" toml:"lon" yaml:"lon,omitempty"`
+	Depth     null.Int     `boil:"depth" json:"depth,omitempty" toml:"depth" yaml:"depth,omitempty"`
+	Magnitude null.String  `boil:"magnitude" json:"magnitude,omitempty" toml:"magnitude" yaml:"magnitude,omitempty"`
+	Date      time.Time    `boil:"date" json:"date" toml:"date" yaml:"date"`
+	Created   time.Time    `boil:"created" json:"created" toml:"created" yaml:"created"`
+	Row       string       `boil:"row" json:"row" toml:"row" yaml:"row"`
 
 	R *earthquakeUpdateR `boil:"-" json:"-" toml:"-" yaml:"-"`
 	L earthquakeUpdateL  `boil:"-" json:"-" toml:"-" yaml:"-"`
 }
 
 var EarthquakeUpdateColumns = struct {
-	ID      string
-	EventID string
-	Date    string
-	Created string
-	Row     string
+	ID        string
+	EventID   string
+	Lat       string
+	Lon       string
+	Depth     string
+	Magnitude string
+	Date      string
+	Created   string
+	Row       string
 }{
-	ID:      "id",
-	EventID: "event_id",
-	Date:    "date",
-	Created: "created",
-	Row:     "row",
+	ID:        "id",
+	EventID:   "event_id",
+	Lat:       "lat",
+	Lon:       "lon",
+	Depth:     "depth",
+	Magnitude: "magnitude",
+	Date:      "date",
+	Created:   "created",
+	Row:       "row",
 }
 
 var EarthquakeUpdateTableColumns = struct {
-	ID      string
-	EventID string
-	Date    string
-	Created string
-	Row     string
+	ID        string
+	EventID   string
+	Lat       string
+	Lon       string
+	Depth     string
+	Magnitude string
+	Date      string
+	Created   string
+	Row       string
 }{
-	ID:      "EarthquakeUpdate.id",
-	EventID: "EarthquakeUpdate.event_id",
-	Date:    "EarthquakeUpdate.date",
-	Created: "EarthquakeUpdate.created",
-	Row:     "EarthquakeUpdate.row",
+	ID:        "EarthquakeUpdate.id",
+	EventID:   "EarthquakeUpdate.event_id",
+	Lat:       "EarthquakeUpdate.lat",
+	Lon:       "EarthquakeUpdate.lon",
+	Depth:     "EarthquakeUpdate.depth",
+	Magnitude: "EarthquakeUpdate.magnitude",
+	Date:      "EarthquakeUpdate.date",
+	Created:   "EarthquakeUpdate.created",
+	Row:       "EarthquakeUpdate.row",
 }
 
 // Generated where
 
 var EarthquakeUpdateWhere = struct {
-	ID      whereHelperuint
-	EventID whereHelperint64
-	Date    whereHelpertime_Time
-	Created whereHelpertime_Time
-	Row     whereHelperstring
+	ID        whereHelperuint
+	EventID   whereHelperint64
+	Lat       whereHelpernull_Float64
+	Lon       whereHelpernull_Float64
+	Depth     whereHelpernull_Int
+	Magnitude whereHelpernull_String
+	Date      whereHelpertime_Time
+	Created   whereHelpertime_Time
+	Row       whereHelperstring
 }{
-	ID:      whereHelperuint{field: "`EarthquakeUpdate`.`id`"},
-	EventID: whereHelperint64{field: "`EarthquakeUpdate`.`event_id`"},
-	Date:    whereHelpertime_Time{field: "`EarthquakeUpdate`.`date`"},
-	Created: whereHelpertime_Time{field: "`EarthquakeUpdate`.`created`"},
-	Row:     whereHelperstring{field: "`EarthquakeUpdate`.`row`"},
+	ID:        whereHelperuint{field: "`EarthquakeUpdate`.`id`"},
+	EventID:   whereHelperint64{field: "`EarthquakeUpdate`.`event_id`"},
+	Lat:       whereHelpernull_Float64{field: "`EarthquakeUpdate`.`lat`"},
+	Lon:       whereHelpernull_Float64{field: "`EarthquakeUpdate`.`lon`"},
+	Depth:     whereHelpernull_Int{field: "`EarthquakeUpdate`.`depth`"},
+	Magnitude: whereHelpernull_String{field: "`EarthquakeUpdate`.`magnitude`"},
+	Date:      whereHelpertime_Time{field: "`EarthquakeUpdate`.`date`"},
+	Created:   whereHelpertime_Time{field: "`EarthquakeUpdate`.`created`"},
+	Row:       whereHelperstring{field: "`EarthquakeUpdate`.`row`"},
 }
 
 // EarthquakeUpdateRels is where relationship names are stored.
@@ -94,8 +123,8 @@ func (*earthquakeUpdateR) NewStruct() *earthquakeUpdateR {
 type earthquakeUpdateL struct{}
 
 var (
-	earthquakeUpdateAllColumns            = []string{"id", "event_id", "date", "created", "row"}
-	earthquakeUpdateColumnsWithoutDefault = []string{"event_id", "date", "row"}
+	earthquakeUpdateAllColumns            = []string{"id", "event_id", "lat", "lon", "depth", "magnitude", "date", "created", "row"}
+	earthquakeUpdateColumnsWithoutDefault = []string{"event_id", "lat", "lon", "depth", "magnitude", "date", "row"}
 	earthquakeUpdateColumnsWithDefault    = []string{"id", "created"}
 	earthquakeUpdatePrimaryKeyColumns     = []string{"id"}
 	earthquakeUpdateGeneratedColumns      = []string{}

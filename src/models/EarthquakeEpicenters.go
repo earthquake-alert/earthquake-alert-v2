@@ -14,6 +14,7 @@ import (
 	"time"
 
 	"github.com/friendsofgo/errors"
+	"github.com/volatiletech/null/v8"
 	"github.com/volatiletech/sqlboiler/v4/boil"
 	"github.com/volatiletech/sqlboiler/v4/queries"
 	"github.com/volatiletech/sqlboiler/v4/queries/qm"
@@ -23,17 +24,16 @@ import (
 
 // EarthquakeEpicenter is an object representing the database table.
 type EarthquakeEpicenter struct {
-	ID            uint      `boil:"id" json:"id" toml:"id" yaml:"id"`
-	EventID       int64     `boil:"event_id" json:"event_id" toml:"event_id" yaml:"event_id"`
-	Lat           int       `boil:"lat" json:"lat" toml:"lat" yaml:"lat"`
-	Lon           int       `boil:"lon" json:"lon" toml:"lon" yaml:"lon"`
-	Depth         int       `boil:"depth" json:"depth" toml:"depth" yaml:"depth"`
-	EpicenterName string    `boil:"epicenter_name" json:"epicenter_name" toml:"epicenter_name" yaml:"epicenter_name"`
-	Magnitude     int       `boil:"magnitude" json:"magnitude" toml:"magnitude" yaml:"magnitude"`
-	MagnitudeType string    `boil:"magnitude_type" json:"magnitude_type" toml:"magnitude_type" yaml:"magnitude_type"`
-	Date          time.Time `boil:"date" json:"date" toml:"date" yaml:"date"`
-	Created       time.Time `boil:"created" json:"created" toml:"created" yaml:"created"`
-	Row           string    `boil:"row" json:"row" toml:"row" yaml:"row"`
+	ID            uint         `boil:"id" json:"id" toml:"id" yaml:"id"`
+	EventID       int64        `boil:"event_id" json:"event_id" toml:"event_id" yaml:"event_id"`
+	Lat           null.Float64 `boil:"lat" json:"lat,omitempty" toml:"lat" yaml:"lat,omitempty"`
+	Lon           null.Float64 `boil:"lon" json:"lon,omitempty" toml:"lon" yaml:"lon,omitempty"`
+	Depth         null.Int     `boil:"depth" json:"depth,omitempty" toml:"depth" yaml:"depth,omitempty"`
+	EpicenterName string       `boil:"epicenter_name" json:"epicenter_name" toml:"epicenter_name" yaml:"epicenter_name"`
+	Magnitude     null.String  `boil:"magnitude" json:"magnitude,omitempty" toml:"magnitude" yaml:"magnitude,omitempty"`
+	Date          time.Time    `boil:"date" json:"date" toml:"date" yaml:"date"`
+	Created       time.Time    `boil:"created" json:"created" toml:"created" yaml:"created"`
+	Row           string       `boil:"row" json:"row" toml:"row" yaml:"row"`
 
 	R *earthquakeEpicenterR `boil:"-" json:"-" toml:"-" yaml:"-"`
 	L earthquakeEpicenterL  `boil:"-" json:"-" toml:"-" yaml:"-"`
@@ -47,7 +47,6 @@ var EarthquakeEpicenterColumns = struct {
 	Depth         string
 	EpicenterName string
 	Magnitude     string
-	MagnitudeType string
 	Date          string
 	Created       string
 	Row           string
@@ -59,7 +58,6 @@ var EarthquakeEpicenterColumns = struct {
 	Depth:         "depth",
 	EpicenterName: "epicenter_name",
 	Magnitude:     "magnitude",
-	MagnitudeType: "magnitude_type",
 	Date:          "date",
 	Created:       "created",
 	Row:           "row",
@@ -73,7 +71,6 @@ var EarthquakeEpicenterTableColumns = struct {
 	Depth         string
 	EpicenterName string
 	Magnitude     string
-	MagnitudeType string
 	Date          string
 	Created       string
 	Row           string
@@ -85,7 +82,6 @@ var EarthquakeEpicenterTableColumns = struct {
 	Depth:         "EarthquakeEpicenters.depth",
 	EpicenterName: "EarthquakeEpicenters.epicenter_name",
 	Magnitude:     "EarthquakeEpicenters.magnitude",
-	MagnitudeType: "EarthquakeEpicenters.magnitude_type",
 	Date:          "EarthquakeEpicenters.date",
 	Created:       "EarthquakeEpicenters.created",
 	Row:           "EarthquakeEpicenters.row",
@@ -93,22 +89,34 @@ var EarthquakeEpicenterTableColumns = struct {
 
 // Generated where
 
-type whereHelperint struct{ field string }
+type whereHelpernull_Float64 struct{ field string }
 
-func (w whereHelperint) EQ(x int) qm.QueryMod  { return qmhelper.Where(w.field, qmhelper.EQ, x) }
-func (w whereHelperint) NEQ(x int) qm.QueryMod { return qmhelper.Where(w.field, qmhelper.NEQ, x) }
-func (w whereHelperint) LT(x int) qm.QueryMod  { return qmhelper.Where(w.field, qmhelper.LT, x) }
-func (w whereHelperint) LTE(x int) qm.QueryMod { return qmhelper.Where(w.field, qmhelper.LTE, x) }
-func (w whereHelperint) GT(x int) qm.QueryMod  { return qmhelper.Where(w.field, qmhelper.GT, x) }
-func (w whereHelperint) GTE(x int) qm.QueryMod { return qmhelper.Where(w.field, qmhelper.GTE, x) }
-func (w whereHelperint) IN(slice []int) qm.QueryMod {
+func (w whereHelpernull_Float64) EQ(x null.Float64) qm.QueryMod {
+	return qmhelper.WhereNullEQ(w.field, false, x)
+}
+func (w whereHelpernull_Float64) NEQ(x null.Float64) qm.QueryMod {
+	return qmhelper.WhereNullEQ(w.field, true, x)
+}
+func (w whereHelpernull_Float64) LT(x null.Float64) qm.QueryMod {
+	return qmhelper.Where(w.field, qmhelper.LT, x)
+}
+func (w whereHelpernull_Float64) LTE(x null.Float64) qm.QueryMod {
+	return qmhelper.Where(w.field, qmhelper.LTE, x)
+}
+func (w whereHelpernull_Float64) GT(x null.Float64) qm.QueryMod {
+	return qmhelper.Where(w.field, qmhelper.GT, x)
+}
+func (w whereHelpernull_Float64) GTE(x null.Float64) qm.QueryMod {
+	return qmhelper.Where(w.field, qmhelper.GTE, x)
+}
+func (w whereHelpernull_Float64) IN(slice []float64) qm.QueryMod {
 	values := make([]interface{}, 0, len(slice))
 	for _, value := range slice {
 		values = append(values, value)
 	}
 	return qm.WhereIn(fmt.Sprintf("%s IN ?", w.field), values...)
 }
-func (w whereHelperint) NIN(slice []int) qm.QueryMod {
+func (w whereHelpernull_Float64) NIN(slice []float64) qm.QueryMod {
 	values := make([]interface{}, 0, len(slice))
 	for _, value := range slice {
 		values = append(values, value)
@@ -116,27 +124,104 @@ func (w whereHelperint) NIN(slice []int) qm.QueryMod {
 	return qm.WhereNotIn(fmt.Sprintf("%s NOT IN ?", w.field), values...)
 }
 
+func (w whereHelpernull_Float64) IsNull() qm.QueryMod    { return qmhelper.WhereIsNull(w.field) }
+func (w whereHelpernull_Float64) IsNotNull() qm.QueryMod { return qmhelper.WhereIsNotNull(w.field) }
+
+type whereHelpernull_Int struct{ field string }
+
+func (w whereHelpernull_Int) EQ(x null.Int) qm.QueryMod {
+	return qmhelper.WhereNullEQ(w.field, false, x)
+}
+func (w whereHelpernull_Int) NEQ(x null.Int) qm.QueryMod {
+	return qmhelper.WhereNullEQ(w.field, true, x)
+}
+func (w whereHelpernull_Int) LT(x null.Int) qm.QueryMod {
+	return qmhelper.Where(w.field, qmhelper.LT, x)
+}
+func (w whereHelpernull_Int) LTE(x null.Int) qm.QueryMod {
+	return qmhelper.Where(w.field, qmhelper.LTE, x)
+}
+func (w whereHelpernull_Int) GT(x null.Int) qm.QueryMod {
+	return qmhelper.Where(w.field, qmhelper.GT, x)
+}
+func (w whereHelpernull_Int) GTE(x null.Int) qm.QueryMod {
+	return qmhelper.Where(w.field, qmhelper.GTE, x)
+}
+func (w whereHelpernull_Int) IN(slice []int) qm.QueryMod {
+	values := make([]interface{}, 0, len(slice))
+	for _, value := range slice {
+		values = append(values, value)
+	}
+	return qm.WhereIn(fmt.Sprintf("%s IN ?", w.field), values...)
+}
+func (w whereHelpernull_Int) NIN(slice []int) qm.QueryMod {
+	values := make([]interface{}, 0, len(slice))
+	for _, value := range slice {
+		values = append(values, value)
+	}
+	return qm.WhereNotIn(fmt.Sprintf("%s NOT IN ?", w.field), values...)
+}
+
+func (w whereHelpernull_Int) IsNull() qm.QueryMod    { return qmhelper.WhereIsNull(w.field) }
+func (w whereHelpernull_Int) IsNotNull() qm.QueryMod { return qmhelper.WhereIsNotNull(w.field) }
+
+type whereHelpernull_String struct{ field string }
+
+func (w whereHelpernull_String) EQ(x null.String) qm.QueryMod {
+	return qmhelper.WhereNullEQ(w.field, false, x)
+}
+func (w whereHelpernull_String) NEQ(x null.String) qm.QueryMod {
+	return qmhelper.WhereNullEQ(w.field, true, x)
+}
+func (w whereHelpernull_String) LT(x null.String) qm.QueryMod {
+	return qmhelper.Where(w.field, qmhelper.LT, x)
+}
+func (w whereHelpernull_String) LTE(x null.String) qm.QueryMod {
+	return qmhelper.Where(w.field, qmhelper.LTE, x)
+}
+func (w whereHelpernull_String) GT(x null.String) qm.QueryMod {
+	return qmhelper.Where(w.field, qmhelper.GT, x)
+}
+func (w whereHelpernull_String) GTE(x null.String) qm.QueryMod {
+	return qmhelper.Where(w.field, qmhelper.GTE, x)
+}
+func (w whereHelpernull_String) IN(slice []string) qm.QueryMod {
+	values := make([]interface{}, 0, len(slice))
+	for _, value := range slice {
+		values = append(values, value)
+	}
+	return qm.WhereIn(fmt.Sprintf("%s IN ?", w.field), values...)
+}
+func (w whereHelpernull_String) NIN(slice []string) qm.QueryMod {
+	values := make([]interface{}, 0, len(slice))
+	for _, value := range slice {
+		values = append(values, value)
+	}
+	return qm.WhereNotIn(fmt.Sprintf("%s NOT IN ?", w.field), values...)
+}
+
+func (w whereHelpernull_String) IsNull() qm.QueryMod    { return qmhelper.WhereIsNull(w.field) }
+func (w whereHelpernull_String) IsNotNull() qm.QueryMod { return qmhelper.WhereIsNotNull(w.field) }
+
 var EarthquakeEpicenterWhere = struct {
 	ID            whereHelperuint
 	EventID       whereHelperint64
-	Lat           whereHelperint
-	Lon           whereHelperint
-	Depth         whereHelperint
+	Lat           whereHelpernull_Float64
+	Lon           whereHelpernull_Float64
+	Depth         whereHelpernull_Int
 	EpicenterName whereHelperstring
-	Magnitude     whereHelperint
-	MagnitudeType whereHelperstring
+	Magnitude     whereHelpernull_String
 	Date          whereHelpertime_Time
 	Created       whereHelpertime_Time
 	Row           whereHelperstring
 }{
 	ID:            whereHelperuint{field: "`EarthquakeEpicenters`.`id`"},
 	EventID:       whereHelperint64{field: "`EarthquakeEpicenters`.`event_id`"},
-	Lat:           whereHelperint{field: "`EarthquakeEpicenters`.`lat`"},
-	Lon:           whereHelperint{field: "`EarthquakeEpicenters`.`lon`"},
-	Depth:         whereHelperint{field: "`EarthquakeEpicenters`.`depth`"},
+	Lat:           whereHelpernull_Float64{field: "`EarthquakeEpicenters`.`lat`"},
+	Lon:           whereHelpernull_Float64{field: "`EarthquakeEpicenters`.`lon`"},
+	Depth:         whereHelpernull_Int{field: "`EarthquakeEpicenters`.`depth`"},
 	EpicenterName: whereHelperstring{field: "`EarthquakeEpicenters`.`epicenter_name`"},
-	Magnitude:     whereHelperint{field: "`EarthquakeEpicenters`.`magnitude`"},
-	MagnitudeType: whereHelperstring{field: "`EarthquakeEpicenters`.`magnitude_type`"},
+	Magnitude:     whereHelpernull_String{field: "`EarthquakeEpicenters`.`magnitude`"},
 	Date:          whereHelpertime_Time{field: "`EarthquakeEpicenters`.`date`"},
 	Created:       whereHelpertime_Time{field: "`EarthquakeEpicenters`.`created`"},
 	Row:           whereHelperstring{field: "`EarthquakeEpicenters`.`row`"},
@@ -159,8 +244,8 @@ func (*earthquakeEpicenterR) NewStruct() *earthquakeEpicenterR {
 type earthquakeEpicenterL struct{}
 
 var (
-	earthquakeEpicenterAllColumns            = []string{"id", "event_id", "lat", "lon", "depth", "epicenter_name", "magnitude", "magnitude_type", "date", "created", "row"}
-	earthquakeEpicenterColumnsWithoutDefault = []string{"event_id", "lat", "lon", "depth", "epicenter_name", "magnitude", "magnitude_type", "date", "row"}
+	earthquakeEpicenterAllColumns            = []string{"id", "event_id", "lat", "lon", "depth", "epicenter_name", "magnitude", "date", "created", "row"}
+	earthquakeEpicenterColumnsWithoutDefault = []string{"event_id", "lat", "lon", "depth", "epicenter_name", "magnitude", "date", "row"}
 	earthquakeEpicenterColumnsWithDefault    = []string{"id", "created"}
 	earthquakeEpicenterPrimaryKeyColumns     = []string{"id"}
 	earthquakeEpicenterGeneratedColumns      = []string{}
