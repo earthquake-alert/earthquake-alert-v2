@@ -63,7 +63,6 @@ func (e *EarthquakeUpdate) Assembly(ctx context.Context, db *sql.DB) error {
 	}
 
 	// 取消報の時
-	// FIXME: DBに入れる
 	if e.Parsed.Body.Earthquake == nil {
 		return nil
 	}
@@ -72,7 +71,6 @@ func (e *EarthquakeUpdate) Assembly(ctx context.Context, db *sql.DB) error {
 	if err := e.ParseEpicenter(); err != nil {
 		return err
 	}
-
 	// マグニチュード表記を文字列にフォーマットする
 	e.NewMagnitude = FormatMagnitude(&e.Parsed.Body.Earthquake.Magnitude)
 
@@ -80,37 +78,19 @@ func (e *EarthquakeUpdate) Assembly(ctx context.Context, db *sql.DB) error {
 	if err != nil {
 		return err
 	}
-	if ea != nil {
-		e.LatestEarthquake = ea
+	if ea == nil {
+		return nil
 	}
 
-	update := models.EarthquakeUpdate{
-		EventID:   eventId[0],
-		Lat:       null.Float64FromPtr(e.NewLat),
-		Lon:       null.Float64FromPtr(e.NewLon),
-		Depth:     null.IntFromPtr(e.NewDepth),
-		Magnitude: null.NewString(e.NewMagnitude, true),
-		Date:      targetD,
-		Row:       e.Row,
-	}
-	if err := update.Insert(ctx, db, boil.Infer()); err != nil {
-		return err
-	}
+	e.LatestEarthquake = ea
 
 	// Earthquakes テーブルを更新する
-	// FIXME: 重複している
-	earthquake, err := models.Earthquakes(
-		models.EarthquakeWhere.EventID.EQ(eventId[0]),
-	).One(ctx, db)
-	if err != nil {
-		return err
-	}
-	earthquake.Lat = null.Float64FromPtr(e.NewLat)
-	earthquake.Lon = null.Float64FromPtr(e.NewLon)
-	earthquake.Depth = null.IntFromPtr(e.NewDepth)
-	earthquake.Magnitude = null.NewString(e.NewMagnitude, true)
+	ea.Lat = null.Float64FromPtr(e.NewLat)
+	ea.Lon = null.Float64FromPtr(e.NewLon)
+	ea.Depth = null.IntFromPtr(e.NewDepth)
+	ea.Magnitude = null.NewString(e.NewMagnitude, true)
 
-	if _, err := earthquake.Update(ctx, db, boil.Infer()); err != nil {
+	if _, err := ea.Update(ctx, db, boil.Infer()); err != nil {
 		return err
 	}
 	return nil
