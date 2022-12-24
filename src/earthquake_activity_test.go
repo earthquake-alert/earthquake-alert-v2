@@ -118,7 +118,7 @@ func TestEarthquakeActivityGetTargetDate(t *testing.T) {
 		d, err := ea.GetTargetDate()
 		require.NoError(t, err)
 
-		require.Equal(t, d.String(), "2019-11-11 17:00:00 +0000 UTC")
+		require.Equal(t, d.String(), "2019-11-11 17:00:00 +0900 JST")
 	})
 
 	t.Run("2", func(t *testing.T) {
@@ -134,7 +134,7 @@ func TestEarthquakeActivityGetTargetDate(t *testing.T) {
 		d, err := ea.GetTargetDate()
 		require.NoError(t, err)
 
-		require.Equal(t, d.String(), "2022-03-16 13:46:00 +0000 UTC")
+		require.Equal(t, d.String(), "2022-03-16 13:46:00 +0900 JST")
 
 	})
 }
@@ -201,6 +201,17 @@ func TestEarthquakeActivityAssembly(t *testing.T) {
 			).Exists(ctx, db)
 			require.NoError(t, err)
 			require.True(t, exists)
+
+			a, err := models.EarthquakeActivities(
+				models.EarthquakeActivityWhere.EventID.EQ(eventIds[0]),
+			).One(ctx, db)
+			require.NoError(t, err)
+
+			require.Equal(t, a.EventID, eventIds[0])
+			require.NotNil(t, a.Created)
+			require.NotNil(t, a.ID)
+			require.NotNil(t, a.Date)
+			require.Equal(t, a.Row, string(row))
 		})
 
 		t.Run("2", func(t *testing.T) {
@@ -224,34 +235,6 @@ func TestEarthquakeActivityAssembly(t *testing.T) {
 			).Exists(ctx, db)
 			require.NoError(t, err)
 			require.True(t, exists)
-		})
-
-		t.Run("正しく全て入っている", func(t *testing.T) {
-			target := "32-35_09_01_191111_VXSE56.xml"
-
-			testPath := filepath.Join(TEST_DATA_PATH, target)
-			row, err := os.ReadFile(testPath)
-			require.NoError(t, err)
-
-			ea, err := src.ParseEarthquakeActivity(row)
-			require.NoError(t, err)
-
-			err = ea.Assembly(ctx, db)
-			require.NoError(t, err)
-
-			eventIds, err := ea.GetEventId()
-			require.NoError(t, err)
-
-			a, err := models.EarthquakeActivities(
-				models.EarthquakeActivityWhere.EventID.EQ(eventIds[0]),
-			).One(ctx, db)
-			require.NoError(t, err)
-
-			require.Equal(t, a.EventID, int64(eventIds[0]))
-			require.NotNil(t, a.Created)
-			require.NotNil(t, a.ID)
-			require.NotNil(t, a.Date)
-			require.Equal(t, a.Row, string(row))
 		})
 	})
 }
