@@ -45,4 +45,9 @@ func TestParsePosition(t *testing.T) {
 		require.Equal(t, src.ParsePosition(-36.1), -35.83)
 		require.Equal(t, src.ParsePosition(-072.6), -71.0)
 	})
+
+	t.Run("分が0の場合", func(t *testing.T) {
+		require.Equal(t, src.ParsePosition(40.0), 40.0)
+		require.Equal(t, src.ParsePosition(-40.0), -40.0)
+	})
 }
