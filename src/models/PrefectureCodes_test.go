@@ -21,24 +21,24 @@ var (
 	_ = queries.Equal
 )
 
-func testAreas(t *testing.T) {
+func testPrefectureCodes(t *testing.T) {
 	t.Parallel()
 
-	query := Areas()
+	query := PrefectureCodes()
 
 	if query.Query == nil {
 		t.Error("expected a query, got nothing")
 	}
 }
 
-func testAreasDelete(t *testing.T) {
+func testPrefectureCodesDelete(t *testing.T) {
 	t.Parallel()
 
 	seed := randomize.NewSeed()
 	var err error
-	o := &Areas{}
-	if err = randomize.Struct(seed, o, areasDBTypes, true, areasColumnsWithDefault...); err != nil {
-		t.Errorf("Unable to randomize Areas struct: %s", err)
+	o := &PrefectureCode{}
+	if err = randomize.Struct(seed, o, prefectureCodeDBTypes, true, prefectureCodeColumnsWithDefault...); err != nil {
+		t.Errorf("Unable to randomize PrefectureCode struct: %s", err)
 	}
 
 	ctx := context.Background()
@@ -54,7 +54,7 @@ func testAreasDelete(t *testing.T) {
 		t.Error("should only have deleted one row, but affected:", rowsAff)
 	}
 
-	count, err := Areas().Count(ctx, tx)
+	count, err := PrefectureCodes().Count(ctx, tx)
 	if err != nil {
 		t.Error(err)
 	}
@@ -64,14 +64,14 @@ func testAreasDelete(t *testing.T) {
 	}
 }
 
-func testAreasQueryDeleteAll(t *testing.T) {
+func testPrefectureCodesQueryDeleteAll(t *testing.T) {
 	t.Parallel()
 
 	seed := randomize.NewSeed()
 	var err error
-	o := &Areas{}
-	if err = randomize.Struct(seed, o, areasDBTypes, true, areasColumnsWithDefault...); err != nil {
-		t.Errorf("Unable to randomize Areas struct: %s", err)
+	o := &PrefectureCode{}
+	if err = randomize.Struct(seed, o, prefectureCodeDBTypes, true, prefectureCodeColumnsWithDefault...); err != nil {
+		t.Errorf("Unable to randomize PrefectureCode struct: %s", err)
 	}
 
 	ctx := context.Background()
@@ -81,13 +81,13 @@ func testAreasQueryDeleteAll(t *testing.T) {
 		t.Error(err)
 	}
 
-	if rowsAff, err := Areas().DeleteAll(ctx, tx); err != nil {
+	if rowsAff, err := PrefectureCodes().DeleteAll(ctx, tx); err != nil {
 		t.Error(err)
 	} else if rowsAff != 1 {
 		t.Error("should only have deleted one row, but affected:", rowsAff)
 	}
 
-	count, err := Areas().Count(ctx, tx)
+	count, err := PrefectureCodes().Count(ctx, tx)
 	if err != nil {
 		t.Error(err)
 	}
@@ -97,14 +97,14 @@ func testAreasQueryDeleteAll(t *testing.T) {
 	}
 }
 
-func testAreasSliceDeleteAll(t *testing.T) {
+func testPrefectureCodesSliceDeleteAll(t *testing.T) {
 	t.Parallel()
 
 	seed := randomize.NewSeed()
 	var err error
-	o := &Areas{}
-	if err = randomize.Struct(seed, o, areasDBTypes, true, areasColumnsWithDefault...); err != nil {
-		t.Errorf("Unable to randomize Areas struct: %s", err)
+	o := &PrefectureCode{}
+	if err = randomize.Struct(seed, o, prefectureCodeDBTypes, true, prefectureCodeColumnsWithDefault...); err != nil {
+		t.Errorf("Unable to randomize PrefectureCode struct: %s", err)
 	}
 
 	ctx := context.Background()
@@ -114,7 +114,7 @@ func testAreasSliceDeleteAll(t *testing.T) {
 		t.Error(err)
 	}
 
-	slice := AreasSlice{o}
+	slice := PrefectureCodeSlice{o}
 
 	if rowsAff, err := slice.DeleteAll(ctx, tx); err != nil {
 		t.Error(err)
@@ -122,7 +122,7 @@ func testAreasSliceDeleteAll(t *testing.T) {
 		t.Error("should only have deleted one row, but affected:", rowsAff)
 	}
 
-	count, err := Areas().Count(ctx, tx)
+	count, err := PrefectureCodes().Count(ctx, tx)
 	if err != nil {
 		t.Error(err)
 	}
@@ -132,14 +132,14 @@ func testAreasSliceDeleteAll(t *testing.T) {
 	}
 }
 
-func testAreasExists(t *testing.T) {
+func testPrefectureCodesExists(t *testing.T) {
 	t.Parallel()
 
 	seed := randomize.NewSeed()
 	var err error
-	o := &Areas{}
-	if err = randomize.Struct(seed, o, areasDBTypes, true, areasColumnsWithDefault...); err != nil {
-		t.Errorf("Unable to randomize Areas struct: %s", err)
+	o := &PrefectureCode{}
+	if err = randomize.Struct(seed, o, prefectureCodeDBTypes, true, prefectureCodeColumnsWithDefault...); err != nil {
+		t.Errorf("Unable to randomize PrefectureCode struct: %s", err)
 	}
 
 	ctx := context.Background()
@@ -149,23 +149,23 @@ func testAreasExists(t *testing.T) {
 		t.Error(err)
 	}
 
-	e, err := AreasExists(ctx, tx, o.ID)
+	e, err := PrefectureCodeExists(ctx, tx, o.ID)
 	if err != nil {
-		t.Errorf("Unable to check if Areas exists: %s", err)
+		t.Errorf("Unable to check if PrefectureCode exists: %s", err)
 	}
 	if !e {
-		t.Errorf("Expected AreasExists to return true, but got false.")
+		t.Errorf("Expected PrefectureCodeExists to return true, but got false.")
 	}
 }
 
-func testAreasFind(t *testing.T) {
+func testPrefectureCodesFind(t *testing.T) {
 	t.Parallel()
 
 	seed := randomize.NewSeed()
 	var err error
-	o := &Areas{}
-	if err = randomize.Struct(seed, o, areasDBTypes, true, areasColumnsWithDefault...); err != nil {
-		t.Errorf("Unable to randomize Areas struct: %s", err)
+	o := &PrefectureCode{}
+	if err = randomize.Struct(seed, o, prefectureCodeDBTypes, true, prefectureCodeColumnsWithDefault...); err != nil {
+		t.Errorf("Unable to randomize PrefectureCode struct: %s", err)
 	}
 
 	ctx := context.Background()
@@ -175,24 +175,24 @@ func testAreasFind(t *testing.T) {
 		t.Error(err)
 	}
 
-	areasFound, err := FindAreas(ctx, tx, o.ID)
+	prefectureCodeFound, err := FindPrefectureCode(ctx, tx, o.ID)
 	if err != nil {
 		t.Error(err)
 	}
 
-	if areasFound == nil {
+	if prefectureCodeFound == nil {
 		t.Error("want a record, got nil")
 	}
 }
 
-func testAreasBind(t *testing.T) {
+func testPrefectureCodesBind(t *testing.T) {
 	t.Parallel()
 
 	seed := randomize.NewSeed()
 	var err error
-	o := &Areas{}
-	if err = randomize.Struct(seed, o, areasDBTypes, true, areasColumnsWithDefault...); err != nil {
-		t.Errorf("Unable to randomize Areas struct: %s", err)
+	o := &PrefectureCode{}
+	if err = randomize.Struct(seed, o, prefectureCodeDBTypes, true, prefectureCodeColumnsWithDefault...); err != nil {
+		t.Errorf("Unable to randomize PrefectureCode struct: %s", err)
 	}
 
 	ctx := context.Background()
@@ -202,19 +202,19 @@ func testAreasBind(t *testing.T) {
 		t.Error(err)
 	}
 
-	if err = Areas().Bind(ctx, tx, o); err != nil {
+	if err = PrefectureCodes().Bind(ctx, tx, o); err != nil {
 		t.Error(err)
 	}
 }
 
-func testAreasOne(t *testing.T) {
+func testPrefectureCodesOne(t *testing.T) {
 	t.Parallel()
 
 	seed := randomize.NewSeed()
 	var err error
-	o := &Areas{}
-	if err = randomize.Struct(seed, o, areasDBTypes, true, areasColumnsWithDefault...); err != nil {
-		t.Errorf("Unable to randomize Areas struct: %s", err)
+	o := &PrefectureCode{}
+	if err = randomize.Struct(seed, o, prefectureCodeDBTypes, true, prefectureCodeColumnsWithDefault...); err != nil {
+		t.Errorf("Unable to randomize PrefectureCode struct: %s", err)
 	}
 
 	ctx := context.Background()
@@ -224,38 +224,38 @@ func testAreasOne(t *testing.T) {
 		t.Error(err)
 	}
 
-	if x, err := Areas().One(ctx, tx); err != nil {
+	if x, err := PrefectureCodes().One(ctx, tx); err != nil {
 		t.Error(err)
 	} else if x == nil {
 		t.Error("expected to get a non nil record")
 	}
 }
 
-func testAreasAll(t *testing.T) {
+func testPrefectureCodesAll(t *testing.T) {
 	t.Parallel()
 
 	seed := randomize.NewSeed()
 	var err error
-	areasOne := &Areas{}
-	areasTwo := &Areas{}
-	if err = randomize.Struct(seed, areasOne, areasDBTypes, false, areasColumnsWithDefault...); err != nil {
-		t.Errorf("Unable to randomize Areas struct: %s", err)
+	prefectureCodeOne := &PrefectureCode{}
+	prefectureCodeTwo := &PrefectureCode{}
+	if err = randomize.Struct(seed, prefectureCodeOne, prefectureCodeDBTypes, false, prefectureCodeColumnsWithDefault...); err != nil {
+		t.Errorf("Unable to randomize PrefectureCode struct: %s", err)
 	}
-	if err = randomize.Struct(seed, areasTwo, areasDBTypes, false, areasColumnsWithDefault...); err != nil {
-		t.Errorf("Unable to randomize Areas struct: %s", err)
+	if err = randomize.Struct(seed, prefectureCodeTwo, prefectureCodeDBTypes, false, prefectureCodeColumnsWithDefault...); err != nil {
+		t.Errorf("Unable to randomize PrefectureCode struct: %s", err)
 	}
 
 	ctx := context.Background()
 	tx := MustTx(boil.BeginTx(ctx, nil))
 	defer func() { _ = tx.Rollback() }()
-	if err = areasOne.Insert(ctx, tx, boil.Infer()); err != nil {
+	if err = prefectureCodeOne.Insert(ctx, tx, boil.Infer()); err != nil {
 		t.Error(err)
 	}
-	if err = areasTwo.Insert(ctx, tx, boil.Infer()); err != nil {
+	if err = prefectureCodeTwo.Insert(ctx, tx, boil.Infer()); err != nil {
 		t.Error(err)
 	}
 
-	slice, err := Areas().All(ctx, tx)
+	slice, err := PrefectureCodes().All(ctx, tx)
 	if err != nil {
 		t.Error(err)
 	}
@@ -265,31 +265,31 @@ func testAreasAll(t *testing.T) {
 	}
 }
 
-func testAreasCount(t *testing.T) {
+func testPrefectureCodesCount(t *testing.T) {
 	t.Parallel()
 
 	var err error
 	seed := randomize.NewSeed()
-	areasOne := &Areas{}
-	areasTwo := &Areas{}
-	if err = randomize.Struct(seed, areasOne, areasDBTypes, false, areasColumnsWithDefault...); err != nil {
-		t.Errorf("Unable to randomize Areas struct: %s", err)
+	prefectureCodeOne := &PrefectureCode{}
+	prefectureCodeTwo := &PrefectureCode{}
+	if err = randomize.Struct(seed, prefectureCodeOne, prefectureCodeDBTypes, false, prefectureCodeColumnsWithDefault...); err != nil {
+		t.Errorf("Unable to randomize PrefectureCode struct: %s", err)
 	}
-	if err = randomize.Struct(seed, areasTwo, areasDBTypes, false, areasColumnsWithDefault...); err != nil {
-		t.Errorf("Unable to randomize Areas struct: %s", err)
+	if err = randomize.Struct(seed, prefectureCodeTwo, prefectureCodeDBTypes, false, prefectureCodeColumnsWithDefault...); err != nil {
+		t.Errorf("Unable to randomize PrefectureCode struct: %s", err)
 	}
 
 	ctx := context.Background()
 	tx := MustTx(boil.BeginTx(ctx, nil))
 	defer func() { _ = tx.Rollback() }()
-	if err = areasOne.Insert(ctx, tx, boil.Infer()); err != nil {
+	if err = prefectureCodeOne.Insert(ctx, tx, boil.Infer()); err != nil {
 		t.Error(err)
 	}
-	if err = areasTwo.Insert(ctx, tx, boil.Infer()); err != nil {
+	if err = prefectureCodeTwo.Insert(ctx, tx, boil.Infer()); err != nil {
 		t.Error(err)
 	}
 
-	count, err := Areas().Count(ctx, tx)
+	count, err := PrefectureCodes().Count(ctx, tx)
 	if err != nil {
 		t.Error(err)
 	}
@@ -299,155 +299,155 @@ func testAreasCount(t *testing.T) {
 	}
 }
 
-func areasBeforeInsertHook(ctx context.Context, e boil.ContextExecutor, o *Areas) error {
-	*o = Areas{}
+func prefectureCodeBeforeInsertHook(ctx context.Context, e boil.ContextExecutor, o *PrefectureCode) error {
+	*o = PrefectureCode{}
 	return nil
 }
 
-func areasAfterInsertHook(ctx context.Context, e boil.ContextExecutor, o *Areas) error {
-	*o = Areas{}
+func prefectureCodeAfterInsertHook(ctx context.Context, e boil.ContextExecutor, o *PrefectureCode) error {
+	*o = PrefectureCode{}
 	return nil
 }
 
-func areasAfterSelectHook(ctx context.Context, e boil.ContextExecutor, o *Areas) error {
-	*o = Areas{}
+func prefectureCodeAfterSelectHook(ctx context.Context, e boil.ContextExecutor, o *PrefectureCode) error {
+	*o = PrefectureCode{}
 	return nil
 }
 
-func areasBeforeUpdateHook(ctx context.Context, e boil.ContextExecutor, o *Areas) error {
-	*o = Areas{}
+func prefectureCodeBeforeUpdateHook(ctx context.Context, e boil.ContextExecutor, o *PrefectureCode) error {
+	*o = PrefectureCode{}
 	return nil
 }
 
-func areasAfterUpdateHook(ctx context.Context, e boil.ContextExecutor, o *Areas) error {
-	*o = Areas{}
+func prefectureCodeAfterUpdateHook(ctx context.Context, e boil.ContextExecutor, o *PrefectureCode) error {
+	*o = PrefectureCode{}
 	return nil
 }
 
-func areasBeforeDeleteHook(ctx context.Context, e boil.ContextExecutor, o *Areas) error {
-	*o = Areas{}
+func prefectureCodeBeforeDeleteHook(ctx context.Context, e boil.ContextExecutor, o *PrefectureCode) error {
+	*o = PrefectureCode{}
 	return nil
 }
 
-func areasAfterDeleteHook(ctx context.Context, e boil.ContextExecutor, o *Areas) error {
-	*o = Areas{}
+func prefectureCodeAfterDeleteHook(ctx context.Context, e boil.ContextExecutor, o *PrefectureCode) error {
+	*o = PrefectureCode{}
 	return nil
 }
 
-func areasBeforeUpsertHook(ctx context.Context, e boil.ContextExecutor, o *Areas) error {
-	*o = Areas{}
+func prefectureCodeBeforeUpsertHook(ctx context.Context, e boil.ContextExecutor, o *PrefectureCode) error {
+	*o = PrefectureCode{}
 	return nil
 }
 
-func areasAfterUpsertHook(ctx context.Context, e boil.ContextExecutor, o *Areas) error {
-	*o = Areas{}
+func prefectureCodeAfterUpsertHook(ctx context.Context, e boil.ContextExecutor, o *PrefectureCode) error {
+	*o = PrefectureCode{}
 	return nil
 }
 
-func testAreasHooks(t *testing.T) {
+func testPrefectureCodesHooks(t *testing.T) {
 	t.Parallel()
 
 	var err error
 
 	ctx := context.Background()
-	empty := &Areas{}
-	o := &Areas{}
+	empty := &PrefectureCode{}
+	o := &PrefectureCode{}
 
 	seed := randomize.NewSeed()
-	if err = randomize.Struct(seed, o, areasDBTypes, false); err != nil {
-		t.Errorf("Unable to randomize Areas object: %s", err)
+	if err = randomize.Struct(seed, o, prefectureCodeDBTypes, false); err != nil {
+		t.Errorf("Unable to randomize PrefectureCode object: %s", err)
 	}
 
-	AddAreasHook(boil.BeforeInsertHook, areasBeforeInsertHook)
+	AddPrefectureCodeHook(boil.BeforeInsertHook, prefectureCodeBeforeInsertHook)
 	if err = o.doBeforeInsertHooks(ctx, nil); err != nil {
 		t.Errorf("Unable to execute doBeforeInsertHooks: %s", err)
 	}
 	if !reflect.DeepEqual(o, empty) {
 		t.Errorf("Expected BeforeInsertHook function to empty object, but got: %#v", o)
 	}
-	areasBeforeInsertHooks = []AreasHook{}
+	prefectureCodeBeforeInsertHooks = []PrefectureCodeHook{}
 
-	AddAreasHook(boil.AfterInsertHook, areasAfterInsertHook)
+	AddPrefectureCodeHook(boil.AfterInsertHook, prefectureCodeAfterInsertHook)
 	if err = o.doAfterInsertHooks(ctx, nil); err != nil {
 		t.Errorf("Unable to execute doAfterInsertHooks: %s", err)
 	}
 	if !reflect.DeepEqual(o, empty) {
 		t.Errorf("Expected AfterInsertHook function to empty object, but got: %#v", o)
 	}
-	areasAfterInsertHooks = []AreasHook{}
+	prefectureCodeAfterInsertHooks = []PrefectureCodeHook{}
 
-	AddAreasHook(boil.AfterSelectHook, areasAfterSelectHook)
+	AddPrefectureCodeHook(boil.AfterSelectHook, prefectureCodeAfterSelectHook)
 	if err = o.doAfterSelectHooks(ctx, nil); err != nil {
 		t.Errorf("Unable to execute doAfterSelectHooks: %s", err)
 	}
 	if !reflect.DeepEqual(o, empty) {
 		t.Errorf("Expected AfterSelectHook function to empty object, but got: %#v", o)
 	}
-	areasAfterSelectHooks = []AreasHook{}
+	prefectureCodeAfterSelectHooks = []PrefectureCodeHook{}
 
-	AddAreasHook(boil.BeforeUpdateHook, areasBeforeUpdateHook)
+	AddPrefectureCodeHook(boil.BeforeUpdateHook, prefectureCodeBeforeUpdateHook)
 	if err = o.doBeforeUpdateHooks(ctx, nil); err != nil {
 		t.Errorf("Unable to execute doBeforeUpdateHooks: %s", err)
 	}
 	if !reflect.DeepEqual(o, empty) {
 		t.Errorf("Expected BeforeUpdateHook function to empty object, but got: %#v", o)
 	}
-	areasBeforeUpdateHooks = []AreasHook{}
+	prefectureCodeBeforeUpdateHooks = []PrefectureCodeHook{}
 
-	AddAreasHook(boil.AfterUpdateHook, areasAfterUpdateHook)
+	AddPrefectureCodeHook(boil.AfterUpdateHook, prefectureCodeAfterUpdateHook)
 	if err = o.doAfterUpdateHooks(ctx, nil); err != nil {
 		t.Errorf("Unable to execute doAfterUpdateHooks: %s", err)
 	}
 	if !reflect.DeepEqual(o, empty) {
 		t.Errorf("Expected AfterUpdateHook function to empty object, but got: %#v", o)
 	}
-	areasAfterUpdateHooks = []AreasHook{}
+	prefectureCodeAfterUpdateHooks = []PrefectureCodeHook{}
 
-	AddAreasHook(boil.BeforeDeleteHook, areasBeforeDeleteHook)
+	AddPrefectureCodeHook(boil.BeforeDeleteHook, prefectureCodeBeforeDeleteHook)
 	if err = o.doBeforeDeleteHooks(ctx, nil); err != nil {
 		t.Errorf("Unable to execute doBeforeDeleteHooks: %s", err)
 	}
 	if !reflect.DeepEqual(o, empty) {
 		t.Errorf("Expected BeforeDeleteHook function to empty object, but got: %#v", o)
 	}
-	areasBeforeDeleteHooks = []AreasHook{}
+	prefectureCodeBeforeDeleteHooks = []PrefectureCodeHook{}
 
-	AddAreasHook(boil.AfterDeleteHook, areasAfterDeleteHook)
+	AddPrefectureCodeHook(boil.AfterDeleteHook, prefectureCodeAfterDeleteHook)
 	if err = o.doAfterDeleteHooks(ctx, nil); err != nil {
 		t.Errorf("Unable to execute doAfterDeleteHooks: %s", err)
 	}
 	if !reflect.DeepEqual(o, empty) {
 		t.Errorf("Expected AfterDeleteHook function to empty object, but got: %#v", o)
 	}
-	areasAfterDeleteHooks = []AreasHook{}
+	prefectureCodeAfterDeleteHooks = []PrefectureCodeHook{}
 
-	AddAreasHook(boil.BeforeUpsertHook, areasBeforeUpsertHook)
+	AddPrefectureCodeHook(boil.BeforeUpsertHook, prefectureCodeBeforeUpsertHook)
 	if err = o.doBeforeUpsertHooks(ctx, nil); err != nil {
 		t.Errorf("Unable to execute doBeforeUpsertHooks: %s", err)
 	}
 	if !reflect.DeepEqual(o, empty) {
 		t.Errorf("Expected BeforeUpsertHook function to empty object, but got: %#v", o)
 	}
-	areasBeforeUpsertHooks = []AreasHook{}
+	prefectureCodeBeforeUpsertHooks = []PrefectureCodeHook{}
 
-	AddAreasHook(boil.AfterUpsertHook, areasAfterUpsertHook)
+	AddPrefectureCodeHook(boil.AfterUpsertHook, prefectureCodeAfterUpsertHook)
 	if err = o.doAfterUpsertHooks(ctx, nil); err != nil {
 		t.Errorf("Unable to execute doAfterUpsertHooks: %s", err)
 	}
 	if !reflect.DeepEqual(o, empty) {
 		t.Errorf("Expected AfterUpsertHook function to empty object, but got: %#v", o)
 	}
-	areasAfterUpsertHooks = []AreasHook{}
+	prefectureCodeAfterUpsertHooks = []PrefectureCodeHook{}
 }
 
-func testAreasInsert(t *testing.T) {
+func testPrefectureCodesInsert(t *testing.T) {
 	t.Parallel()
 
 	seed := randomize.NewSeed()
 	var err error
-	o := &Areas{}
-	if err = randomize.Struct(seed, o, areasDBTypes, true, areasColumnsWithDefault...); err != nil {
-		t.Errorf("Unable to randomize Areas struct: %s", err)
+	o := &PrefectureCode{}
+	if err = randomize.Struct(seed, o, prefectureCodeDBTypes, true, prefectureCodeColumnsWithDefault...); err != nil {
+		t.Errorf("Unable to randomize PrefectureCode struct: %s", err)
 	}
 
 	ctx := context.Background()
@@ -457,7 +457,7 @@ func testAreasInsert(t *testing.T) {
 		t.Error(err)
 	}
 
-	count, err := Areas().Count(ctx, tx)
+	count, err := PrefectureCodes().Count(ctx, tx)
 	if err != nil {
 		t.Error(err)
 	}
@@ -467,24 +467,24 @@ func testAreasInsert(t *testing.T) {
 	}
 }
 
-func testAreasInsertWhitelist(t *testing.T) {
+func testPrefectureCodesInsertWhitelist(t *testing.T) {
 	t.Parallel()
 
 	seed := randomize.NewSeed()
 	var err error
-	o := &Areas{}
-	if err = randomize.Struct(seed, o, areasDBTypes, true); err != nil {
-		t.Errorf("Unable to randomize Areas struct: %s", err)
+	o := &PrefectureCode{}
+	if err = randomize.Struct(seed, o, prefectureCodeDBTypes, true); err != nil {
+		t.Errorf("Unable to randomize PrefectureCode struct: %s", err)
 	}
 
 	ctx := context.Background()
 	tx := MustTx(boil.BeginTx(ctx, nil))
 	defer func() { _ = tx.Rollback() }()
-	if err = o.Insert(ctx, tx, boil.Whitelist(areasColumnsWithoutDefault...)); err != nil {
+	if err = o.Insert(ctx, tx, boil.Whitelist(prefectureCodeColumnsWithoutDefault...)); err != nil {
 		t.Error(err)
 	}
 
-	count, err := Areas().Count(ctx, tx)
+	count, err := PrefectureCodes().Count(ctx, tx)
 	if err != nil {
 		t.Error(err)
 	}
@@ -494,14 +494,14 @@ func testAreasInsertWhitelist(t *testing.T) {
 	}
 }
 
-func testAreasReload(t *testing.T) {
+func testPrefectureCodesReload(t *testing.T) {
 	t.Parallel()
 
 	seed := randomize.NewSeed()
 	var err error
-	o := &Areas{}
-	if err = randomize.Struct(seed, o, areasDBTypes, true, areasColumnsWithDefault...); err != nil {
-		t.Errorf("Unable to randomize Areas struct: %s", err)
+	o := &PrefectureCode{}
+	if err = randomize.Struct(seed, o, prefectureCodeDBTypes, true, prefectureCodeColumnsWithDefault...); err != nil {
+		t.Errorf("Unable to randomize PrefectureCode struct: %s", err)
 	}
 
 	ctx := context.Background()
@@ -516,14 +516,14 @@ func testAreasReload(t *testing.T) {
 	}
 }
 
-func testAreasReloadAll(t *testing.T) {
+func testPrefectureCodesReloadAll(t *testing.T) {
 	t.Parallel()
 
 	seed := randomize.NewSeed()
 	var err error
-	o := &Areas{}
-	if err = randomize.Struct(seed, o, areasDBTypes, true, areasColumnsWithDefault...); err != nil {
-		t.Errorf("Unable to randomize Areas struct: %s", err)
+	o := &PrefectureCode{}
+	if err = randomize.Struct(seed, o, prefectureCodeDBTypes, true, prefectureCodeColumnsWithDefault...); err != nil {
+		t.Errorf("Unable to randomize PrefectureCode struct: %s", err)
 	}
 
 	ctx := context.Background()
@@ -533,21 +533,21 @@ func testAreasReloadAll(t *testing.T) {
 		t.Error(err)
 	}
 
-	slice := AreasSlice{o}
+	slice := PrefectureCodeSlice{o}
 
 	if err = slice.ReloadAll(ctx, tx); err != nil {
 		t.Error(err)
 	}
 }
 
-func testAreasSelect(t *testing.T) {
+func testPrefectureCodesSelect(t *testing.T) {
 	t.Parallel()
 
 	seed := randomize.NewSeed()
 	var err error
-	o := &Areas{}
-	if err = randomize.Struct(seed, o, areasDBTypes, true, areasColumnsWithDefault...); err != nil {
-		t.Errorf("Unable to randomize Areas struct: %s", err)
+	o := &PrefectureCode{}
+	if err = randomize.Struct(seed, o, prefectureCodeDBTypes, true, prefectureCodeColumnsWithDefault...); err != nil {
+		t.Errorf("Unable to randomize PrefectureCode struct: %s", err)
 	}
 
 	ctx := context.Background()
@@ -557,7 +557,7 @@ func testAreasSelect(t *testing.T) {
 		t.Error(err)
 	}
 
-	slice, err := Areas().All(ctx, tx)
+	slice, err := PrefectureCodes().All(ctx, tx)
 	if err != nil {
 		t.Error(err)
 	}
@@ -568,25 +568,25 @@ func testAreasSelect(t *testing.T) {
 }
 
 var (
-	areasDBTypes = map[string]string{`ID`: `int`, `Name`: `text`, `PrefectureID`: `int`, `Created`: `datetime`, `Updated`: `datetime`}
-	_            = bytes.MinRead
+	prefectureCodeDBTypes = map[string]string{`ID`: `int`, `Name`: `text`, `Created`: `datetime`, `Updated`: `datetime`}
+	_                     = bytes.MinRead
 )
 
-func testAreasUpdate(t *testing.T) {
+func testPrefectureCodesUpdate(t *testing.T) {
 	t.Parallel()
 
-	if 0 == len(areasPrimaryKeyColumns) {
+	if 0 == len(prefectureCodePrimaryKeyColumns) {
 		t.Skip("Skipping table with no primary key columns")
 	}
-	if len(areasAllColumns) == len(areasPrimaryKeyColumns) {
+	if len(prefectureCodeAllColumns) == len(prefectureCodePrimaryKeyColumns) {
 		t.Skip("Skipping table with only primary key columns")
 	}
 
 	seed := randomize.NewSeed()
 	var err error
-	o := &Areas{}
-	if err = randomize.Struct(seed, o, areasDBTypes, true, areasColumnsWithDefault...); err != nil {
-		t.Errorf("Unable to randomize Areas struct: %s", err)
+	o := &PrefectureCode{}
+	if err = randomize.Struct(seed, o, prefectureCodeDBTypes, true, prefectureCodeColumnsWithDefault...); err != nil {
+		t.Errorf("Unable to randomize PrefectureCode struct: %s", err)
 	}
 
 	ctx := context.Background()
@@ -596,7 +596,7 @@ func testAreasUpdate(t *testing.T) {
 		t.Error(err)
 	}
 
-	count, err := Areas().Count(ctx, tx)
+	count, err := PrefectureCodes().Count(ctx, tx)
 	if err != nil {
 		t.Error(err)
 	}
@@ -605,8 +605,8 @@ func testAreasUpdate(t *testing.T) {
 		t.Error("want one record, got:", count)
 	}
 
-	if err = randomize.Struct(seed, o, areasDBTypes, true, areasPrimaryKeyColumns...); err != nil {
-		t.Errorf("Unable to randomize Areas struct: %s", err)
+	if err = randomize.Struct(seed, o, prefectureCodeDBTypes, true, prefectureCodePrimaryKeyColumns...); err != nil {
+		t.Errorf("Unable to randomize PrefectureCode struct: %s", err)
 	}
 
 	if rowsAff, err := o.Update(ctx, tx, boil.Infer()); err != nil {
@@ -616,18 +616,18 @@ func testAreasUpdate(t *testing.T) {
 	}
 }
 
-func testAreasSliceUpdateAll(t *testing.T) {
+func testPrefectureCodesSliceUpdateAll(t *testing.T) {
 	t.Parallel()
 
-	if len(areasAllColumns) == len(areasPrimaryKeyColumns) {
+	if len(prefectureCodeAllColumns) == len(prefectureCodePrimaryKeyColumns) {
 		t.Skip("Skipping table with only primary key columns")
 	}
 
 	seed := randomize.NewSeed()
 	var err error
-	o := &Areas{}
-	if err = randomize.Struct(seed, o, areasDBTypes, true, areasColumnsWithDefault...); err != nil {
-		t.Errorf("Unable to randomize Areas struct: %s", err)
+	o := &PrefectureCode{}
+	if err = randomize.Struct(seed, o, prefectureCodeDBTypes, true, prefectureCodeColumnsWithDefault...); err != nil {
+		t.Errorf("Unable to randomize PrefectureCode struct: %s", err)
 	}
 
 	ctx := context.Background()
@@ -637,7 +637,7 @@ func testAreasSliceUpdateAll(t *testing.T) {
 		t.Error(err)
 	}
 
-	count, err := Areas().Count(ctx, tx)
+	count, err := PrefectureCodes().Count(ctx, tx)
 	if err != nil {
 		t.Error(err)
 	}
@@ -646,18 +646,18 @@ func testAreasSliceUpdateAll(t *testing.T) {
 		t.Error("want one record, got:", count)
 	}
 
-	if err = randomize.Struct(seed, o, areasDBTypes, true, areasPrimaryKeyColumns...); err != nil {
-		t.Errorf("Unable to randomize Areas struct: %s", err)
+	if err = randomize.Struct(seed, o, prefectureCodeDBTypes, true, prefectureCodePrimaryKeyColumns...); err != nil {
+		t.Errorf("Unable to randomize PrefectureCode struct: %s", err)
 	}
 
 	// Remove Primary keys and unique columns from what we plan to update
 	var fields []string
-	if strmangle.StringSliceMatch(areasAllColumns, areasPrimaryKeyColumns) {
-		fields = areasAllColumns
+	if strmangle.StringSliceMatch(prefectureCodeAllColumns, prefectureCodePrimaryKeyColumns) {
+		fields = prefectureCodeAllColumns
 	} else {
 		fields = strmangle.SetComplement(
-			areasAllColumns,
-			areasPrimaryKeyColumns,
+			prefectureCodeAllColumns,
+			prefectureCodePrimaryKeyColumns,
 		)
 	}
 
@@ -675,7 +675,7 @@ func testAreasSliceUpdateAll(t *testing.T) {
 		}
 	}
 
-	slice := AreasSlice{o}
+	slice := PrefectureCodeSlice{o}
 	if rowsAff, err := slice.UpdateAll(ctx, tx, updateMap); err != nil {
 		t.Error(err)
 	} else if rowsAff != 1 {
@@ -683,32 +683,32 @@ func testAreasSliceUpdateAll(t *testing.T) {
 	}
 }
 
-func testAreasUpsert(t *testing.T) {
+func testPrefectureCodesUpsert(t *testing.T) {
 	t.Parallel()
 
-	if len(areasAllColumns) == len(areasPrimaryKeyColumns) {
+	if len(prefectureCodeAllColumns) == len(prefectureCodePrimaryKeyColumns) {
 		t.Skip("Skipping table with only primary key columns")
 	}
-	if len(mySQLAreasUniqueColumns) == 0 {
+	if len(mySQLPrefectureCodeUniqueColumns) == 0 {
 		t.Skip("Skipping table with no unique columns to conflict on")
 	}
 
 	seed := randomize.NewSeed()
 	var err error
 	// Attempt the INSERT side of an UPSERT
-	o := Areas{}
-	if err = randomize.Struct(seed, &o, areasDBTypes, false); err != nil {
-		t.Errorf("Unable to randomize Areas struct: %s", err)
+	o := PrefectureCode{}
+	if err = randomize.Struct(seed, &o, prefectureCodeDBTypes, false); err != nil {
+		t.Errorf("Unable to randomize PrefectureCode struct: %s", err)
 	}
 
 	ctx := context.Background()
 	tx := MustTx(boil.BeginTx(ctx, nil))
 	defer func() { _ = tx.Rollback() }()
 	if err = o.Upsert(ctx, tx, boil.Infer(), boil.Infer()); err != nil {
-		t.Errorf("Unable to upsert Areas: %s", err)
+		t.Errorf("Unable to upsert PrefectureCode: %s", err)
 	}
 
-	count, err := Areas().Count(ctx, tx)
+	count, err := PrefectureCodes().Count(ctx, tx)
 	if err != nil {
 		t.Error(err)
 	}
@@ -717,15 +717,15 @@ func testAreasUpsert(t *testing.T) {
 	}
 
 	// Attempt the UPDATE side of an UPSERT
-	if err = randomize.Struct(seed, &o, areasDBTypes, false, areasPrimaryKeyColumns...); err != nil {
-		t.Errorf("Unable to randomize Areas struct: %s", err)
+	if err = randomize.Struct(seed, &o, prefectureCodeDBTypes, false, prefectureCodePrimaryKeyColumns...); err != nil {
+		t.Errorf("Unable to randomize PrefectureCode struct: %s", err)
 	}
 
 	if err = o.Upsert(ctx, tx, boil.Infer(), boil.Infer()); err != nil {
-		t.Errorf("Unable to upsert Areas: %s", err)
+		t.Errorf("Unable to upsert PrefectureCode: %s", err)
 	}
 
-	count, err = Areas().Count(ctx, tx)
+	count, err = PrefectureCodes().Count(ctx, tx)
 	if err != nil {
 		t.Error(err)
 	}

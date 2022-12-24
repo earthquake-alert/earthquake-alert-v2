@@ -4,33 +4,33 @@
 package models
 
 var TableNames = struct {
-	Areas                string
-	EarthquakeActivity   string
-	EarthquakeCount      string
-	EarthquakeEpicenters string
-	EarthquakeInfos      string
-	EarthquakeReports    string
-	EarthquakeUpdate     string
-	Earthquakes          string
-	IntensityStations    string
-	JmaXmlEntries        string
-	Prefectures          string
-	TsunamiConnects      string
-	TsunamiInfos         string
-	TwitterThreads       string
+	AreaCodes             string
+	EarthquakeActivity    string
+	EarthquakeCount       string
+	EarthquakeEpicenters  string
+	EarthquakeInfos       string
+	EarthquakeReports     string
+	EarthquakeUpdate      string
+	Earthquakes           string
+	IntensityStationCodes string
+	JmaXmlEntries         string
+	PrefectureCodes       string
+	TsunamiConnects       string
+	TsunamiInfos          string
+	TwitterThreads        string
 }{
-	Areas:                "Areas",
-	EarthquakeActivity:   "EarthquakeActivity",
-	EarthquakeCount:      "EarthquakeCount",
-	EarthquakeEpicenters: "EarthquakeEpicenters",
-	EarthquakeInfos:      "EarthquakeInfos",
-	EarthquakeReports:    "EarthquakeReports",
-	EarthquakeUpdate:     "EarthquakeUpdate",
-	Earthquakes:          "Earthquakes",
-	IntensityStations:    "IntensityStations",
-	JmaXmlEntries:        "JmaXmlEntries",
-	Prefectures:          "Prefectures",
-	TsunamiConnects:      "TsunamiConnects",
-	TsunamiInfos:         "TsunamiInfos",
-	TwitterThreads:       "TwitterThreads",
+	AreaCodes:             "AreaCodes",
+	EarthquakeActivity:    "EarthquakeActivity",
+	EarthquakeCount:       "EarthquakeCount",
+	EarthquakeEpicenters:  "EarthquakeEpicenters",
+	EarthquakeInfos:       "EarthquakeInfos",
+	EarthquakeReports:     "EarthquakeReports",
+	EarthquakeUpdate:      "EarthquakeUpdate",
+	Earthquakes:           "Earthquakes",
+	IntensityStationCodes: "IntensityStationCodes",
+	JmaXmlEntries:         "JmaXmlEntries",
+	PrefectureCodes:       "PrefectureCodes",
+	TsunamiConnects:       "TsunamiConnects",
+	TsunamiInfos:          "TsunamiInfos",
+	TwitterThreads:        "TwitterThreads",
 }

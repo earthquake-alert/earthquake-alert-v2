@@ -17,7 +17,7 @@
     "EarthquakeActivity",
     "EarthquakeUpdate",
     "EarthquakeCount",
-    "Prefectures",
-    "Areas",
-    "IntensityStations"
+    "PrefectureCodes",
+    "AreaCodes",
+    "IntensityStationCodes"
   ]

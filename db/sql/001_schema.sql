@@ -127,7 +127,7 @@ CREATE TABLE IF NOT EXISTS `EarthquakeCount` (
 );
 
 # 都道府県とcodeの対応
-CREATE TABLE IF NOT EXISTS `Prefectures` (
+CREATE TABLE IF NOT EXISTS `PrefectureCodes` (
     `id` INT UNSIGNED NOT NULL,
     `name` TEXT NOT NULL,
     `created` DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
@@ -136,7 +136,7 @@ CREATE TABLE IF NOT EXISTS `Prefectures` (
 );
 
 # 地域とcodeの対応
-CREATE TABLE IF NOT EXISTS `Areas` (
+CREATE TABLE IF NOT EXISTS `AreaCodes` (
     `id` INT UNSIGNED NOT NULL,
     `name` TEXT NOT NULL,
     `prefecture_id` INT UNSIGNED NOT NULL,
@@ -146,7 +146,7 @@ CREATE TABLE IF NOT EXISTS `Areas` (
 );
 
 # 震度観測点とcodeの対応
-CREATE TABLE IF NOT EXISTS `IntensityStations` (
+CREATE TABLE IF NOT EXISTS `IntensityStationCodes` (
     `id` INT UNSIGNED NOT NULL,
     `name` TEXT NOT NULL,
     `lat` DOUBLE NOT NULL,

@@ -21,19 +21,19 @@ import (
 	"github.com/volatiletech/strmangle"
 )
 
-// Areas is an object representing the database table.
-type Areas struct {
+// AreaCode is an object representing the database table.
+type AreaCode struct {
 	ID           uint      `boil:"id" json:"id" toml:"id" yaml:"id"`
 	Name         string    `boil:"name" json:"name" toml:"name" yaml:"name"`
 	PrefectureID uint      `boil:"prefecture_id" json:"prefecture_id" toml:"prefecture_id" yaml:"prefecture_id"`
 	Created      time.Time `boil:"created" json:"created" toml:"created" yaml:"created"`
 	Updated      time.Time `boil:"updated" json:"updated" toml:"updated" yaml:"updated"`
 
-	R *areasR `boil:"-" json:"-" toml:"-" yaml:"-"`
-	L areasL  `boil:"-" json:"-" toml:"-" yaml:"-"`
+	R *areaCodeR `boil:"-" json:"-" toml:"-" yaml:"-"`
+	L areaCodeL  `boil:"-" json:"-" toml:"-" yaml:"-"`
 }
 
-var AreasColumns = struct {
+var AreaCodeColumns = struct {
 	ID           string
 	Name         string
 	PrefectureID string
@@ -47,18 +47,18 @@ var AreasColumns = struct {
 	Updated:      "updated",
 }
 
-var AreasTableColumns = struct {
+var AreaCodeTableColumns = struct {
 	ID           string
 	Name         string
 	PrefectureID string
 	Created      string
 	Updated      string
 }{
-	ID:           "Areas.id",
-	Name:         "Areas.name",
-	PrefectureID: "Areas.prefecture_id",
-	Created:      "Areas.created",
-	Updated:      "Areas.updated",
+	ID:           "AreaCodes.id",
+	Name:         "AreaCodes.name",
+	PrefectureID: "AreaCodes.prefecture_id",
+	Created:      "AreaCodes.created",
+	Updated:      "AreaCodes.updated",
 }
 
 // Generated where
@@ -130,67 +130,67 @@ func (w whereHelpertime_Time) GTE(x time.Time) qm.QueryMod {
 	return qmhelper.Where(w.field, qmhelper.GTE, x)
 }
 
-var AreasWhere = struct {
+var AreaCodeWhere = struct {
 	ID           whereHelperuint
 	Name         whereHelperstring
 	PrefectureID whereHelperuint
 	Created      whereHelpertime_Time
 	Updated      whereHelpertime_Time
 }{
-	ID:           whereHelperuint{field: "`Areas`.`id`"},
-	Name:         whereHelperstring{field: "`Areas`.`name`"},
-	PrefectureID: whereHelperuint{field: "`Areas`.`prefecture_id`"},
-	Created:      whereHelpertime_Time{field: "`Areas`.`created`"},
-	Updated:      whereHelpertime_Time{field: "`Areas`.`updated`"},
+	ID:           whereHelperuint{field: "`AreaCodes`.`id`"},
+	Name:         whereHelperstring{field: "`AreaCodes`.`name`"},
+	PrefectureID: whereHelperuint{field: "`AreaCodes`.`prefecture_id`"},
+	Created:      whereHelpertime_Time{field: "`AreaCodes`.`created`"},
+	Updated:      whereHelpertime_Time{field: "`AreaCodes`.`updated`"},
 }
 
-// AreasRels is where relationship names are stored.
-var AreasRels = struct {
+// AreaCodeRels is where relationship names are stored.
+var AreaCodeRels = struct {
 }{}
 
-// areasR is where relationships are stored.
-type areasR struct {
+// areaCodeR is where relationships are stored.
+type areaCodeR struct {
 }
 
 // NewStruct creates a new relationship struct
-func (*areasR) NewStruct() *areasR {
-	return &areasR{}
+func (*areaCodeR) NewStruct() *areaCodeR {
+	return &areaCodeR{}
 }
 
-// areasL is where Load methods for each relationship are stored.
-type areasL struct{}
+// areaCodeL is where Load methods for each relationship are stored.
+type areaCodeL struct{}
 
 var (
-	areasAllColumns            = []string{"id", "name", "prefecture_id", "created", "updated"}
-	areasColumnsWithoutDefault = []string{"id", "name", "prefecture_id"}
-	areasColumnsWithDefault    = []string{"created", "updated"}
-	areasPrimaryKeyColumns     = []string{"id"}
-	areasGeneratedColumns      = []string{}
+	areaCodeAllColumns            = []string{"id", "name", "prefecture_id", "created", "updated"}
+	areaCodeColumnsWithoutDefault = []string{"id", "name", "prefecture_id"}
+	areaCodeColumnsWithDefault    = []string{"created", "updated"}
+	areaCodePrimaryKeyColumns     = []string{"id"}
+	areaCodeGeneratedColumns      = []string{}
 )
 
 type (
-	// AreasSlice is an alias for a slice of pointers to Areas.
-	// This should almost always be used instead of []Areas.
-	AreasSlice []*Areas
-	// AreasHook is the signature for custom Areas hook methods
-	AreasHook func(context.Context, boil.ContextExecutor, *Areas) error
+	// AreaCodeSlice is an alias for a slice of pointers to AreaCode.
+	// This should almost always be used instead of []AreaCode.
+	AreaCodeSlice []*AreaCode
+	// AreaCodeHook is the signature for custom AreaCode hook methods
+	AreaCodeHook func(context.Context, boil.ContextExecutor, *AreaCode) error
 
-	areasQuery struct {
+	areaCodeQuery struct {
 		*queries.Query
 	}
 )
 
 // Cache for insert, update and upsert
 var (
-	areasType                 = reflect.TypeOf(&Areas{})
-	areasMapping              = queries.MakeStructMapping(areasType)
-	areasPrimaryKeyMapping, _ = queries.BindMapping(areasType, areasMapping, areasPrimaryKeyColumns)
-	areasInsertCacheMut       sync.RWMutex
-	areasInsertCache          = make(map[string]insertCache)
-	areasUpdateCacheMut       sync.RWMutex
-	areasUpdateCache          = make(map[string]updateCache)
-	areasUpsertCacheMut       sync.RWMutex
-	areasUpsertCache          = make(map[string]insertCache)
+	areaCodeType                 = reflect.TypeOf(&AreaCode{})
+	areaCodeMapping              = queries.MakeStructMapping(areaCodeType)
+	areaCodePrimaryKeyMapping, _ = queries.BindMapping(areaCodeType, areaCodeMapping, areaCodePrimaryKeyColumns)
+	areaCodeInsertCacheMut       sync.RWMutex
+	areaCodeInsertCache          = make(map[string]insertCache)
+	areaCodeUpdateCacheMut       sync.RWMutex
+	areaCodeUpdateCache          = make(map[string]updateCache)
+	areaCodeUpsertCacheMut       sync.RWMutex
+	areaCodeUpsertCache          = make(map[string]insertCache)
 )
 
 var (
@@ -201,27 +201,27 @@ var (
 	_ = qmhelper.Where
 )
 
-var areasAfterSelectHooks []AreasHook
+var areaCodeAfterSelectHooks []AreaCodeHook
 
-var areasBeforeInsertHooks []AreasHook
-var areasAfterInsertHooks []AreasHook
+var areaCodeBeforeInsertHooks []AreaCodeHook
+var areaCodeAfterInsertHooks []AreaCodeHook
 
-var areasBeforeUpdateHooks []AreasHook
-var areasAfterUpdateHooks []AreasHook
+var areaCodeBeforeUpdateHooks []AreaCodeHook
+var areaCodeAfterUpdateHooks []AreaCodeHook
 
-var areasBeforeDeleteHooks []AreasHook
-var areasAfterDeleteHooks []AreasHook
+var areaCodeBeforeDeleteHooks []AreaCodeHook
+var areaCodeAfterDeleteHooks []AreaCodeHook
 
-var areasBeforeUpsertHooks []AreasHook
-var areasAfterUpsertHooks []AreasHook
+var areaCodeBeforeUpsertHooks []AreaCodeHook
+var areaCodeAfterUpsertHooks []AreaCodeHook
 
 // doAfterSelectHooks executes all "after Select" hooks.
-func (o *Areas) doAfterSelectHooks(ctx context.Context, exec boil.ContextExecutor) (err error) {
+func (o *AreaCode) doAfterSelectHooks(ctx context.Context, exec boil.ContextExecutor) (err error) {
 	if boil.HooksAreSkipped(ctx) {
 		return nil
 	}
 
-	for _, hook := range areasAfterSelectHooks {
+	for _, hook := range areaCodeAfterSelectHooks {
 		if err := hook(ctx, exec, o); err != nil {
 			return err
 		}
@@ -231,12 +231,12 @@ func (o *Areas) doAfterSelectHooks(ctx context.Context, exec boil.ContextExecuto
 }
 
 // doBeforeInsertHooks executes all "before insert" hooks.
-func (o *Areas) doBeforeInsertHooks(ctx context.Context, exec boil.ContextExecutor) (err error) {
+func (o *AreaCode) doBeforeInsertHooks(ctx context.Context, exec boil.ContextExecutor) (err error) {
 	if boil.HooksAreSkipped(ctx) {
 		return nil
 	}
 
-	for _, hook := range areasBeforeInsertHooks {
+	for _, hook := range areaCodeBeforeInsertHooks {
 		if err := hook(ctx, exec, o); err != nil {
 			return err
 		}
@@ -246,12 +246,12 @@ func (o *Areas) doBeforeInsertHooks(ctx context.Context, exec boil.ContextExecut
 }
 
 // doAfterInsertHooks executes all "after Insert" hooks.
-func (o *Areas) doAfterInsertHooks(ctx context.Context, exec boil.ContextExecutor) (err error) {
+func (o *AreaCode) doAfterInsertHooks(ctx context.Context, exec boil.ContextExecutor) (err error) {
 	if boil.HooksAreSkipped(ctx) {
 		return nil
 	}
 
-	for _, hook := range areasAfterInsertHooks {
+	for _, hook := range areaCodeAfterInsertHooks {
 		if err := hook(ctx, exec, o); err != nil {
 			return err
 		}
@@ -261,12 +261,12 @@ func (o *Areas) doAfterInsertHooks(ctx context.Context, exec boil.ContextExecuto
 }
 
 // doBeforeUpdateHooks executes all "before Update" hooks.
-func (o *Areas) doBeforeUpdateHooks(ctx context.Context, exec boil.ContextExecutor) (err error) {
+func (o *AreaCode) doBeforeUpdateHooks(ctx context.Context, exec boil.ContextExecutor) (err error) {
 	if boil.HooksAreSkipped(ctx) {
 		return nil
 	}
 
-	for _, hook := range areasBeforeUpdateHooks {
+	for _, hook := range areaCodeBeforeUpdateHooks {
 		if err := hook(ctx, exec, o); err != nil {
 			return err
 		}
@@ -276,12 +276,12 @@ func (o *Areas) doBeforeUpdateHooks(ctx context.Context, exec boil.ContextExecut
 }
 
 // doAfterUpdateHooks executes all "after Update" hooks.
-func (o *Areas) doAfterUpdateHooks(ctx context.Context, exec boil.ContextExecutor) (err error) {
+func (o *AreaCode) doAfterUpdateHooks(ctx context.Context, exec boil.ContextExecutor) (err error) {
 	if boil.HooksAreSkipped(ctx) {
 		return nil
 	}
 
-	for _, hook := range areasAfterUpdateHooks {
+	for _, hook := range areaCodeAfterUpdateHooks {
 		if err := hook(ctx, exec, o); err != nil {
 			return err
 		}
@@ -291,12 +291,12 @@ func (o *Areas) doAfterUpdateHooks(ctx context.Context, exec boil.ContextExecuto
 }
 
 // doBeforeDeleteHooks executes all "before Delete" hooks.
-func (o *Areas) doBeforeDeleteHooks(ctx context.Context, exec boil.ContextExecutor) (err error) {
+func (o *AreaCode) doBeforeDeleteHooks(ctx context.Context, exec boil.ContextExecutor) (err error) {
 	if boil.HooksAreSkipped(ctx) {
 		return nil
 	}
 
-	for _, hook := range areasBeforeDeleteHooks {
+	for _, hook := range areaCodeBeforeDeleteHooks {
 		if err := hook(ctx, exec, o); err != nil {
 			return err
 		}
@@ -306,12 +306,12 @@ func (o *Areas) doBeforeDeleteHooks(ctx context.Context, exec boil.ContextExecut
 }
 
 // doAfterDeleteHooks executes all "after Delete" hooks.
-func (o *Areas) doAfterDeleteHooks(ctx context.Context, exec boil.ContextExecutor) (err error) {
+func (o *AreaCode) doAfterDeleteHooks(ctx context.Context, exec boil.ContextExecutor) (err error) {
 	if boil.HooksAreSkipped(ctx) {
 		return nil
 	}
 
-	for _, hook := range areasAfterDeleteHooks {
+	for _, hook := range areaCodeAfterDeleteHooks {
 		if err := hook(ctx, exec, o); err != nil {
 			return err
 		}
@@ -321,12 +321,12 @@ func (o *Areas) doAfterDeleteHooks(ctx context.Context, exec boil.ContextExecuto
 }
 
 // doBeforeUpsertHooks executes all "before Upsert" hooks.
-func (o *Areas) doBeforeUpsertHooks(ctx context.Context, exec boil.ContextExecutor) (err error) {
+func (o *AreaCode) doBeforeUpsertHooks(ctx context.Context, exec boil.ContextExecutor) (err error) {
 	if boil.HooksAreSkipped(ctx) {
 		return nil
 	}
 
-	for _, hook := range areasBeforeUpsertHooks {
+	for _, hook := range areaCodeBeforeUpsertHooks {
 		if err := hook(ctx, exec, o); err != nil {
 			return err
 		}
@@ -336,12 +336,12 @@ func (o *Areas) doBeforeUpsertHooks(ctx context.Context, exec boil.ContextExecut
 }
 
 // doAfterUpsertHooks executes all "after Upsert" hooks.
-func (o *Areas) doAfterUpsertHooks(ctx context.Context, exec boil.ContextExecutor) (err error) {
+func (o *AreaCode) doAfterUpsertHooks(ctx context.Context, exec boil.ContextExecutor) (err error) {
 	if boil.HooksAreSkipped(ctx) {
 		return nil
 	}
 
-	for _, hook := range areasAfterUpsertHooks {
+	for _, hook := range areaCodeAfterUpsertHooks {
 		if err := hook(ctx, exec, o); err != nil {
 			return err
 		}
@@ -350,33 +350,33 @@ func (o *Areas) doAfterUpsertHooks(ctx context.Context, exec boil.ContextExecuto
 	return nil
 }
 
-// AddAreasHook registers your hook function for all future operations.
-func AddAreasHook(hookPoint boil.HookPoint, areasHook AreasHook) {
+// AddAreaCodeHook registers your hook function for all future operations.
+func AddAreaCodeHook(hookPoint boil.HookPoint, areaCodeHook AreaCodeHook) {
 	switch hookPoint {
 	case boil.AfterSelectHook:
-		areasAfterSelectHooks = append(areasAfterSelectHooks, areasHook)
+		areaCodeAfterSelectHooks = append(areaCodeAfterSelectHooks, areaCodeHook)
 	case boil.BeforeInsertHook:
-		areasBeforeInsertHooks = append(areasBeforeInsertHooks, areasHook)
+		areaCodeBeforeInsertHooks = append(areaCodeBeforeInsertHooks, areaCodeHook)
 	case boil.AfterInsertHook:
-		areasAfterInsertHooks = append(areasAfterInsertHooks, areasHook)
+		areaCodeAfterInsertHooks = append(areaCodeAfterInsertHooks, areaCodeHook)
 	case boil.BeforeUpdateHook:
-		areasBeforeUpdateHooks = append(areasBeforeUpdateHooks, areasHook)
+		areaCodeBeforeUpdateHooks = append(areaCodeBeforeUpdateHooks, areaCodeHook)
 	case boil.AfterUpdateHook:
-		areasAfterUpdateHooks = append(areasAfterUpdateHooks, areasHook)
+		areaCodeAfterUpdateHooks = append(areaCodeAfterUpdateHooks, areaCodeHook)
 	case boil.BeforeDeleteHook:
-		areasBeforeDeleteHooks = append(areasBeforeDeleteHooks, areasHook)
+		areaCodeBeforeDeleteHooks = append(areaCodeBeforeDeleteHooks, areaCodeHook)
 	case boil.AfterDeleteHook:
-		areasAfterDeleteHooks = append(areasAfterDeleteHooks, areasHook)
+		areaCodeAfterDeleteHooks = append(areaCodeAfterDeleteHooks, areaCodeHook)
 	case boil.BeforeUpsertHook:
-		areasBeforeUpsertHooks = append(areasBeforeUpsertHooks, areasHook)
+		areaCodeBeforeUpsertHooks = append(areaCodeBeforeUpsertHooks, areaCodeHook)
 	case boil.AfterUpsertHook:
-		areasAfterUpsertHooks = append(areasAfterUpsertHooks, areasHook)
+		areaCodeAfterUpsertHooks = append(areaCodeAfterUpsertHooks, areaCodeHook)
 	}
 }
 
-// One returns a single areas record from the query.
-func (q areasQuery) One(ctx context.Context, exec boil.ContextExecutor) (*Areas, error) {
-	o := &Areas{}
+// One returns a single areaCode record from the query.
+func (q areaCodeQuery) One(ctx context.Context, exec boil.ContextExecutor) (*AreaCode, error) {
+	o := &AreaCode{}
 
 	queries.SetLimit(q.Query, 1)
 
@@ -385,7 +385,7 @@ func (q areasQuery) One(ctx context.Context, exec boil.ContextExecutor) (*Areas,
 		if errors.Is(err, sql.ErrNoRows) {
 			return nil, sql.ErrNoRows
 		}
-		return nil, errors.Wrap(err, "models: failed to execute a one query for Areas")
+		return nil, errors.Wrap(err, "models: failed to execute a one query for AreaCodes")
 	}
 
 	if err := o.doAfterSelectHooks(ctx, exec); err != nil {
@@ -395,16 +395,16 @@ func (q areasQuery) One(ctx context.Context, exec boil.ContextExecutor) (*Areas,
 	return o, nil
 }
 
-// All returns all Areas records from the query.
-func (q areasQuery) All(ctx context.Context, exec boil.ContextExecutor) (AreasSlice, error) {
-	var o []*Areas
+// All returns all AreaCode records from the query.
+func (q areaCodeQuery) All(ctx context.Context, exec boil.ContextExecutor) (AreaCodeSlice, error) {
+	var o []*AreaCode
 
 	err := q.Bind(ctx, exec, &o)
 	if err != nil {
-		return nil, errors.Wrap(err, "models: failed to assign all query results to Areas slice")
+		return nil, errors.Wrap(err, "models: failed to assign all query results to AreaCode slice")
 	}
 
-	if len(areasAfterSelectHooks) != 0 {
+	if len(areaCodeAfterSelectHooks) != 0 {
 		for _, obj := range o {
 			if err := obj.doAfterSelectHooks(ctx, exec); err != nil {
 				return o, err
@@ -415,8 +415,8 @@ func (q areasQuery) All(ctx context.Context, exec boil.ContextExecutor) (AreasSl
 	return o, nil
 }
 
-// Count returns the count of all Areas records in the query.
-func (q areasQuery) Count(ctx context.Context, exec boil.ContextExecutor) (int64, error) {
+// Count returns the count of all AreaCode records in the query.
+func (q areaCodeQuery) Count(ctx context.Context, exec boil.ContextExecutor) (int64, error) {
 	var count int64
 
 	queries.SetSelect(q.Query, nil)
@@ -424,14 +424,14 @@ func (q areasQuery) Count(ctx context.Context, exec boil.ContextExecutor) (int64
 
 	err := q.Query.QueryRowContext(ctx, exec).Scan(&count)
 	if err != nil {
-		return 0, errors.Wrap(err, "models: failed to count Areas rows")
+		return 0, errors.Wrap(err, "models: failed to count AreaCodes rows")
 	}
 
 	return count, nil
 }
 
 // Exists checks if the row exists in the table.
-func (q areasQuery) Exists(ctx context.Context, exec boil.ContextExecutor) (bool, error) {
+func (q areaCodeQuery) Exists(ctx context.Context, exec boil.ContextExecutor) (bool, error) {
 	var count int64
 
 	queries.SetSelect(q.Query, nil)
@@ -440,58 +440,58 @@ func (q areasQuery) Exists(ctx context.Context, exec boil.ContextExecutor) (bool
 
 	err := q.Query.QueryRowContext(ctx, exec).Scan(&count)
 	if err != nil {
-		return false, errors.Wrap(err, "models: failed to check if Areas exists")
+		return false, errors.Wrap(err, "models: failed to check if AreaCodes exists")
 	}
 
 	return count > 0, nil
 }
 
-// Areas retrieves all the records using an executor.
-func Areas(mods ...qm.QueryMod) areasQuery {
-	mods = append(mods, qm.From("`Areas`"))
+// AreaCodes retrieves all the records using an executor.
+func AreaCodes(mods ...qm.QueryMod) areaCodeQuery {
+	mods = append(mods, qm.From("`AreaCodes`"))
 	q := NewQuery(mods...)
 	if len(queries.GetSelect(q)) == 0 {
-		queries.SetSelect(q, []string{"`Areas`.*"})
+		queries.SetSelect(q, []string{"`AreaCodes`.*"})
 	}
 
-	return areasQuery{q}
+	return areaCodeQuery{q}
 }
 
-// FindAreas retrieves a single record by ID with an executor.
+// FindAreaCode retrieves a single record by ID with an executor.
 // If selectCols is empty Find will return all columns.
-func FindAreas(ctx context.Context, exec boil.ContextExecutor, iD uint, selectCols ...string) (*Areas, error) {
-	areasObj := &Areas{}
+func FindAreaCode(ctx context.Context, exec boil.ContextExecutor, iD uint, selectCols ...string) (*AreaCode, error) {
+	areaCodeObj := &AreaCode{}
 
 	sel := "*"
 	if len(selectCols) > 0 {
 		sel = strings.Join(strmangle.IdentQuoteSlice(dialect.LQ, dialect.RQ, selectCols), ",")
 	}
 	query := fmt.Sprintf(
-		"select %s from `Areas` where `id`=?", sel,
+		"select %s from `AreaCodes` where `id`=?", sel,
 	)
 
 	q := queries.Raw(query, iD)
 
-	err := q.Bind(ctx, exec, areasObj)
+	err := q.Bind(ctx, exec, areaCodeObj)
 	if err != nil {
 		if errors.Is(err, sql.ErrNoRows) {
 			return nil, sql.ErrNoRows
 		}
-		return nil, errors.Wrap(err, "models: unable to select from Areas")
+		return nil, errors.Wrap(err, "models: unable to select from AreaCodes")
 	}
 
-	if err = areasObj.doAfterSelectHooks(ctx, exec); err != nil {
-		return areasObj, err
+	if err = areaCodeObj.doAfterSelectHooks(ctx, exec); err != nil {
+		return areaCodeObj, err
 	}
 
-	return areasObj, nil
+	return areaCodeObj, nil
 }
 
 // Insert a single record using an executor.
 // See boil.Columns.InsertColumnSet documentation to understand column list inference for inserts.
-func (o *Areas) Insert(ctx context.Context, exec boil.ContextExecutor, columns boil.Columns) error {
+func (o *AreaCode) Insert(ctx context.Context, exec boil.ContextExecutor, columns boil.Columns) error {
 	if o == nil {
-		return errors.New("models: no Areas provided for insertion")
+		return errors.New("models: no AreaCodes provided for insertion")
 	}
 
 	var err error
@@ -500,39 +500,39 @@ func (o *Areas) Insert(ctx context.Context, exec boil.ContextExecutor, columns b
 		return err
 	}
 
-	nzDefaults := queries.NonZeroDefaultSet(areasColumnsWithDefault, o)
+	nzDefaults := queries.NonZeroDefaultSet(areaCodeColumnsWithDefault, o)
 
 	key := makeCacheKey(columns, nzDefaults)
-	areasInsertCacheMut.RLock()
-	cache, cached := areasInsertCache[key]
-	areasInsertCacheMut.RUnlock()
+	areaCodeInsertCacheMut.RLock()
+	cache, cached := areaCodeInsertCache[key]
+	areaCodeInsertCacheMut.RUnlock()
 
 	if !cached {
 		wl, returnColumns := columns.InsertColumnSet(
-			areasAllColumns,
-			areasColumnsWithDefault,
-			areasColumnsWithoutDefault,
+			areaCodeAllColumns,
+			areaCodeColumnsWithDefault,
+			areaCodeColumnsWithoutDefault,
 			nzDefaults,
 		)
 
-		cache.valueMapping, err = queries.BindMapping(areasType, areasMapping, wl)
+		cache.valueMapping, err = queries.BindMapping(areaCodeType, areaCodeMapping, wl)
 		if err != nil {
 			return err
 		}
-		cache.retMapping, err = queries.BindMapping(areasType, areasMapping, returnColumns)
+		cache.retMapping, err = queries.BindMapping(areaCodeType, areaCodeMapping, returnColumns)
 		if err != nil {
 			return err
 		}
 		if len(wl) != 0 {
-			cache.query = fmt.Sprintf("INSERT INTO `Areas` (`%s`) %%sVALUES (%s)%%s", strings.Join(wl, "`,`"), strmangle.Placeholders(dialect.UseIndexPlaceholders, len(wl), 1, 1))
+			cache.query = fmt.Sprintf("INSERT INTO `AreaCodes` (`%s`) %%sVALUES (%s)%%s", strings.Join(wl, "`,`"), strmangle.Placeholders(dialect.UseIndexPlaceholders, len(wl), 1, 1))
 		} else {
-			cache.query = "INSERT INTO `Areas` () VALUES ()%s%s"
+			cache.query = "INSERT INTO `AreaCodes` () VALUES ()%s%s"
 		}
 
 		var queryOutput, queryReturning string
 
 		if len(cache.retMapping) != 0 {
-			cache.retQuery = fmt.Sprintf("SELECT `%s` FROM `Areas` WHERE %s", strings.Join(returnColumns, "`,`"), strmangle.WhereClause("`", "`", 0, areasPrimaryKeyColumns))
+			cache.retQuery = fmt.Sprintf("SELECT `%s` FROM `AreaCodes` WHERE %s", strings.Join(returnColumns, "`,`"), strmangle.WhereClause("`", "`", 0, areaCodePrimaryKeyColumns))
 		}
 
 		cache.query = fmt.Sprintf(cache.query, queryOutput, queryReturning)
@@ -549,7 +549,7 @@ func (o *Areas) Insert(ctx context.Context, exec boil.ContextExecutor, columns b
 	_, err = exec.ExecContext(ctx, cache.query, vals...)
 
 	if err != nil {
-		return errors.Wrap(err, "models: unable to insert into Areas")
+		return errors.Wrap(err, "models: unable to insert into AreaCodes")
 	}
 
 	var identifierCols []interface{}
@@ -569,50 +569,50 @@ func (o *Areas) Insert(ctx context.Context, exec boil.ContextExecutor, columns b
 	}
 	err = exec.QueryRowContext(ctx, cache.retQuery, identifierCols...).Scan(queries.PtrsFromMapping(value, cache.retMapping)...)
 	if err != nil {
-		return errors.Wrap(err, "models: unable to populate default values for Areas")
+		return errors.Wrap(err, "models: unable to populate default values for AreaCodes")
 	}
 
 CacheNoHooks:
 	if !cached {
-		areasInsertCacheMut.Lock()
-		areasInsertCache[key] = cache
-		areasInsertCacheMut.Unlock()
+		areaCodeInsertCacheMut.Lock()
+		areaCodeInsertCache[key] = cache
+		areaCodeInsertCacheMut.Unlock()
 	}
 
 	return o.doAfterInsertHooks(ctx, exec)
 }
 
-// Update uses an executor to update the Areas.
+// Update uses an executor to update the AreaCode.
 // See boil.Columns.UpdateColumnSet documentation to understand column list inference for updates.
 // Update does not automatically update the record in case of default values. Use .Reload() to refresh the records.
-func (o *Areas) Update(ctx context.Context, exec boil.ContextExecutor, columns boil.Columns) (int64, error) {
+func (o *AreaCode) Update(ctx context.Context, exec boil.ContextExecutor, columns boil.Columns) (int64, error) {
 	var err error
 	if err = o.doBeforeUpdateHooks(ctx, exec); err != nil {
 		return 0, err
 	}
 	key := makeCacheKey(columns, nil)
-	areasUpdateCacheMut.RLock()
-	cache, cached := areasUpdateCache[key]
-	areasUpdateCacheMut.RUnlock()
+	areaCodeUpdateCacheMut.RLock()
+	cache, cached := areaCodeUpdateCache[key]
+	areaCodeUpdateCacheMut.RUnlock()
 
 	if !cached {
 		wl := columns.UpdateColumnSet(
-			areasAllColumns,
-			areasPrimaryKeyColumns,
+			areaCodeAllColumns,
+			areaCodePrimaryKeyColumns,
 		)
 
 		if !columns.IsWhitelist() {
 			wl = strmangle.SetComplement(wl, []string{"created_at"})
 		}
 		if len(wl) == 0 {
-			return 0, errors.New("models: unable to update Areas, could not build whitelist")
+			return 0, errors.New("models: unable to update AreaCodes, could not build whitelist")
 		}
 
-		cache.query = fmt.Sprintf("UPDATE `Areas` SET %s WHERE %s",
+		cache.query = fmt.Sprintf("UPDATE `AreaCodes` SET %s WHERE %s",
 			strmangle.SetParamNames("`", "`", 0, wl),
-			strmangle.WhereClause("`", "`", 0, areasPrimaryKeyColumns),
+			strmangle.WhereClause("`", "`", 0, areaCodePrimaryKeyColumns),
 		)
-		cache.valueMapping, err = queries.BindMapping(areasType, areasMapping, append(wl, areasPrimaryKeyColumns...))
+		cache.valueMapping, err = queries.BindMapping(areaCodeType, areaCodeMapping, append(wl, areaCodePrimaryKeyColumns...))
 		if err != nil {
 			return 0, err
 		}
@@ -628,42 +628,42 @@ func (o *Areas) Update(ctx context.Context, exec boil.ContextExecutor, columns b
 	var result sql.Result
 	result, err = exec.ExecContext(ctx, cache.query, values...)
 	if err != nil {
-		return 0, errors.Wrap(err, "models: unable to update Areas row")
+		return 0, errors.Wrap(err, "models: unable to update AreaCodes row")
 	}
 
 	rowsAff, err := result.RowsAffected()
 	if err != nil {
-		return 0, errors.Wrap(err, "models: failed to get rows affected by update for Areas")
+		return 0, errors.Wrap(err, "models: failed to get rows affected by update for AreaCodes")
 	}
 
 	if !cached {
-		areasUpdateCacheMut.Lock()
-		areasUpdateCache[key] = cache
-		areasUpdateCacheMut.Unlock()
+		areaCodeUpdateCacheMut.Lock()
+		areaCodeUpdateCache[key] = cache
+		areaCodeUpdateCacheMut.Unlock()
 	}
 
 	return rowsAff, o.doAfterUpdateHooks(ctx, exec)
 }
 
 // UpdateAll updates all rows with the specified column values.
-func (q areasQuery) UpdateAll(ctx context.Context, exec boil.ContextExecutor, cols M) (int64, error) {
+func (q areaCodeQuery) UpdateAll(ctx context.Context, exec boil.ContextExecutor, cols M) (int64, error) {
 	queries.SetUpdate(q.Query, cols)
 
 	result, err := q.Query.ExecContext(ctx, exec)
 	if err != nil {
-		return 0, errors.Wrap(err, "models: unable to update all for Areas")
+		return 0, errors.Wrap(err, "models: unable to update all for AreaCodes")
 	}
 
 	rowsAff, err := result.RowsAffected()
 	if err != nil {
-		return 0, errors.Wrap(err, "models: unable to retrieve rows affected for Areas")
+		return 0, errors.Wrap(err, "models: unable to retrieve rows affected for AreaCodes")
 	}
 
 	return rowsAff, nil
 }
 
 // UpdateAll updates all rows with the specified column values, using an executor.
-func (o AreasSlice) UpdateAll(ctx context.Context, exec boil.ContextExecutor, cols M) (int64, error) {
+func (o AreaCodeSlice) UpdateAll(ctx context.Context, exec boil.ContextExecutor, cols M) (int64, error) {
 	ln := int64(len(o))
 	if ln == 0 {
 		return 0, nil
@@ -685,13 +685,13 @@ func (o AreasSlice) UpdateAll(ctx context.Context, exec boil.ContextExecutor, co
 
 	// Append all of the primary key values for each column
 	for _, obj := range o {
-		pkeyArgs := queries.ValuesFromMapping(reflect.Indirect(reflect.ValueOf(obj)), areasPrimaryKeyMapping)
+		pkeyArgs := queries.ValuesFromMapping(reflect.Indirect(reflect.ValueOf(obj)), areaCodePrimaryKeyMapping)
 		args = append(args, pkeyArgs...)
 	}
 
-	sql := fmt.Sprintf("UPDATE `Areas` SET %s WHERE %s",
+	sql := fmt.Sprintf("UPDATE `AreaCodes` SET %s WHERE %s",
 		strmangle.SetParamNames("`", "`", 0, colNames),
-		strmangle.WhereClauseRepeated(string(dialect.LQ), string(dialect.RQ), 0, areasPrimaryKeyColumns, len(o)))
+		strmangle.WhereClauseRepeated(string(dialect.LQ), string(dialect.RQ), 0, areaCodePrimaryKeyColumns, len(o)))
 
 	if boil.IsDebug(ctx) {
 		writer := boil.DebugWriterFrom(ctx)
@@ -700,33 +700,33 @@ func (o AreasSlice) UpdateAll(ctx context.Context, exec boil.ContextExecutor, co
 	}
 	result, err := exec.ExecContext(ctx, sql, args...)
 	if err != nil {
-		return 0, errors.Wrap(err, "models: unable to update all in areas slice")
+		return 0, errors.Wrap(err, "models: unable to update all in areaCode slice")
 	}
 
 	rowsAff, err := result.RowsAffected()
 	if err != nil {
-		return 0, errors.Wrap(err, "models: unable to retrieve rows affected all in update all areas")
+		return 0, errors.Wrap(err, "models: unable to retrieve rows affected all in update all areaCode")
 	}
 	return rowsAff, nil
 }
 
-var mySQLAreasUniqueColumns = []string{
+var mySQLAreaCodeUniqueColumns = []string{
 	"id",
 }
 
 // Upsert attempts an insert using an executor, and does an update or ignore on conflict.
 // See boil.Columns documentation for how to properly use updateColumns and insertColumns.
-func (o *Areas) Upsert(ctx context.Context, exec boil.ContextExecutor, updateColumns, insertColumns boil.Columns) error {
+func (o *AreaCode) Upsert(ctx context.Context, exec boil.ContextExecutor, updateColumns, insertColumns boil.Columns) error {
 	if o == nil {
-		return errors.New("models: no Areas provided for upsert")
+		return errors.New("models: no AreaCodes provided for upsert")
 	}
 
 	if err := o.doBeforeUpsertHooks(ctx, exec); err != nil {
 		return err
 	}
 
-	nzDefaults := queries.NonZeroDefaultSet(areasColumnsWithDefault, o)
-	nzUniques := queries.NonZeroDefaultSet(mySQLAreasUniqueColumns, o)
+	nzDefaults := queries.NonZeroDefaultSet(areaCodeColumnsWithDefault, o)
+	nzUniques := queries.NonZeroDefaultSet(mySQLAreaCodeUniqueColumns, o)
 
 	if len(nzUniques) == 0 {
 		return errors.New("cannot upsert with a table that cannot conflict on a unique column")
@@ -754,43 +754,43 @@ func (o *Areas) Upsert(ctx context.Context, exec boil.ContextExecutor, updateCol
 	key := buf.String()
 	strmangle.PutBuffer(buf)
 
-	areasUpsertCacheMut.RLock()
-	cache, cached := areasUpsertCache[key]
-	areasUpsertCacheMut.RUnlock()
+	areaCodeUpsertCacheMut.RLock()
+	cache, cached := areaCodeUpsertCache[key]
+	areaCodeUpsertCacheMut.RUnlock()
 
 	var err error
 
 	if !cached {
 		insert, ret := insertColumns.InsertColumnSet(
-			areasAllColumns,
-			areasColumnsWithDefault,
-			areasColumnsWithoutDefault,
+			areaCodeAllColumns,
+			areaCodeColumnsWithDefault,
+			areaCodeColumnsWithoutDefault,
 			nzDefaults,
 		)
 
 		update := updateColumns.UpdateColumnSet(
-			areasAllColumns,
-			areasPrimaryKeyColumns,
+			areaCodeAllColumns,
+			areaCodePrimaryKeyColumns,
 		)
 
 		if !updateColumns.IsNone() && len(update) == 0 {
-			return errors.New("models: unable to upsert Areas, could not build update column list")
+			return errors.New("models: unable to upsert AreaCodes, could not build update column list")
 		}
 
 		ret = strmangle.SetComplement(ret, nzUniques)
-		cache.query = buildUpsertQueryMySQL(dialect, "`Areas`", update, insert)
+		cache.query = buildUpsertQueryMySQL(dialect, "`AreaCodes`", update, insert)
 		cache.retQuery = fmt.Sprintf(
-			"SELECT %s FROM `Areas` WHERE %s",
+			"SELECT %s FROM `AreaCodes` WHERE %s",
 			strings.Join(strmangle.IdentQuoteSlice(dialect.LQ, dialect.RQ, ret), ","),
 			strmangle.WhereClause("`", "`", 0, nzUniques),
 		)
 
-		cache.valueMapping, err = queries.BindMapping(areasType, areasMapping, insert)
+		cache.valueMapping, err = queries.BindMapping(areaCodeType, areaCodeMapping, insert)
 		if err != nil {
 			return err
 		}
 		if len(ret) != 0 {
-			cache.retMapping, err = queries.BindMapping(areasType, areasMapping, ret)
+			cache.retMapping, err = queries.BindMapping(areaCodeType, areaCodeMapping, ret)
 			if err != nil {
 				return err
 			}
@@ -812,7 +812,7 @@ func (o *Areas) Upsert(ctx context.Context, exec boil.ContextExecutor, updateCol
 	_, err = exec.ExecContext(ctx, cache.query, vals...)
 
 	if err != nil {
-		return errors.Wrap(err, "models: unable to upsert for Areas")
+		return errors.Wrap(err, "models: unable to upsert for AreaCodes")
 	}
 
 	var uniqueMap []uint64
@@ -822,9 +822,9 @@ func (o *Areas) Upsert(ctx context.Context, exec boil.ContextExecutor, updateCol
 		goto CacheNoHooks
 	}
 
-	uniqueMap, err = queries.BindMapping(areasType, areasMapping, nzUniques)
+	uniqueMap, err = queries.BindMapping(areaCodeType, areaCodeMapping, nzUniques)
 	if err != nil {
-		return errors.Wrap(err, "models: unable to retrieve unique values for Areas")
+		return errors.Wrap(err, "models: unable to retrieve unique values for AreaCodes")
 	}
 	nzUniqueCols = queries.ValuesFromMapping(reflect.Indirect(reflect.ValueOf(o)), uniqueMap)
 
@@ -835,32 +835,32 @@ func (o *Areas) Upsert(ctx context.Context, exec boil.ContextExecutor, updateCol
 	}
 	err = exec.QueryRowContext(ctx, cache.retQuery, nzUniqueCols...).Scan(returns...)
 	if err != nil {
-		return errors.Wrap(err, "models: unable to populate default values for Areas")
+		return errors.Wrap(err, "models: unable to populate default values for AreaCodes")
 	}
 
 CacheNoHooks:
 	if !cached {
-		areasUpsertCacheMut.Lock()
-		areasUpsertCache[key] = cache
-		areasUpsertCacheMut.Unlock()
+		areaCodeUpsertCacheMut.Lock()
+		areaCodeUpsertCache[key] = cache
+		areaCodeUpsertCacheMut.Unlock()
 	}
 
 	return o.doAfterUpsertHooks(ctx, exec)
 }
 
-// Delete deletes a single Areas record with an executor.
+// Delete deletes a single AreaCode record with an executor.
 // Delete will match against the primary key column to find the record to delete.
-func (o *Areas) Delete(ctx context.Context, exec boil.ContextExecutor) (int64, error) {
+func (o *AreaCode) Delete(ctx context.Context, exec boil.ContextExecutor) (int64, error) {
 	if o == nil {
-		return 0, errors.New("models: no Areas provided for delete")
+		return 0, errors.New("models: no AreaCode provided for delete")
 	}
 
 	if err := o.doBeforeDeleteHooks(ctx, exec); err != nil {
 		return 0, err
 	}
 
-	args := queries.ValuesFromMapping(reflect.Indirect(reflect.ValueOf(o)), areasPrimaryKeyMapping)
-	sql := "DELETE FROM `Areas` WHERE `id`=?"
+	args := queries.ValuesFromMapping(reflect.Indirect(reflect.ValueOf(o)), areaCodePrimaryKeyMapping)
+	sql := "DELETE FROM `AreaCodes` WHERE `id`=?"
 
 	if boil.IsDebug(ctx) {
 		writer := boil.DebugWriterFrom(ctx)
@@ -869,12 +869,12 @@ func (o *Areas) Delete(ctx context.Context, exec boil.ContextExecutor) (int64, e
 	}
 	result, err := exec.ExecContext(ctx, sql, args...)
 	if err != nil {
-		return 0, errors.Wrap(err, "models: unable to delete from Areas")
+		return 0, errors.Wrap(err, "models: unable to delete from AreaCodes")
 	}
 
 	rowsAff, err := result.RowsAffected()
 	if err != nil {
-		return 0, errors.Wrap(err, "models: failed to get rows affected by delete for Areas")
+		return 0, errors.Wrap(err, "models: failed to get rows affected by delete for AreaCodes")
 	}
 
 	if err := o.doAfterDeleteHooks(ctx, exec); err != nil {
@@ -885,33 +885,33 @@ func (o *Areas) Delete(ctx context.Context, exec boil.ContextExecutor) (int64, e
 }
 
 // DeleteAll deletes all matching rows.
-func (q areasQuery) DeleteAll(ctx context.Context, exec boil.ContextExecutor) (int64, error) {
+func (q areaCodeQuery) DeleteAll(ctx context.Context, exec boil.ContextExecutor) (int64, error) {
 	if q.Query == nil {
-		return 0, errors.New("models: no areasQuery provided for delete all")
+		return 0, errors.New("models: no areaCodeQuery provided for delete all")
 	}
 
 	queries.SetDelete(q.Query)
 
 	result, err := q.Query.ExecContext(ctx, exec)
 	if err != nil {
-		return 0, errors.Wrap(err, "models: unable to delete all from Areas")
+		return 0, errors.Wrap(err, "models: unable to delete all from AreaCodes")
 	}
 
 	rowsAff, err := result.RowsAffected()
 	if err != nil {
-		return 0, errors.Wrap(err, "models: failed to get rows affected by deleteall for Areas")
+		return 0, errors.Wrap(err, "models: failed to get rows affected by deleteall for AreaCodes")
 	}
 
 	return rowsAff, nil
 }
 
 // DeleteAll deletes all rows in the slice, using an executor.
-func (o AreasSlice) DeleteAll(ctx context.Context, exec boil.ContextExecutor) (int64, error) {
+func (o AreaCodeSlice) DeleteAll(ctx context.Context, exec boil.ContextExecutor) (int64, error) {
 	if len(o) == 0 {
 		return 0, nil
 	}
 
-	if len(areasBeforeDeleteHooks) != 0 {
+	if len(areaCodeBeforeDeleteHooks) != 0 {
 		for _, obj := range o {
 			if err := obj.doBeforeDeleteHooks(ctx, exec); err != nil {
 				return 0, err
@@ -921,12 +921,12 @@ func (o AreasSlice) DeleteAll(ctx context.Context, exec boil.ContextExecutor) (i
 
 	var args []interface{}
 	for _, obj := range o {
-		pkeyArgs := queries.ValuesFromMapping(reflect.Indirect(reflect.ValueOf(obj)), areasPrimaryKeyMapping)
+		pkeyArgs := queries.ValuesFromMapping(reflect.Indirect(reflect.ValueOf(obj)), areaCodePrimaryKeyMapping)
 		args = append(args, pkeyArgs...)
 	}
 
-	sql := "DELETE FROM `Areas` WHERE " +
-		strmangle.WhereClauseRepeated(string(dialect.LQ), string(dialect.RQ), 0, areasPrimaryKeyColumns, len(o))
+	sql := "DELETE FROM `AreaCodes` WHERE " +
+		strmangle.WhereClauseRepeated(string(dialect.LQ), string(dialect.RQ), 0, areaCodePrimaryKeyColumns, len(o))
 
 	if boil.IsDebug(ctx) {
 		writer := boil.DebugWriterFrom(ctx)
@@ -935,15 +935,15 @@ func (o AreasSlice) DeleteAll(ctx context.Context, exec boil.ContextExecutor) (i
 	}
 	result, err := exec.ExecContext(ctx, sql, args...)
 	if err != nil {
-		return 0, errors.Wrap(err, "models: unable to delete all from areas slice")
+		return 0, errors.Wrap(err, "models: unable to delete all from areaCode slice")
 	}
 
 	rowsAff, err := result.RowsAffected()
 	if err != nil {
-		return 0, errors.Wrap(err, "models: failed to get rows affected by deleteall for Areas")
+		return 0, errors.Wrap(err, "models: failed to get rows affected by deleteall for AreaCodes")
 	}
 
-	if len(areasAfterDeleteHooks) != 0 {
+	if len(areaCodeAfterDeleteHooks) != 0 {
 		for _, obj := range o {
 			if err := obj.doAfterDeleteHooks(ctx, exec); err != nil {
 				return 0, err
@@ -956,8 +956,8 @@ func (o AreasSlice) DeleteAll(ctx context.Context, exec boil.ContextExecutor) (i
 
 // Reload refetches the object from the database
 // using the primary keys with an executor.
-func (o *Areas) Reload(ctx context.Context, exec boil.ContextExecutor) error {
-	ret, err := FindAreas(ctx, exec, o.ID)
+func (o *AreaCode) Reload(ctx context.Context, exec boil.ContextExecutor) error {
+	ret, err := FindAreaCode(ctx, exec, o.ID)
 	if err != nil {
 		return err
 	}
@@ -968,26 +968,26 @@ func (o *Areas) Reload(ctx context.Context, exec boil.ContextExecutor) error {
 
 // ReloadAll refetches every row with matching primary key column values
 // and overwrites the original object slice with the newly updated slice.
-func (o *AreasSlice) ReloadAll(ctx context.Context, exec boil.ContextExecutor) error {
+func (o *AreaCodeSlice) ReloadAll(ctx context.Context, exec boil.ContextExecutor) error {
 	if o == nil || len(*o) == 0 {
 		return nil
 	}
 
-	slice := AreasSlice{}
+	slice := AreaCodeSlice{}
 	var args []interface{}
 	for _, obj := range *o {
-		pkeyArgs := queries.ValuesFromMapping(reflect.Indirect(reflect.ValueOf(obj)), areasPrimaryKeyMapping)
+		pkeyArgs := queries.ValuesFromMapping(reflect.Indirect(reflect.ValueOf(obj)), areaCodePrimaryKeyMapping)
 		args = append(args, pkeyArgs...)
 	}
 
-	sql := "SELECT `Areas`.* FROM `Areas` WHERE " +
-		strmangle.WhereClauseRepeated(string(dialect.LQ), string(dialect.RQ), 0, areasPrimaryKeyColumns, len(*o))
+	sql := "SELECT `AreaCodes`.* FROM `AreaCodes` WHERE " +
+		strmangle.WhereClauseRepeated(string(dialect.LQ), string(dialect.RQ), 0, areaCodePrimaryKeyColumns, len(*o))
 
 	q := queries.Raw(sql, args...)
 
 	err := q.Bind(ctx, exec, &slice)
 	if err != nil {
-		return errors.Wrap(err, "models: unable to reload all in AreasSlice")
+		return errors.Wrap(err, "models: unable to reload all in AreaCodeSlice")
 	}
 
 	*o = slice
@@ -995,10 +995,10 @@ func (o *AreasSlice) ReloadAll(ctx context.Context, exec boil.ContextExecutor) e
 	return nil
 }
 
-// AreasExists checks if the Areas row exists.
-func AreasExists(ctx context.Context, exec boil.ContextExecutor, iD uint) (bool, error) {
+// AreaCodeExists checks if the AreaCode row exists.
+func AreaCodeExists(ctx context.Context, exec boil.ContextExecutor, iD uint) (bool, error) {
 	var exists bool
-	sql := "select exists(select 1 from `Areas` where `id`=? limit 1)"
+	sql := "select exists(select 1 from `AreaCodes` where `id`=? limit 1)"
 
 	if boil.IsDebug(ctx) {
 		writer := boil.DebugWriterFrom(ctx)
@@ -1009,13 +1009,13 @@ func AreasExists(ctx context.Context, exec boil.ContextExecutor, iD uint) (bool,
 
 	err := row.Scan(&exists)
 	if err != nil {
-		return false, errors.Wrap(err, "models: unable to check if Areas exists")
+		return false, errors.Wrap(err, "models: unable to check if AreaCodes exists")
 	}
 
 	return exists, nil
 }
 
-// Exists checks if the Areas row exists.
-func (o *Areas) Exists(ctx context.Context, exec boil.ContextExecutor) (bool, error) {
-	return AreasExists(ctx, exec, o.ID)
+// Exists checks if the AreaCode row exists.
+func (o *AreaCode) Exists(ctx context.Context, exec boil.ContextExecutor) (bool, error) {
+	return AreaCodeExists(ctx, exec, o.ID)
 }
