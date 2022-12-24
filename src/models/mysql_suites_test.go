@@ -6,6 +6,8 @@ package models
 import "testing"
 
 func TestUpsert(t *testing.T) {
+	t.Run("Areas", testAreasUpsert)
+
 	t.Run("EarthquakeActivities", testEarthquakeActivitiesUpsert)
 
 	t.Run("EarthquakeCounts", testEarthquakeCountsUpsert)
@@ -20,7 +22,11 @@ func TestUpsert(t *testing.T) {
 
 	t.Run("Earthquakes", testEarthquakesUpsert)
 
+	t.Run("IntensityStations", testIntensityStationsUpsert)
+
 	t.Run("JmaXmlEntries", testJmaXmlEntriesUpsert)
+
+	t.Run("Prefectures", testPrefecturesUpsert)
 
 	t.Run("TsunamiConnects", testTsunamiConnectsUpsert)
 

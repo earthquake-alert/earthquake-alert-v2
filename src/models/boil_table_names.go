@@ -4,6 +4,7 @@
 package models
 
 var TableNames = struct {
+	Areas                string
 	EarthquakeActivity   string
 	EarthquakeCount      string
 	EarthquakeEpicenters string
@@ -11,11 +12,14 @@ var TableNames = struct {
 	EarthquakeReports    string
 	EarthquakeUpdate     string
 	Earthquakes          string
+	IntensityStations    string
 	JmaXmlEntries        string
+	Prefectures          string
 	TsunamiConnects      string
 	TsunamiInfos         string
 	TwitterThreads       string
 }{
+	Areas:                "Areas",
 	EarthquakeActivity:   "EarthquakeActivity",
 	EarthquakeCount:      "EarthquakeCount",
 	EarthquakeEpicenters: "EarthquakeEpicenters",
@@ -23,7 +27,9 @@ var TableNames = struct {
 	EarthquakeReports:    "EarthquakeReports",
 	EarthquakeUpdate:     "EarthquakeUpdate",
 	Earthquakes:          "Earthquakes",
+	IntensityStations:    "IntensityStations",
 	JmaXmlEntries:        "JmaXmlEntries",
+	Prefectures:          "Prefectures",
 	TsunamiConnects:      "TsunamiConnects",
 	TsunamiInfos:         "TsunamiInfos",
 	TwitterThreads:       "TwitterThreads",
