@@ -30,6 +30,8 @@ func ParseDate(d string) (time.Time, error) {
 }
 
 // 度分秒の緯度経度十進度に変換する
+// = 度 + (分 / 60) + (秒 / 60)
+// 引数は、00.00の形式で、[度].[分]となる。
 func ParsePosition(position float64) float64 {
 	isNegative := false
 	if position < 0 {
