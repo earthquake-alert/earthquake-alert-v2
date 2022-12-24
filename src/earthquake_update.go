@@ -5,7 +5,6 @@ import (
 	"database/sql"
 	"errors"
 	"fmt"
-	"strconv"
 	"time"
 
 	"github.com/earthquake-alert/erarthquake-alert-v2/src/jma"
@@ -77,7 +76,7 @@ func (e *EarthquakeUpdate) Assembly(ctx context.Context, db *sql.DB) error {
 	// マグニチュード表記を文字列にフォーマットする
 	e.NewMagnitude = FormatMagnitude(&e.Parsed.Body.Earthquake.Magnitude)
 
-	ea, err := e.GetOldEarthquakes(ctx, db, int64(eventId[0]))
+	ea, err := e.GetOldEarthquakes(ctx, db, eventId[0])
 	if err != nil {
 		return err
 	}
@@ -86,7 +85,7 @@ func (e *EarthquakeUpdate) Assembly(ctx context.Context, db *sql.DB) error {
 	}
 
 	update := models.EarthquakeUpdate{
-		EventID:   int64(eventId[0]),
+		EventID:   eventId[0],
 		Lat:       null.Float64FromPtr(e.NewLat),
 		Lon:       null.Float64FromPtr(e.NewLon),
 		Depth:     null.IntFromPtr(e.NewDepth),
@@ -101,7 +100,7 @@ func (e *EarthquakeUpdate) Assembly(ctx context.Context, db *sql.DB) error {
 	// Earthquakes テーブルを更新する
 	// FIXME: 重複している
 	earthquake, err := models.Earthquakes(
-		models.EarthquakeWhere.EventID.EQ(int64(eventId[0])),
+		models.EarthquakeWhere.EventID.EQ(eventId[0]),
 	).One(ctx, db)
 	if err != nil {
 		return err
@@ -117,8 +116,8 @@ func (e *EarthquakeUpdate) Assembly(ctx context.Context, db *sql.DB) error {
 	return nil
 }
 
-func (e *EarthquakeUpdate) InsertUpdateDB(ctx context.Context, db *sql.DB, eventId int64, targetDate time.Time) error {
-
+// EarthquakeUpdates テーブルにinsertする
+func (e *EarthquakeUpdate) InsertUpdateDB(ctx context.Context, db *sql.DB, eventId uint64, targetDate time.Time) error {
 	update := models.EarthquakeUpdate{
 		EventID:   eventId,
 		Lat:       null.Float64FromPtr(e.NewLat),
@@ -132,7 +131,7 @@ func (e *EarthquakeUpdate) InsertUpdateDB(ctx context.Context, db *sql.DB, event
 }
 
 // 更新前の地震情報を取得する
-func (e *EarthquakeUpdate) GetOldEarthquakes(ctx context.Context, db *sql.DB, eventId int64) (*models.Earthquake, error) {
+func (e *EarthquakeUpdate) GetOldEarthquakes(ctx context.Context, db *sql.DB, eventId uint64) (*models.Earthquake, error) {
 	ea, err := models.Earthquakes(
 		models.EarthquakeWhere.EventID.EQ(eventId),
 	).One(ctx, db)
@@ -215,6 +214,8 @@ func (e *EarthquakeUpdate) GetOldEpicenter() string {
 	return FormatLatLonDepth(lat, lon, depth)
 }
 
+// 前回のマグニチュードを返す
+// DBに格納されているマグニチュード表記はフォーマットしたものであるため存在している場合はそのまま返す
 func (e *EarthquakeUpdate) GetOldMagnitude() string {
 	if e.LatestEarthquake == nil {
 		return "M不明"
@@ -233,9 +234,7 @@ func (e *EarthquakeUpdate) GetTitle() string {
 }
 
 func (e *EarthquakeUpdate) GetTargetDate() (time.Time, error) {
-	targetTime := e.Parsed.Head.TargetDateTime
-
-	return time.Parse("2006-01-02T15:04:05+09:00", targetTime)
+	return ParseDate(e.Parsed.Head.TargetDateTime)
 }
 
 func (e *EarthquakeUpdate) GetInfoType() jma.InfoType {
@@ -250,10 +249,6 @@ func (e *EarthquakeUpdate) GetImages() []string {
 	return e.Images
 }
 
-func (e *EarthquakeUpdate) GetEventId() ([]int, error) {
-	eventId, err := strconv.Atoi(e.Parsed.Head.EventID)
-	if err != nil {
-		return nil, err
-	}
-	return []int{eventId}, nil
+func (e *EarthquakeUpdate) GetEventId() ([]uint64, error) {
+	return ParseEventID(e.Parsed.Head.EventID)
 }

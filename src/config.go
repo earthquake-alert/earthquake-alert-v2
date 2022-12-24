@@ -3,6 +3,7 @@ package src
 import (
 	"os"
 	"path/filepath"
+	"time"
 
 	"github.com/earthquake-alert/erarthquake-alert-v2/src/jma"
 	"github.com/go-sql-driver/mysql"
@@ -26,6 +27,9 @@ type Config struct {
 	PublishConfigPath string
 
 	PublishConfig *PublishConfig
+
+	// タイムゾーン
+	TimeLocation *time.Location
 
 	// 気象庁XML電文のURL
 	JmaXmlUrl string

@@ -48,7 +48,6 @@ type JmaXmlControl struct {
 
 	// 発表時刻
 	// 気象庁システムからの発信時刻を記載する。この値は秒値まで有効である
-	// TODO: ISO 8601 でエンコードできるかどうか
 	DateTime string `xml:"DateTime"`
 
 	// 運用種別

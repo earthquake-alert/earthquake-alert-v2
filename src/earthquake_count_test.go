@@ -95,7 +95,7 @@ func TestEarthquakeCountAssembly(t *testing.T) {
 			require.NoError(t, err)
 
 			exists, err := models.EarthquakeCounts(
-				models.EarthquakeCountWhere.EventID.EQ(int64(eventIds[0])),
+				models.EarthquakeCountWhere.EventID.EQ(eventIds[0]),
 			).Exists(ctx, db)
 			require.NoError(t, err)
 			require.True(t, exists)
@@ -118,7 +118,7 @@ func TestEarthquakeCountAssembly(t *testing.T) {
 			require.NoError(t, err)
 
 			exists, err := models.EarthquakeCounts(
-				models.EarthquakeCountWhere.EventID.EQ(int64(eventIds[0])),
+				models.EarthquakeCountWhere.EventID.EQ(eventIds[0]),
 			).Exists(ctx, db)
 			require.NoError(t, err)
 			require.True(t, exists)
@@ -141,7 +141,7 @@ func TestEarthquakeCountAssembly(t *testing.T) {
 			require.NoError(t, err)
 
 			a, err := models.EarthquakeCounts(
-				models.EarthquakeCountWhere.EventID.EQ(int64(eventIds[0])),
+				models.EarthquakeCountWhere.EventID.EQ(eventIds[0]),
 			).One(ctx, db)
 			require.NoError(t, err)
 

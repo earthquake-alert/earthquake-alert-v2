@@ -49,6 +49,7 @@ func FormatDepth(d *int) string {
 }
 
 // 日本測地系の緯度経度をいい感じにする
+// lat, lonは度分秒で表す
 func FormatLatLonDepth(lat float64, lon float64, depth *int) string {
 	latPrefix := "北緯"
 	if lat < 0 {

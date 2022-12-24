@@ -153,7 +153,7 @@ func TestEarthquakeActivityGetEventId(t *testing.T) {
 		e, err := ea.GetEventId()
 		require.NoError(t, err)
 
-		require.Equal(t, e, []int{20191111170000})
+		require.Equal(t, e, []uint64{20191111170000})
 	})
 
 	t.Run("2", func(t *testing.T) {
@@ -169,7 +169,7 @@ func TestEarthquakeActivityGetEventId(t *testing.T) {
 		e, err := ea.GetEventId()
 		require.NoError(t, err)
 
-		require.Equal(t, e, []int{20220316133000})
+		require.Equal(t, e, []uint64{20220316133000})
 
 	})
 }
@@ -197,7 +197,7 @@ func TestEarthquakeActivityAssembly(t *testing.T) {
 			require.NoError(t, err)
 
 			exists, err := models.EarthquakeActivities(
-				models.EarthquakeActivityWhere.EventID.EQ(int64(eventIds[0])),
+				models.EarthquakeActivityWhere.EventID.EQ(eventIds[0]),
 			).Exists(ctx, db)
 			require.NoError(t, err)
 			require.True(t, exists)
@@ -220,7 +220,7 @@ func TestEarthquakeActivityAssembly(t *testing.T) {
 			require.NoError(t, err)
 
 			exists, err := models.EarthquakeActivities(
-				models.EarthquakeActivityWhere.EventID.EQ(int64(eventIds[0])),
+				models.EarthquakeActivityWhere.EventID.EQ(eventIds[0]),
 			).Exists(ctx, db)
 			require.NoError(t, err)
 			require.True(t, exists)
@@ -243,7 +243,7 @@ func TestEarthquakeActivityAssembly(t *testing.T) {
 			require.NoError(t, err)
 
 			a, err := models.EarthquakeActivities(
-				models.EarthquakeActivityWhere.EventID.EQ(int64(eventIds[0])),
+				models.EarthquakeActivityWhere.EventID.EQ(eventIds[0]),
 			).One(ctx, db)
 			require.NoError(t, err)
 

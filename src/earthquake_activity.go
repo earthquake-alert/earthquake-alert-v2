@@ -4,7 +4,6 @@ import (
 	"context"
 	"database/sql"
 	"fmt"
-	"strconv"
 	"time"
 
 	"github.com/earthquake-alert/erarthquake-alert-v2/src/jma"
@@ -43,7 +42,7 @@ func (e *EarthquakeActivity) Assembly(ctx context.Context, db *sql.DB) error {
 	}
 
 	activity := &models.EarthquakeActivity{
-		EventID: int64(eventId[0]),
+		EventID: eventId[0],
 		Date:    d,
 		Row:     e.Row,
 	}
@@ -69,9 +68,7 @@ func (e *EarthquakeActivity) GetTitle() string {
 }
 
 func (e *EarthquakeActivity) GetTargetDate() (time.Time, error) {
-	targetTime := e.Parsed.Head.TargetDateTime
-
-	return time.Parse("2006-01-02T15:04:05+09:00", targetTime)
+	return ParseDate(e.Parsed.Head.TargetDateTime)
 }
 
 func (e *EarthquakeActivity) GetInfoType() jma.InfoType {
@@ -88,9 +85,5 @@ func (e *EarthquakeActivity) GetImages() []string {
 }
 
 func (e *EarthquakeActivity) GetEventId() ([]uint64, error) {
-	eventId, err := strconv.Atoi(e.Parsed.Head.EventID)
-	if err != nil {
-		return nil, err
-	}
-	return []uint64{eventId}, nil
+	return ParseEventID(e.Parsed.Head.EventID)
 }

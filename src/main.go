@@ -2,7 +2,6 @@ package src
 
 import (
 	"context"
-	"time"
 
 	"github.com/earthquake-alert/erarthquake-alert-v2/src/logging"
 	"github.com/gin-gonic/gin"
@@ -12,11 +11,6 @@ import (
 func Init(mode string) {
 	logging.InitLogging(mode)
 	err := InitConfig(mode)
-	if err != nil {
-		logging.Sugar.Fatal(err)
-	}
-
-	_, err = time.LoadLocation("Asia/Tokyo")
 	if err != nil {
 		logging.Sugar.Fatal(err)
 	}
