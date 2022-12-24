@@ -24,7 +24,7 @@ import (
 
 // Earthquake is an object representing the database table.
 type Earthquake struct {
-	EventID       int64        `boil:"event_id" json:"event_id" toml:"event_id" yaml:"event_id"`
+	EventID       uint64       `boil:"event_id" json:"event_id" toml:"event_id" yaml:"event_id"`
 	Lat           null.Float64 `boil:"lat" json:"lat,omitempty" toml:"lat" yaml:"lat,omitempty"`
 	Lon           null.Float64 `boil:"lon" json:"lon,omitempty" toml:"lon" yaml:"lon,omitempty"`
 	Depth         null.Int     `boil:"depth" json:"depth,omitempty" toml:"depth" yaml:"depth,omitempty"`
@@ -90,7 +90,7 @@ var EarthquakeTableColumns = struct {
 // Generated where
 
 var EarthquakeWhere = struct {
-	EventID       whereHelperint64
+	EventID       whereHelperuint64
 	Lat           whereHelpernull_Float64
 	Lon           whereHelpernull_Float64
 	Depth         whereHelpernull_Int
@@ -101,7 +101,7 @@ var EarthquakeWhere = struct {
 	Created       whereHelpertime_Time
 	Modified      whereHelpertime_Time
 }{
-	EventID:       whereHelperint64{field: "`Earthquakes`.`event_id`"},
+	EventID:       whereHelperuint64{field: "`Earthquakes`.`event_id`"},
 	Lat:           whereHelpernull_Float64{field: "`Earthquakes`.`lat`"},
 	Lon:           whereHelpernull_Float64{field: "`Earthquakes`.`lon`"},
 	Depth:         whereHelpernull_Int{field: "`Earthquakes`.`depth`"},
@@ -428,7 +428,7 @@ func Earthquakes(mods ...qm.QueryMod) earthquakeQuery {
 
 // FindEarthquake retrieves a single record by ID with an executor.
 // If selectCols is empty Find will return all columns.
-func FindEarthquake(ctx context.Context, exec boil.ContextExecutor, eventID int64, selectCols ...string) (*Earthquake, error) {
+func FindEarthquake(ctx context.Context, exec boil.ContextExecutor, eventID uint64, selectCols ...string) (*Earthquake, error) {
 	earthquakeObj := &Earthquake{}
 
 	sel := "*"
@@ -965,7 +965,7 @@ func (o *EarthquakeSlice) ReloadAll(ctx context.Context, exec boil.ContextExecut
 }
 
 // EarthquakeExists checks if the Earthquake row exists.
-func EarthquakeExists(ctx context.Context, exec boil.ContextExecutor, eventID int64) (bool, error) {
+func EarthquakeExists(ctx context.Context, exec boil.ContextExecutor, eventID uint64) (bool, error) {
 	var exists bool
 	sql := "select exists(select 1 from `Earthquakes` where `event_id`=? limit 1)"
 

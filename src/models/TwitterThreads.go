@@ -23,7 +23,7 @@ import (
 
 // TwitterThread is an object representing the database table.
 type TwitterThread struct {
-	EventID int64     `boil:"event_id" json:"event_id" toml:"event_id" yaml:"event_id"`
+	EventID uint64    `boil:"event_id" json:"event_id" toml:"event_id" yaml:"event_id"`
 	TweetID string    `boil:"tweet_id" json:"tweet_id" toml:"tweet_id" yaml:"tweet_id"`
 	Created time.Time `boil:"created" json:"created" toml:"created" yaml:"created"`
 
@@ -54,11 +54,11 @@ var TwitterThreadTableColumns = struct {
 // Generated where
 
 var TwitterThreadWhere = struct {
-	EventID whereHelperint64
+	EventID whereHelperuint64
 	TweetID whereHelperstring
 	Created whereHelpertime_Time
 }{
-	EventID: whereHelperint64{field: "`TwitterThreads`.`event_id`"},
+	EventID: whereHelperuint64{field: "`TwitterThreads`.`event_id`"},
 	TweetID: whereHelperstring{field: "`TwitterThreads`.`tweet_id`"},
 	Created: whereHelpertime_Time{field: "`TwitterThreads`.`created`"},
 }
@@ -378,7 +378,7 @@ func TwitterThreads(mods ...qm.QueryMod) twitterThreadQuery {
 
 // FindTwitterThread retrieves a single record by ID with an executor.
 // If selectCols is empty Find will return all columns.
-func FindTwitterThread(ctx context.Context, exec boil.ContextExecutor, eventID int64, selectCols ...string) (*TwitterThread, error) {
+func FindTwitterThread(ctx context.Context, exec boil.ContextExecutor, eventID uint64, selectCols ...string) (*TwitterThread, error) {
 	twitterThreadObj := &TwitterThread{}
 
 	sel := "*"
@@ -915,7 +915,7 @@ func (o *TwitterThreadSlice) ReloadAll(ctx context.Context, exec boil.ContextExe
 }
 
 // TwitterThreadExists checks if the TwitterThread row exists.
-func TwitterThreadExists(ctx context.Context, exec boil.ContextExecutor, eventID int64) (bool, error) {
+func TwitterThreadExists(ctx context.Context, exec boil.ContextExecutor, eventID uint64) (bool, error) {
 	var exists bool
 	sql := "select exists(select 1 from `TwitterThreads` where `event_id`=? limit 1)"
 

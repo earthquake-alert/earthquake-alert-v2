@@ -25,7 +25,7 @@ import (
 // EarthquakeEpicenter is an object representing the database table.
 type EarthquakeEpicenter struct {
 	ID            uint         `boil:"id" json:"id" toml:"id" yaml:"id"`
-	EventID       int64        `boil:"event_id" json:"event_id" toml:"event_id" yaml:"event_id"`
+	EventID       uint64       `boil:"event_id" json:"event_id" toml:"event_id" yaml:"event_id"`
 	Lat           null.Float64 `boil:"lat" json:"lat,omitempty" toml:"lat" yaml:"lat,omitempty"`
 	Lon           null.Float64 `boil:"lon" json:"lon,omitempty" toml:"lon" yaml:"lon,omitempty"`
 	Depth         null.Int     `boil:"depth" json:"depth,omitempty" toml:"depth" yaml:"depth,omitempty"`
@@ -205,7 +205,7 @@ func (w whereHelpernull_String) IsNotNull() qm.QueryMod { return qmhelper.WhereI
 
 var EarthquakeEpicenterWhere = struct {
 	ID            whereHelperuint
-	EventID       whereHelperint64
+	EventID       whereHelperuint64
 	Lat           whereHelpernull_Float64
 	Lon           whereHelpernull_Float64
 	Depth         whereHelpernull_Int
@@ -216,7 +216,7 @@ var EarthquakeEpicenterWhere = struct {
 	Row           whereHelperstring
 }{
 	ID:            whereHelperuint{field: "`EarthquakeEpicenters`.`id`"},
-	EventID:       whereHelperint64{field: "`EarthquakeEpicenters`.`event_id`"},
+	EventID:       whereHelperuint64{field: "`EarthquakeEpicenters`.`event_id`"},
 	Lat:           whereHelpernull_Float64{field: "`EarthquakeEpicenters`.`lat`"},
 	Lon:           whereHelpernull_Float64{field: "`EarthquakeEpicenters`.`lon`"},
 	Depth:         whereHelpernull_Int{field: "`EarthquakeEpicenters`.`depth`"},
