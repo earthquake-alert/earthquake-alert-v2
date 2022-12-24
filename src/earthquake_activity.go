@@ -87,10 +87,10 @@ func (e *EarthquakeActivity) GetImages() []string {
 	return []string{}
 }
 
-func (e *EarthquakeActivity) GetEventId() ([]int, error) {
+func (e *EarthquakeActivity) GetEventId() ([]uint64, error) {
 	eventId, err := strconv.Atoi(e.Parsed.Head.EventID)
 	if err != nil {
 		return nil, err
 	}
-	return []int{eventId}, nil
+	return []uint64{eventId}, nil
 }

@@ -50,15 +50,23 @@ func ParseEarthquakeUpdate(row []byte) (*EarthquakeUpdate, error) {
 }
 
 func (e *EarthquakeUpdate) Assembly(ctx context.Context, db *sql.DB) error {
+	eventId, err := e.GetEventId()
+	if err != nil {
+		return err
+	}
+	targetD, err := e.GetTargetDate()
+	if err != nil {
+		return err
+	}
+
+	if err := e.InsertUpdateDB(ctx, db, eventId[0], targetD); err != nil {
+		return err
+	}
+
 	// 取消報の時
 	// FIXME: DBに入れる
 	if e.Parsed.Body.Earthquake == nil {
 		return nil
-	}
-
-	eventId, err := e.GetEventId()
-	if err != nil {
-		return err
 	}
 
 	// 震源要素をパースする
@@ -75,11 +83,6 @@ func (e *EarthquakeUpdate) Assembly(ctx context.Context, db *sql.DB) error {
 	}
 	if ea != nil {
 		e.LatestEarthquake = ea
-	}
-
-	targetD, err := e.GetTargetDate()
-	if err != nil {
-		return err
 	}
 
 	update := models.EarthquakeUpdate{
@@ -112,6 +115,20 @@ func (e *EarthquakeUpdate) Assembly(ctx context.Context, db *sql.DB) error {
 		return err
 	}
 	return nil
+}
+
+func (e *EarthquakeUpdate) InsertUpdateDB(ctx context.Context, db *sql.DB, eventId int64, targetDate time.Time) error {
+
+	update := models.EarthquakeUpdate{
+		EventID:   eventId,
+		Lat:       null.Float64FromPtr(e.NewLat),
+		Lon:       null.Float64FromPtr(e.NewLon),
+		Depth:     null.IntFromPtr(e.NewDepth),
+		Magnitude: null.NewString(e.NewMagnitude, true),
+		Date:      targetDate,
+		Row:       e.Row,
+	}
+	return update.Insert(ctx, db, boil.Infer())
 }
 
 // 更新前の地震情報を取得する

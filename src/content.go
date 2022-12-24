@@ -8,7 +8,7 @@ import (
 	"github.com/earthquake-alert/erarthquake-alert-v2/src/jma"
 )
 
-type JmaElement interface {
+type Content interface {
 	// DBに格納したり、DBから関連の地震・津波情報を取得してくるメソッド
 	Assembly(ctx context.Context, db *sql.DB) error
 
@@ -33,5 +33,5 @@ type JmaElement interface {
 	GetImages() []string
 
 	// EventIDを返す
-	GetEventId() ([]int, error)
+	GetEventId() ([]uint64, error)
 }
