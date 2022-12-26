@@ -40,10 +40,8 @@ func TestEarthquakeUpdateAssembly(t *testing.T) {
 	require.NoError(t, err)
 
 	ctx := context.Background()
-	db, err := src.NewConnectMySQL(ctx)
-	require.NoError(t, err)
 
-	err = ea.Assembly(ctx, db)
+	err = ea.Assembly(ctx, DB)
 	require.Error(t, err)
 
 	t.Run("正しくパースされる", func(t *testing.T) {

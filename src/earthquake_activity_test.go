@@ -155,8 +155,6 @@ func TestEarthquakeActivityGetEventId(t *testing.T) {
 
 func TestEarthquakeActivityAssembly(t *testing.T) {
 	ctx := context.Background()
-	db, err := src.NewConnectMySQL(ctx)
-	require.NoError(t, err)
 
 	t.Run("DBに格納される", func(t *testing.T) {
 		t.Run("1", func(t *testing.T) {
@@ -166,7 +164,7 @@ func TestEarthquakeActivityAssembly(t *testing.T) {
 			ea, err := src.ParseEarthquakeActivity(row)
 			require.NoError(t, err)
 
-			err = ea.Assembly(ctx, db)
+			err = ea.Assembly(ctx, DB)
 			require.NoError(t, err)
 
 			eventIds, err := ea.GetEventId()
@@ -174,13 +172,13 @@ func TestEarthquakeActivityAssembly(t *testing.T) {
 
 			exists, err := models.EarthquakeActivities(
 				models.EarthquakeActivityWhere.EventID.EQ(eventIds[0]),
-			).Exists(ctx, db)
+			).Exists(ctx, DB)
 			require.NoError(t, err)
 			require.True(t, exists)
 
 			a, err := models.EarthquakeActivities(
 				models.EarthquakeActivityWhere.EventID.EQ(eventIds[0]),
-			).One(ctx, db)
+			).One(ctx, DB)
 			require.NoError(t, err)
 
 			require.Equal(t, a.EventID, eventIds[0])
@@ -197,7 +195,7 @@ func TestEarthquakeActivityAssembly(t *testing.T) {
 			ea, err := src.ParseEarthquakeActivity(row)
 			require.NoError(t, err)
 
-			err = ea.Assembly(ctx, db)
+			err = ea.Assembly(ctx, DB)
 			require.NoError(t, err)
 
 			eventIds, err := ea.GetEventId()
@@ -205,7 +203,7 @@ func TestEarthquakeActivityAssembly(t *testing.T) {
 
 			exists, err := models.EarthquakeActivities(
 				models.EarthquakeActivityWhere.EventID.EQ(eventIds[0]),
-			).Exists(ctx, db)
+			).Exists(ctx, DB)
 			require.NoError(t, err)
 			require.True(t, exists)
 		})
