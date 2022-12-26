@@ -20,12 +20,9 @@ var TestEarthquakeActivity = []string{
 func TestParseEarthquakeActivity(t *testing.T) {
 	for _, d := range TestEarthquakeActivity {
 		t.Run(fmt.Sprintf("Test %s", d), func(t *testing.T) {
-			testPath := filepath.Join(TEST_DATA_PATH, d)
+			row := LoadFile(d)
 
-			row, err := os.ReadFile(testPath)
-			require.NoError(t, err)
-
-			_, err = src.ParseEarthquakeActivity(row)
+			_, err := src.ParseEarthquakeActivity(row)
 			require.NoError(t, err)
 		})
 	}
@@ -41,10 +38,7 @@ func TestParseEarthquakeActivity(t *testing.T) {
 func TestEarthquakeActivityGetText(t *testing.T) {
 	t.Run("1", func(t *testing.T) {
 		target := "32-35_09_01_191111_VXSE56.xml"
-
-		testPath := filepath.Join(TEST_DATA_PATH, target)
-		row, err := os.ReadFile(testPath)
-		require.NoError(t, err)
+		row := LoadFile(target)
 
 		ea, err := src.ParseEarthquakeActivity(row)
 		require.NoError(t, err)
@@ -57,10 +51,7 @@ func TestEarthquakeActivityGetText(t *testing.T) {
 
 	t.Run("2", func(t *testing.T) {
 		target := "32-35_09_02_220316_VXSE56.xml"
-
-		testPath := filepath.Join(TEST_DATA_PATH, target)
-		row, err := os.ReadFile(testPath)
-		require.NoError(t, err)
+		row := LoadFile(target)
 
 		ea, err := src.ParseEarthquakeActivity(row)
 		require.NoError(t, err)
@@ -75,10 +66,7 @@ func TestEarthquakeActivityGetText(t *testing.T) {
 func TestEarthquakeActivityGetTitle(t *testing.T) {
 	t.Run("1", func(t *testing.T) {
 		target := "32-35_09_01_191111_VXSE56.xml"
-
-		testPath := filepath.Join(TEST_DATA_PATH, target)
-		row, err := os.ReadFile(testPath)
-		require.NoError(t, err)
+		row := LoadFile(target)
 
 		ea, err := src.ParseEarthquakeActivity(row)
 		require.NoError(t, err)
@@ -107,10 +95,7 @@ func TestEarthquakeActivityGetTitle(t *testing.T) {
 func TestEarthquakeActivityGetTargetDate(t *testing.T) {
 	t.Run("1", func(t *testing.T) {
 		target := "32-35_09_01_191111_VXSE56.xml"
-
-		testPath := filepath.Join(TEST_DATA_PATH, target)
-		row, err := os.ReadFile(testPath)
-		require.NoError(t, err)
+		row := LoadFile(target)
 
 		ea, err := src.ParseEarthquakeActivity(row)
 		require.NoError(t, err)
@@ -123,10 +108,7 @@ func TestEarthquakeActivityGetTargetDate(t *testing.T) {
 
 	t.Run("2", func(t *testing.T) {
 		target := "32-35_09_02_220316_VXSE56.xml"
-
-		testPath := filepath.Join(TEST_DATA_PATH, target)
-		row, err := os.ReadFile(testPath)
-		require.NoError(t, err)
+		row := LoadFile(target)
 
 		ea, err := src.ParseEarthquakeActivity(row)
 		require.NoError(t, err)
@@ -142,10 +124,7 @@ func TestEarthquakeActivityGetTargetDate(t *testing.T) {
 func TestEarthquakeActivityGetEventId(t *testing.T) {
 	t.Run("1", func(t *testing.T) {
 		target := "32-35_09_01_191111_VXSE56.xml"
-
-		testPath := filepath.Join(TEST_DATA_PATH, target)
-		row, err := os.ReadFile(testPath)
-		require.NoError(t, err)
+		row := LoadFile(target)
 
 		ea, err := src.ParseEarthquakeActivity(row)
 		require.NoError(t, err)
@@ -182,10 +161,7 @@ func TestEarthquakeActivityAssembly(t *testing.T) {
 	t.Run("DBに格納される", func(t *testing.T) {
 		t.Run("1", func(t *testing.T) {
 			target := "32-35_09_01_191111_VXSE56.xml"
-
-			testPath := filepath.Join(TEST_DATA_PATH, target)
-			row, err := os.ReadFile(testPath)
-			require.NoError(t, err)
+			row := LoadFile(target)
 
 			ea, err := src.ParseEarthquakeActivity(row)
 			require.NoError(t, err)
@@ -216,10 +192,7 @@ func TestEarthquakeActivityAssembly(t *testing.T) {
 
 		t.Run("2", func(t *testing.T) {
 			target := "32-35_09_02_220316_VXSE56.xml"
-
-			testPath := filepath.Join(TEST_DATA_PATH, target)
-			row, err := os.ReadFile(testPath)
-			require.NoError(t, err)
+			row := LoadFile(target)
 
 			ea, err := src.ParseEarthquakeActivity(row)
 			require.NoError(t, err)

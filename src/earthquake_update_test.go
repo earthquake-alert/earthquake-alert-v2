@@ -3,8 +3,6 @@ package src_test
 import (
 	"context"
 	"fmt"
-	"os"
-	"path/filepath"
 	"testing"
 
 	"github.com/earthquake-alert/erarthquake-alert-v2/src"
@@ -20,12 +18,9 @@ var TestEarthquakeUpdate = []string{
 func TestParseEarthquakeUpdate(t *testing.T) {
 	for _, d := range TestEarthquakeUpdate {
 		t.Run(fmt.Sprintf("Test %s", d), func(t *testing.T) {
-			testPath := filepath.Join(TEST_DATA_PATH, d)
+			row := LoadFile(d)
 
-			row, err := os.ReadFile(testPath)
-			require.NoError(t, err)
-
-			_, err = src.ParseEarthquakeUpdate(row)
+			_, err := src.ParseEarthquakeUpdate(row)
 			require.NoError(t, err)
 		})
 	}
@@ -39,10 +34,7 @@ func TestParseEarthquakeUpdate(t *testing.T) {
 }
 
 func TestEarthquakeUpdateAssembly(t *testing.T) {
-	testPath := filepath.Join(TEST_DATA_PATH, "32-35_06_09_100915_VXSE61.xml")
-
-	row, err := os.ReadFile(testPath)
-	require.NoError(t, err)
+	row := LoadFile("32-35_06_09_100915_VXSE61.xml")
 
 	ea, err := src.ParseEarthquakeUpdate(row)
 	require.NoError(t, err)

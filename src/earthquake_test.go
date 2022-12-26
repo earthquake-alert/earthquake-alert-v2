@@ -2,8 +2,6 @@ package src_test
 
 import (
 	"fmt"
-	"os"
-	"path/filepath"
 	"testing"
 
 	"github.com/earthquake-alert/erarthquake-alert-v2/src"
@@ -62,12 +60,9 @@ var TestEarthquakeData = []string{
 func TestParseEarthquake(t *testing.T) {
 	for _, d := range TestEarthquakeData {
 		t.Run(fmt.Sprintf("Test %s", d), func(t *testing.T) {
-			testPath := filepath.Join(TEST_DATA_PATH, d)
+			row := LoadFile(d)
 
-			row, err := os.ReadFile(testPath)
-			require.NoError(t, err)
-
-			_, err = src.ParseEarthquake(row)
+			_, err := src.ParseEarthquake(row)
 			require.NoError(t, err)
 		})
 	}

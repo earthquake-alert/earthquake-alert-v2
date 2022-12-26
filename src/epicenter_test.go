@@ -1,8 +1,6 @@
 package src_test
 
 import (
-	"os"
-	"path/filepath"
 	"testing"
 
 	"github.com/earthquake-alert/erarthquake-alert-v2/src"
@@ -13,10 +11,7 @@ import (
 func TestEpicenter(t *testing.T) {
 	t.Run("通常", func(t *testing.T) {
 		target := "32-39_11_05_120615_VXSE53.xml"
-
-		testPath := filepath.Join(TEST_DATA_PATH, target)
-		row, err := os.ReadFile(testPath)
-		require.NoError(t, err)
+		row := LoadFile(target)
 
 		ea, err := jma.ParseEarthquake(row)
 		require.NoError(t, err)
@@ -37,10 +32,7 @@ func TestEpicenter(t *testing.T) {
 
 	t.Run("遠地地震", func(t *testing.T) {
 		target := "32-35_01_03_100514_VXSE53.xml"
-
-		testPath := filepath.Join(TEST_DATA_PATH, target)
-		row, err := os.ReadFile(testPath)
-		require.NoError(t, err)
+		row := LoadFile(target)
 
 		ea, err := jma.ParseEarthquake(row)
 		require.NoError(t, err)
@@ -61,10 +53,7 @@ func TestEpicenter(t *testing.T) {
 
 	t.Run("震源要素不明", func(t *testing.T) {
 		target := "32-39_05_01_100831_VXSE53_2.xml"
-
-		testPath := filepath.Join(TEST_DATA_PATH, target)
-		row, err := os.ReadFile(testPath)
-		require.NoError(t, err)
+		row := LoadFile(target)
 
 		ea, err := jma.ParseEarthquake(row)
 		require.NoError(t, err)

@@ -2,16 +2,12 @@ package src_test
 
 import (
 	"fmt"
-	"os"
-	"path/filepath"
 	"testing"
 
 	"github.com/earthquake-alert/erarthquake-alert-v2/src"
 	"github.com/earthquake-alert/erarthquake-alert-v2/src/jma"
 	"github.com/stretchr/testify/require"
 )
-
-const TEST_DATA_PATH = "../test_data/jma_xml/"
 
 // 津波情報のテストデータ
 var TestData = []string{
@@ -52,12 +48,9 @@ var TestData = []string{
 func TestParseTsunami(t *testing.T) {
 	for _, d := range TestData {
 		t.Run(fmt.Sprintf("Test %s", d), func(t *testing.T) {
-			testPath := filepath.Join(TEST_DATA_PATH, d)
+			row := LoadFile(d)
 
-			row, err := os.ReadFile(testPath)
-			require.NoError(t, err)
-
-			_, err = src.ParseTsunami(row)
+			_, err := src.ParseTsunami(row)
 			require.NoError(t, err)
 		})
 	}
@@ -78,11 +71,7 @@ func TestStatus(t *testing.T) {
 
 	for d, s := range statusData {
 		t.Run(fmt.Sprintf("Test IsStatus %s", d), func(t *testing.T) {
-			testPath := filepath.Join(TEST_DATA_PATH, d)
-
-			row, err := os.ReadFile(testPath)
-			require.NoError(t, err)
-
+			row := LoadFile(d)
 			tsunami, err := src.ParseTsunami(row)
 			require.NoError(t, err)
 
@@ -99,10 +88,7 @@ func TestIsCommon(t *testing.T) {
 
 	for d, s := range statusData {
 		t.Run(fmt.Sprintf("Test IsStatus %s", d), func(t *testing.T) {
-			testPath := filepath.Join(TEST_DATA_PATH, d)
-
-			row, err := os.ReadFile(testPath)
-			require.NoError(t, err)
+			row := LoadFile(d)
 
 			tsunami, err := src.ParseTsunami(row)
 			require.NoError(t, err)
@@ -120,10 +106,7 @@ func TestInfoType(t *testing.T) {
 
 	for d, s := range statusData {
 		t.Run(fmt.Sprintf("Test IsStatus %s", d), func(t *testing.T) {
-			testPath := filepath.Join(TEST_DATA_PATH, d)
-
-			row, err := os.ReadFile(testPath)
-			require.NoError(t, err)
+			row := LoadFile(d)
 
 			tsunami, err := src.ParseTsunami(row)
 			require.NoError(t, err)

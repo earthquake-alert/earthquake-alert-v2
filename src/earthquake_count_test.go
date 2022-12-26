@@ -3,8 +3,6 @@ package src_test
 import (
 	"context"
 	"fmt"
-	"os"
-	"path/filepath"
 	"testing"
 
 	"github.com/earthquake-alert/erarthquake-alert-v2/src"
@@ -20,12 +18,9 @@ var TestEarthquakeCount = []string{
 func TestParseEarthquakeCount(t *testing.T) {
 	for _, d := range TestEarthquakeCount {
 		t.Run(fmt.Sprintf("Test %s", d), func(t *testing.T) {
-			testPath := filepath.Join(TEST_DATA_PATH, d)
+			row := LoadFile(d)
 
-			row, err := os.ReadFile(testPath)
-			require.NoError(t, err)
-
-			_, err = src.ParseEarthquakeCount(row)
+			_, err := src.ParseEarthquakeCount(row)
 			require.NoError(t, err)
 		})
 	}
@@ -41,10 +36,7 @@ func TestParseEarthquakeCount(t *testing.T) {
 func TestEarthquakeCountGetText(t *testing.T) {
 	t.Run("1", func(t *testing.T) {
 		target := "32-35_03_01_100514_VXSE60.xml"
-
-		testPath := filepath.Join(TEST_DATA_PATH, target)
-		row, err := os.ReadFile(testPath)
-		require.NoError(t, err)
+		row := LoadFile(target)
 
 		ea, err := src.ParseEarthquakeCount(row)
 		require.NoError(t, err)
@@ -57,10 +49,7 @@ func TestEarthquakeCountGetText(t *testing.T) {
 
 	t.Run("2", func(t *testing.T) {
 		target := "32-35_10_02_220510_VXSE60.xml"
-
-		testPath := filepath.Join(TEST_DATA_PATH, target)
-		row, err := os.ReadFile(testPath)
-		require.NoError(t, err)
+		row := LoadFile(target)
 
 		ea, err := src.ParseEarthquakeCount(row)
 		require.NoError(t, err)
@@ -80,10 +69,7 @@ func TestEarthquakeCountAssembly(t *testing.T) {
 	t.Run("DBに格納される", func(t *testing.T) {
 		t.Run("1", func(t *testing.T) {
 			target := "32-35_03_01_100514_VXSE60.xml"
-
-			testPath := filepath.Join(TEST_DATA_PATH, target)
-			row, err := os.ReadFile(testPath)
-			require.NoError(t, err)
+			row := LoadFile(target)
 
 			ea, err := src.ParseEarthquakeCount(row)
 			require.NoError(t, err)
@@ -114,10 +100,7 @@ func TestEarthquakeCountAssembly(t *testing.T) {
 
 		t.Run("2", func(t *testing.T) {
 			target := "32-35_10_02_220510_VXSE60.xml"
-
-			testPath := filepath.Join(TEST_DATA_PATH, target)
-			row, err := os.ReadFile(testPath)
-			require.NoError(t, err)
+			row := LoadFile(target)
 
 			ea, err := src.ParseEarthquakeCount(row)
 			require.NoError(t, err)

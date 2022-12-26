@@ -2,14 +2,20 @@ package src_test
 
 import (
 	"context"
+	"database/sql"
 	"flag"
 	"os"
+	"path/filepath"
 	"testing"
 
 	"github.com/earthquake-alert/erarthquake-alert-v2/src"
 	"github.com/earthquake-alert/erarthquake-alert-v2/src/models"
 	"github.com/stretchr/testify/require"
 )
+
+const TEST_DATA_PATH = "../test_data/jma_xml/"
+
+var DB *sql.DB
 
 // これをしないとテストが失敗するため追加している
 // ref. https://stackoverflow.com/questions/27342973/custom-command-line-flags-in-gos-unit-tests
@@ -19,7 +25,15 @@ var _ = flag.String("test.config", "", "Overrides the default config")
 func TestMain(m *testing.M) {
 	src.Init("test")
 
-	err := ResetDBTable()
+	ctx := context.Background()
+	db, err := src.NewConnectMySQL(ctx)
+	if err != nil {
+		panic(err)
+	}
+	DB = db
+	defer db.Close()
+
+	err = ResetDBTable(ctx, db)
 	if err != nil {
 		panic(err)
 	}
@@ -28,19 +42,11 @@ func TestMain(m *testing.M) {
 
 	code := m.Run()
 	os.Exit(code)
-
 }
 
 // テスト用のDBを初期化する
-func ResetDBTable() error {
-	ctx := context.Background()
-	db, err := src.NewConnectMySQL(ctx)
-	if err != nil {
-		return err
-	}
-	defer db.Close()
-
-	_, err = models.Earthquakes().DeleteAll(ctx, db)
+func ResetDBTable(ctx context.Context, db *sql.DB) error {
+	_, err := models.Earthquakes().DeleteAll(ctx, db)
 	if err != nil {
 		return err
 	}
@@ -90,4 +96,14 @@ func ResetDBTable() error {
 
 func TestMode(t *testing.T) {
 	require.Equal(t, src.C.Mode, "test")
+}
+
+func LoadFile(file string) []byte {
+	path := filepath.Join(TEST_DATA_PATH, file)
+
+	row, err := os.ReadFile(path)
+	if err != nil {
+		panic(err)
+	}
+	return row
 }
