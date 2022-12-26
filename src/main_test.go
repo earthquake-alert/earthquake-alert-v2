@@ -4,13 +4,18 @@ import (
 	"context"
 	"database/sql"
 	"flag"
+	"math"
+	"math/rand"
 	"os"
 	"path/filepath"
 	"testing"
+	"time"
 
 	"github.com/earthquake-alert/erarthquake-alert-v2/src"
 	"github.com/earthquake-alert/erarthquake-alert-v2/src/models"
 	"github.com/stretchr/testify/require"
+	"github.com/volatiletech/null/v8"
+	"github.com/volatiletech/sqlboiler/v4/boil"
 )
 
 const TEST_DATA_PATH = "../test_data/jma_xml/"
@@ -106,4 +111,32 @@ func LoadFile(file string) []byte {
 		panic(err)
 	}
 	return row
+}
+
+// テストようにランダムなEventIDを生成する
+func RandomEventID() uint64 {
+	length := 14
+	var eventId uint64 = 0
+
+	for i := 1; length > i; i++ {
+		eventId += uint64(rand.Intn(9) * int(math.Pow(10, float64(i))))
+	}
+
+	return eventId
+}
+
+// Earthquakeテーブルにカラムを追加する
+func InsertEarthquake(ctx context.Context, eventId uint64) error {
+	e := models.Earthquake{
+		EventID:       eventId,
+		Lat:           null.Float64{},
+		Lon:           null.Float64{},
+		Depth:         null.Int{},
+		EpicenterName: null.String{},
+		MaxInt:        "6弱",
+		Magnitude:     null.String{},
+		Date:          time.Now(),
+	}
+
+	return e.Insert(ctx, DB, boil.Infer())
 }

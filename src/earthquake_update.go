@@ -58,41 +58,39 @@ func (e *EarthquakeUpdate) Assembly(ctx context.Context, db *sql.DB) error {
 		return err
 	}
 
+	// 取消報じゃないの時
+	if e.Parsed.Body.Earthquake != nil {
+		// 震源要素をパースする
+		if err := e.ParseEpicenter(); err != nil {
+			return err
+		}
+		// マグニチュード表記を文字列にフォーマットする
+		e.NewMagnitude = FormatMagnitude(&e.Parsed.Body.Earthquake.Magnitude)
+
+		ea, err := e.GetOldEarthquakes(ctx, db, eventId[0])
+		if err != nil {
+			return err
+		}
+		if ea != nil {
+			// Earthquakeテーブルにカラムがある場合はUPDATEする
+			e.LatestEarthquake = ea
+
+			// Earthquakes テーブルを更新する
+			ea.Lat = null.Float64FromPtr(e.NewLat)
+			ea.Lon = null.Float64FromPtr(e.NewLon)
+			ea.Depth = null.IntFromPtr(e.NewDepth)
+			ea.Magnitude = null.NewString(e.NewMagnitude, true)
+
+			if _, err := ea.Update(ctx, db, boil.Infer()); err != nil {
+				return err
+			}
+		}
+	}
+
 	if err := e.InsertUpdateDB(ctx, db, eventId[0], targetD); err != nil {
 		return err
 	}
 
-	// 取消報の時
-	if e.Parsed.Body.Earthquake == nil {
-		return nil
-	}
-
-	// 震源要素をパースする
-	if err := e.ParseEpicenter(); err != nil {
-		return err
-	}
-	// マグニチュード表記を文字列にフォーマットする
-	e.NewMagnitude = FormatMagnitude(&e.Parsed.Body.Earthquake.Magnitude)
-
-	ea, err := e.GetOldEarthquakes(ctx, db, eventId[0])
-	if err != nil {
-		return err
-	}
-	if ea == nil {
-		return nil
-	}
-
-	e.LatestEarthquake = ea
-
-	// Earthquakes テーブルを更新する
-	ea.Lat = null.Float64FromPtr(e.NewLat)
-	ea.Lon = null.Float64FromPtr(e.NewLon)
-	ea.Depth = null.IntFromPtr(e.NewDepth)
-	ea.Magnitude = null.NewString(e.NewMagnitude, true)
-
-	if _, err := ea.Update(ctx, db, boil.Infer()); err != nil {
-		return err
-	}
 	return nil
 }
 
@@ -116,7 +114,7 @@ func (e *EarthquakeUpdate) GetOldEarthquakes(ctx context.Context, db *sql.DB, ev
 		models.EarthquakeWhere.EventID.EQ(eventId),
 	).One(ctx, db)
 	if errors.Is(err, sql.ErrNoRows) {
-		return nil, err
+		return nil, nil
 	}
 	if err != nil {
 		return nil, err
