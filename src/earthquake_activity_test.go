@@ -103,7 +103,7 @@ func TestEarthquakeActivityGetTargetDate(t *testing.T) {
 		d, err := ea.GetTargetDate()
 		require.NoError(t, err)
 
-		require.Equal(t, d.String(), "2019-11-11 17:00:00 +0900 JST")
+		require.Equal(t, d.UTC().String(), "2019-11-11 08:00:00 +0000 UTC")
 	})
 
 	t.Run("2", func(t *testing.T) {
@@ -116,7 +116,7 @@ func TestEarthquakeActivityGetTargetDate(t *testing.T) {
 		d, err := ea.GetTargetDate()
 		require.NoError(t, err)
 
-		require.Equal(t, d.String(), "2022-03-16 13:46:00 +0900 JST")
+		require.Equal(t, d.UTC().String(), "2022-03-16 04:46:00 +0000 UTC")
 
 	})
 }
