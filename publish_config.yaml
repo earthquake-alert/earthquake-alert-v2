@@ -1,0 +1,30 @@
+# ここに、送信するプラットフォームの設定を記述します。
+# 記述例は、 `./src/publish_config_test.yaml` にあります。
+# 定義は、`./src/config.go` の PublishConfig で定義されています。
+#
+# 送信可能なプラットフォームは以下の通りです。
+# - Twitter
+# - Discord Webhook
+# - Slack Webhook
+# - LINE Notify
+#
+# この設定は、トークンを記述することを前提としているため"絶対に"Gitにコミットしないでください。
+# (このファイルは.gitignoreで除外されていないため、`git add .`とかすると間違えてコミットしてしまうことがあります。)
+#
+# CloudRunでアプリケーションを実行する場合、この設定ファイルはSecretManagerに格納しDockerコンテナにマウントしてください。
+#
+#############################################
+#
+# 設定例:
+#
+# discord:
+#   - name: my_server
+#     webhook_url: https://example.com/discord/webhook/1
+#     min_int: 3
+#     areas:
+#       - 茨城県
+#       - 埼玉県
+#       - 東京都
+#       - 千葉県
+#       - 神奈川県
+#     is_tsunami: true
