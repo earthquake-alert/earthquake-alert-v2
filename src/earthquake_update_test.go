@@ -8,6 +8,7 @@ import (
 	"github.com/earthquake-alert/erarthquake-alert-v2/src"
 	"github.com/earthquake-alert/erarthquake-alert-v2/src/models"
 	"github.com/stretchr/testify/require"
+	"github.com/volatiletech/null/v8"
 )
 
 var TestEarthquakeUpdate = []string{
@@ -180,5 +181,106 @@ func TestEarthquakeUpdateAssemblyCancel(t *testing.T) {
 		require.False(t, update.Lon.Valid)
 		require.False(t, update.Depth.Valid)
 		require.Equal(t, update.Magnitude.String, "")
+	})
+}
+
+func TestEarthquakeUpdateGetOldEpicenter(t *testing.T) {
+	t.Run("nilの場合", func(t *testing.T) {
+		e := src.EarthquakeUpdate{}
+
+		require.Equal(t, e.GetOldEpicenter(), "不明")
+	})
+
+	t.Run("存在はするが、緯度、軽度が不明の場合", func(t *testing.T) {
+		e := src.EarthquakeUpdate{
+			LatestEarthquake: &models.Earthquake{
+				Lat: null.Float64{},
+				Lon: null.Float64From(20.000),
+			},
+		}
+
+		require.Equal(t, e.GetOldEpicenter(), "不明")
+	})
+
+	t.Run("通常", func(t *testing.T) {
+		e := src.EarthquakeUpdate{
+			LatestEarthquake: &models.Earthquake{
+				Lat:   null.Float64From(200),
+				Lon:   null.Float64From(20.000),
+				Depth: null.IntFrom(-100),
+			},
+		}
+
+		require.Equal(t, e.GetOldEpicenter(), "北緯200.0度 東経20.0度 深さ 100m")
+	})
+
+	t.Run("深さ不明", func(t *testing.T) {
+		e := src.EarthquakeUpdate{
+			LatestEarthquake: &models.Earthquake{
+				Lat:   null.Float64From(200),
+				Lon:   null.Float64From(20.000),
+				Depth: null.Int{},
+			},
+		}
+
+		require.Equal(t, e.GetOldEpicenter(), "北緯200.0度 東経20.0度 深さ 不明")
+	})
+}
+
+func TestEarthquakeUpdateGetOldMagnitude(t *testing.T) {
+	t.Run("nilの場合", func(t *testing.T) {
+		e := src.EarthquakeUpdate{}
+
+		require.Equal(t, e.GetOldMagnitude(), "M不明")
+	})
+
+	t.Run("存在する", func(t *testing.T) {
+		e := src.EarthquakeUpdate{
+			LatestEarthquake: &models.Earthquake{
+				Magnitude: null.NewString("M5.0", false),
+			},
+		}
+
+		require.Equal(t, e.GetOldMagnitude(), "M5.0")
+	})
+}
+
+func TestEarthquakeUpdateGetText(t *testing.T) {
+	ctx := context.Background()
+
+	t.Run("1", func(t *testing.T) {
+		target := "32-35_06_09_100915_VXSE61.xml"
+		row := LoadFile(target)
+
+		ea, err := src.ParseEarthquakeUpdate(row)
+		require.NoError(t, err)
+
+		ea.Parsed.Head.EventID = fmt.Sprint(RandomEventID())
+
+		err = ea.Assembly(ctx, DB)
+		require.NoError(t, err)
+
+		text, err := ea.GetText()
+		require.NoError(t, err)
+
+		require.Equal(t, text, "平成20年 6月14日12時30分をもって、地震の発生場所と規模を更新します。\n\n■ 更新前震源地: 不明\n■ 更新前規模: M不明\n↓\n□ 更新後震源地: 北緯39.0度 東経140.9度 深さ 10km\n□ 更新後規模: M7.2\n\n度単位の震源要素は、津波情報等を引き続き発表する場合に使用されます。")
+	})
+
+	t.Run("2 取消", func(t *testing.T) {
+		target := "32-35_06_10_100915_VXSE61.xml"
+		row := LoadFile(target)
+
+		ea, err := src.ParseEarthquakeUpdate(row)
+		require.NoError(t, err)
+
+		ea.Parsed.Head.EventID = fmt.Sprint(RandomEventID())
+
+		err = ea.Assembly(ctx, DB)
+		require.NoError(t, err)
+
+		text, err := ea.GetText()
+		require.NoError(t, err)
+
+		require.Equal(t, text, "顕著な地震の震源要素更新のお知らせを取り消します。\n\n先ほどの、顕著な地震の震源要素更新のお知らせを取り消します。")
 	})
 }

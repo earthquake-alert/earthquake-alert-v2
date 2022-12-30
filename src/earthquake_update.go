@@ -184,11 +184,7 @@ func (e *EarthquakeUpdate) GetOldEpicenter() string {
 	lat := e.LatestEarthquake.Lat.Float64
 	lon := e.LatestEarthquake.Lon.Float64
 
-	var depth *int = nil
-	if !e.LatestEarthquake.Depth.IsZero() {
-		depth = &e.LatestEarthquake.Depth.Int
-	}
-
+	var depth *int = e.LatestEarthquake.Depth.Ptr()
 	return FormatLatLonDepth(lat, lon, depth)
 }
 

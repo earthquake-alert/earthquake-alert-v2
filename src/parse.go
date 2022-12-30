@@ -26,7 +26,7 @@ func ParseEventID(eventId string) ([]uint64, error) {
 
 // ISO8601拡張形式をパースする
 func ParseDate(d string) (time.Time, error) {
-	return time.Parse("2006-01-02T15:04:05-07:00", d)
+	return time.Parse(time.RFC3339, d)
 }
 
 // 度分秒の緯度経度十進度に変換する
