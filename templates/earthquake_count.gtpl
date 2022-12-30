@@ -5,7 +5,7 @@
 {{- if $c -}}
     {{- printf "\n" -}}{{- $c.FormattedStartTime -}}から{{- $c.FormattedEndTime -}}までの間に、{{- $c.Number -}}回
     {{- if ne $c.FeltNumber -1 -}}
-        （うち有感地震{{- $c.FeltNumber -}}回）
+        （うち震度1以上{{- $c.FeltNumber -}}回）
     {{- end -}}
     の地震が発生しています。
 {{- end -}}
